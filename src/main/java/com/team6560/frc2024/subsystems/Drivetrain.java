@@ -112,6 +112,9 @@ public class Drivetrain extends SubsystemBase {
                 resetOdometry(new Pose2d());
         }
 
+        public SwerveModule[] getModules() {
+                return this.modules;
+        }
         
         @Override
         public void periodic() {
