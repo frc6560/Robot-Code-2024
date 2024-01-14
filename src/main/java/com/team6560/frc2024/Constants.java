@@ -4,17 +4,19 @@
 
 package com.team6560.frc2024;
 
-
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
+// import edu.wpi.first.apriltag.AprilTagFieldLayout;
 // import edu.wpi.first.math.geometry.Rotation3d;
 // import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 // import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Filesystem;
+// import edu.wpi.first.wpilibj.Filesystem;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -84,9 +86,14 @@ public final class Constants {
       new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
       // Back right
       new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
-
-
-
+  
+  public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+    new PIDConstants(0.5, 0, 0), // Translation constants 
+    new PIDConstants(0.5, 0, 0), // Rotation constants 
+    MAX_VELOCITY_METERS_PER_SECOND,
+    DRIVETRAIN_WHEELBASE_METERS,// Drive base radius (distance from center to furthest module) 
+    new ReplanningConfig()
+  );
 
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
@@ -122,7 +129,6 @@ public final class Constants {
     public static final int DRIVER_STATION_X_AXIS = 0;
     public static final int DRIVER_STATION_Y_AXIS = 1;
   }
-
 
   public static final class FieldConstants {
     public static final double length = Units.feetToMeters(54);

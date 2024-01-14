@@ -6,7 +6,7 @@ package com.team6560.frc2024.subsystems;
 
 // WPI & REV & SYSTEM:
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.DriverStation;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 // import com.revrobotics.CANSparkMax.IdleMode;
@@ -18,8 +18,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 // UTIL:
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.Pair;
-import java.util.function.Supplier;
+// import edu.wpi.first.math.Pair;
+// import java.util.function.Supplier;
 import static com.team6560.frc2024.Constants.*;
 
 // SWERVE:
@@ -33,8 +33,7 @@ import com.swervedrivespecialties.swervelib.MkModuleConfiguration;
 import com.swervedrivespecialties.swervelib.MkSwerveModuleBuilder;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-
-
+import com.team6560.frc2024.Constants;
 
 public class Drivetrain extends SubsystemBase {
         /**
@@ -50,6 +49,8 @@ public class Drivetrain extends SubsystemBase {
         private final SwerveModule m_frontRightModule;
         private final SwerveModule m_backLeftModule;
         private final SwerveModule m_backRightModule;
+
+        // private SwerveDriveKinematics kinematics;
 
         /**
          * The default states for each module, corresponding to an X shape.
@@ -67,13 +68,11 @@ public class Drivetrain extends SubsystemBase {
         // ODOMETRY
         private final SwerveDriveOdometry odometry;
 
-
-
         public Drivetrain() {
                 m_frontLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
                                 // .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-                                //                 .withSize(2, 4)
-                                //                 .withPosition(6, 0))
+                                // .withSize(2, 4)
+                                // .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, FRONT_LEFT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, FRONT_LEFT_MODULE_STEER_MOTOR)
@@ -108,6 +107,8 @@ public class Drivetrain extends SubsystemBase {
                 modules = new SwerveModule[] { m_frontLeftModule, m_frontRightModule, m_backLeftModule,
                                 m_backRightModule };
 
+                // kinematics = new SwerveDriveKinematics();
+
                 odometry = new SwerveDriveOdometry(m_kinematics, getRawGyroRotation(), getModulePositions());
                 resetOdometry(new Pose2d());
         }
@@ -115,18 +116,16 @@ public class Drivetrain extends SubsystemBase {
         public SwerveModule[] getModules() {
                 return this.modules;
         }
-        
+
         @Override
         public void periodic() {
                 updateOdometry();
         }
-        
+
         // Updates the field-relative position.
         private void updateOdometry() {
                 odometry.update(getRawGyroRotation(), getModulePositions());
         }
-
-
 
         // This method is used to control the movement of the chassis.
         public void drive(ChassisSpeeds chassisSpeeds) {
@@ -134,7 +133,6 @@ public class Drivetrain extends SubsystemBase {
                 SwerveDriveKinematics.desaturateWheelSpeeds(speeds, MAX_VELOCITY_METERS_PER_SECOND);
                 setChassisState(speeds);
         }
-
 
         // Sets the speeds and orientations of each swerve module.
         // array order: front left, front right, back left, back right
@@ -185,9 +183,6 @@ public class Drivetrain extends SubsystemBase {
                 }
         }
 
-
-
-
         public Rotation2d getRawGyroRotation() {
                 return Rotation2d.fromDegrees(pigeon.getYaw().getValueAsDouble());
         }
@@ -205,11 +200,16 @@ public class Drivetrain extends SubsystemBase {
                                 m_backLeftModule.getPosition(), m_backRightModule.getPosition() };
         }
 
- 
-
         // Gets the current pose of the robot according to the odometer/estimator
         public Pose2d getPose() {
                 return odometry.getPoseMeters();
+        }
+
+        public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+                ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+                SwerveModuleState[] targetStates = m_kinematics.toSwerveModuleStates(targetSpeeds);
+                setChassisState(targetStates);
         }
 
         // This method is used to reset the position of the robot's pose estimator.
@@ -221,5 +221,14 @@ public class Drivetrain extends SubsystemBase {
         // robot is currently facing to the 'forwards' direction.
         public void zeroGyroscope() {
                 resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d(0.0)));
+        }
+
+        public ChassisSpeeds getChassisSpeeds() {
+                return m_kinematics.toChassisSpeeds(getStates());
+        }
+
+        public SwerveModuleState[] getStates() {
+                return new SwerveModuleState[] { m_frontLeftModule.getState(), m_frontRightModule.getState(),
+                                m_backLeftModule.getState(), m_backRightModule.getState() };
         }
 }
