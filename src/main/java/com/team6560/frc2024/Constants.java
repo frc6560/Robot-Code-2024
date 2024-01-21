@@ -75,6 +75,7 @@ public final class Constants {
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
       Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
+  public static final double MAX_VOLTAGE = 12.0;
   public static final double MAX_ACCELERATION = 5.0; // m/s^2
   public static final double MAX_ANGULAR_ACCELERATION = 20.0; // rad/s^2
 

@@ -41,7 +41,6 @@ public class Drivetrain extends SubsystemBase {
          * This can be reduced to cap the robot's maximum speed. Typically, this is
          * useful during initial testing of the robot.
          */
-        public static final double MAX_VOLTAGE = 12.0;
 
         private final Pigeon2 pigeon = new Pigeon2(GYRO_ID);
 
@@ -74,34 +73,34 @@ public class Drivetrain extends SubsystemBase {
                                 // .withSize(2, 4)
                                 // .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-                                .withDriveMotor(MotorType.FALCON, FRONT_LEFT_MODULE_DRIVE_MOTOR)
-                                .withSteerMotor(MotorType.NEO, FRONT_LEFT_MODULE_STEER_MOTOR)
-                                .withSteerEncoderPort(FRONT_LEFT_MODULE_STEER_ENCODER)
-                                .withSteerOffset(FRONT_LEFT_MODULE_STEER_OFFSET)
+                                .withDriveMotor(MotorType.FALCON, Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR)
+                                .withSteerMotor(MotorType.NEO, Constants.FRONT_LEFT_MODULE_STEER_MOTOR)
+                                .withSteerEncoderPort(Constants.FRONT_LEFT_MODULE_STEER_ENCODER)
+                                .withSteerOffset(Constants.FRONT_LEFT_MODULE_STEER_OFFSET)
                                 .build();
 
                 m_frontRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-                                .withDriveMotor(MotorType.FALCON, FRONT_RIGHT_MODULE_DRIVE_MOTOR)
-                                .withSteerMotor(MotorType.NEO, FRONT_RIGHT_MODULE_STEER_MOTOR)
-                                .withSteerEncoderPort(FRONT_RIGHT_MODULE_STEER_ENCODER)
-                                .withSteerOffset(FRONT_RIGHT_MODULE_STEER_OFFSET)
+                                .withDriveMotor(MotorType.FALCON, Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR)
+                                .withSteerMotor(MotorType.NEO, Constants.FRONT_RIGHT_MODULE_STEER_MOTOR)
+                                .withSteerEncoderPort(Constants.FRONT_RIGHT_MODULE_STEER_ENCODER)
+                                .withSteerOffset(Constants.FRONT_RIGHT_MODULE_STEER_OFFSET)
                                 .build();
 
                 m_backLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-                                .withDriveMotor(MotorType.FALCON, BACK_LEFT_MODULE_DRIVE_MOTOR)
-                                .withSteerMotor(MotorType.NEO, BACK_LEFT_MODULE_STEER_MOTOR)
-                                .withSteerEncoderPort(BACK_LEFT_MODULE_STEER_ENCODER)
-                                .withSteerOffset(BACK_LEFT_MODULE_STEER_OFFSET)
+                                .withDriveMotor(MotorType.FALCON, Constants.BACK_LEFT_MODULE_DRIVE_MOTOR)
+                                .withSteerMotor(MotorType.NEO, Constants.BACK_LEFT_MODULE_STEER_MOTOR)
+                                .withSteerEncoderPort(Constants.BACK_LEFT_MODULE_STEER_ENCODER)
+                                .withSteerOffset(Constants.BACK_LEFT_MODULE_STEER_OFFSET)
                                 .build();
 
                 m_backRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-                                .withDriveMotor(MotorType.FALCON, BACK_RIGHT_MODULE_DRIVE_MOTOR)
-                                .withSteerMotor(MotorType.NEO, BACK_RIGHT_MODULE_STEER_MOTOR)
-                                .withSteerEncoderPort(BACK_RIGHT_MODULE_STEER_ENCODER)
-                                .withSteerOffset(BACK_RIGHT_MODULE_STEER_OFFSET)
+                                .withDriveMotor(MotorType.FALCON, Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR)
+                                .withSteerMotor(MotorType.NEO, Constants.BACK_RIGHT_MODULE_STEER_MOTOR)
+                                .withSteerEncoderPort(Constants.BACK_RIGHT_MODULE_STEER_ENCODER)
+                                .withSteerOffset(Constants.BACK_RIGHT_MODULE_STEER_OFFSET)
                                 .build();
 
                 modules = new SwerveModule[] { m_frontLeftModule, m_frontRightModule, m_backLeftModule,
@@ -130,20 +129,28 @@ public class Drivetrain extends SubsystemBase {
         // This method is used to control the movement of the chassis.
         public void drive(ChassisSpeeds chassisSpeeds) {
                 SwerveModuleState[] speeds = m_kinematics.toSwerveModuleStates(chassisSpeeds);
-                SwerveDriveKinematics.desaturateWheelSpeeds(speeds, MAX_VELOCITY_METERS_PER_SECOND);
+                SwerveDriveKinematics.desaturateWheelSpeeds(speeds, Constants.MAX_VELOCITY_METERS_PER_SECOND);
                 setChassisState(speeds);
         }
 
         // Sets the speeds and orientations of each swerve module.
         // array order: front left, front right, back left, back right
         public void setChassisState(SwerveModuleState[] states) {
-                m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                m_frontLeftModule.set(
+                                states[0].speedMetersPerSecond / Constants.MAX_VELOCITY_METERS_PER_SECOND
+                                                * Constants.MAX_VOLTAGE,
                                 states[0].angle.getRadians());
-                m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                m_frontRightModule.set(
+                                states[1].speedMetersPerSecond / Constants.MAX_VELOCITY_METERS_PER_SECOND
+                                                * Constants.MAX_VOLTAGE,
                                 states[1].angle.getRadians());
-                m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                m_backLeftModule.set(
+                                states[2].speedMetersPerSecond / Constants.MAX_VELOCITY_METERS_PER_SECOND
+                                                * Constants.MAX_VOLTAGE,
                                 states[2].angle.getRadians());
-                m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                m_backRightModule.set(
+                                states[3].speedMetersPerSecond / Constants.MAX_VELOCITY_METERS_PER_SECOND
+                                                * Constants.MAX_VOLTAGE,
                                 states[3].angle.getRadians());
 
         }

@@ -5,7 +5,7 @@
 package com.team6560.frc2024.controls;
 
 import com.team6560.frc2024.Constants;
-import com.team6560.frc2024.Constants.*;
+// import com.team6560.frc2024.Constants.*;
 import com.team6560.frc2024.commands.DriveCommand;
 import com.team6560.frc2024.utility.NumberStepper;
 import com.team6560.frc2024.utility.PovNumberStepper;
@@ -13,10 +13,10 @@ import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
+// import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+// import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class ManualControls implements DriveCommand.Controls {
   private XboxController xbox;
@@ -34,12 +34,12 @@ public class ManualControls implements DriveCommand.Controls {
 
   private NetworkTable armTable;
 
-  private boolean prevclimbEngaged;
-  private boolean climbEngaged;
+  // private boolean prevclimbEngaged;
+  // private boolean climbEngaged;
 
-  private boolean prevIntakeOverrideEngaged;
+  // private boolean prevIntakeOverrideEngaged;
 
-  private boolean intakeOverrideEngaged;
+  // private boolean intakeOverrideEngaged;
 
   /**
    * Creates a new `ManualControls` instance.
@@ -119,15 +119,15 @@ public class ManualControls implements DriveCommand.Controls {
     return value;
   }
 
-  private static double modifyAxis2(double value) {
-    // Deadband
-    value = deadband(value, 0.1);
+  // private static double modifyAxis2(double value) {
+  //   // Deadband
+  //   value = deadband(value, 0.1);
 
-    // Square the axis
-    value = Math.copySign(value * value, value);
+  //   // Square the axis
+  //   value = Math.copySign(value * value, value);
 
-    return value;
-  }
+  //   return value;
+  // }
 
   /**
    * Returns the x component of the robot's velocity, as controlled by the Xbox
