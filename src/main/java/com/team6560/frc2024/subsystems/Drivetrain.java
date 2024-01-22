@@ -14,6 +14,7 @@ import com.swervedrivespecialties.swervelib.MotorType;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.pathplanner.lib.auto.AutoBuilder;
 
 // UTIL:
 import edu.wpi.first.math.geometry.Pose2d;
@@ -26,6 +27,7 @@ import static com.team6560.frc2024.Constants.*;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
@@ -110,6 +112,42 @@ public class Drivetrain extends SubsystemBase {
 
                 odometry = new SwerveDriveOdometry(m_kinematics, getRawGyroRotation(), getModulePositions());
                 resetOdometry(new Pose2d());
+
+                AutoBuilder.configureHolonomic(
+                                () -> getOdometryPose2dNoApriltags(), // Pose2d supplier
+                                (pose) -> resetOdometry(pose), // Pose2d consumer, used to reset odometry at
+                                                                          // the beginning of
+                                                                          // auto
+                                () -> getChassisSpeeds(),
+                                (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds),
+                                // Constants.m_kinematics, // SwerveDriveKinematics
+                                // new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for translation
+                                // error (used to create the X
+                                // // and Y PID controllers)
+                                // new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation
+                                // error (used to create the
+                                // // rotation controller)
+                                // (state) -> drivetrain.setChassisState(state), // Module states consumer used
+                                // to output to the drive
+                                // subsystem
+                                Constants.pathFollowerConfig,
+                                // eventMap,
+                                () -> {
+                                        // Boolean supplier that controls when the path will be mirrored for the red
+                                        // alliance
+                                        // This will flip the path being followed to the red side of the field.
+                                        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                                        var alliance = DriverStation.getAlliance();
+                                        if (alliance.isPresent()) {
+                                                return alliance.get() == DriverStation.Alliance.Red;
+                                        }
+                                        return false;
+                                },
+                                this // The drive subsystem. Used to properly set the requirements of path
+                                           // following
+                                           // commands
+                );
         }
 
         public SwerveModule[] getModules() {
