@@ -7,6 +7,7 @@ package com.team6560.frc2024;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
 
 // import java.io.File;
 
@@ -14,6 +15,7 @@ import com.team6560.frc2024.commands.DriveCommand;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Drivetrain;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,7 +36,6 @@ public class RobotContainer {
 
         private final SendableChooser<Command> autoChooser;
 
-
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
@@ -53,8 +54,26 @@ public class RobotContainer {
 
         private void configureBindings() {
                 SmartDashboard.putData("5 Balls", new PathPlannerAuto("5 Ball"));
+                SmartDashboard.putData("Basic 2 Ball", new PathPlannerAuto("Basic 2 Ball"));
+                SmartDashboard.putData("Short Line", new PathPlannerAuto("Short Lines"));
         }
 
+        public Command goToPose(Pose2d desiredPose) {
+
+                // Pose2d currPose = drivetrain.getPose();
+
+                // ChassisSpeeds currChassisSpeeds = drivetrain.getChassisSpeeds();
+
+                // double currSpeed = Math
+                // .abs(Math.hypot(currChassisSpeeds.vxMetersPerSecond,
+                // currChassisSpeeds.vyMetersPerSecond));
+
+                // Rotation2d heading = Rotation2d
+                // .fromRadians(Math.atan2(currChassisSpeeds.vyMetersPerSecond,
+                // currChassisSpeeds.vxMetersPerSecond));
+
+                return AutoBuilder.pathfindToPose(desiredPose, new PathConstraints(1.0, 1.0, 1.0, 1.0));
+        }
 
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.
