@@ -28,8 +28,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
@@ -52,8 +50,6 @@ public class Drivetrain extends SubsystemBase {
         private final SwerveModule m_frontRightModule;
         private final SwerveModule m_backLeftModule;
         private final SwerveModule m_backRightModule;
-
-        private Field2d field;
 
         // private SwerveDriveKinematics kinematics;
 
@@ -115,8 +111,6 @@ public class Drivetrain extends SubsystemBase {
                 // kinematics = new SwerveDriveKinematics();
 
                 odometry = new SwerveDriveOdometry(m_kinematics, getRawGyroRotation(), getModulePositions());
-
-                this.field = new Field2d();
                 resetOdometry(new Pose2d());
 
                 AutoBuilder.configureHolonomic(
@@ -154,8 +148,6 @@ public class Drivetrain extends SubsystemBase {
                                            // following
                                            // commands
                 );
-
-                SmartDashboard.putData("Field", field);
         }
 
         public SwerveModule[] getModules() {
@@ -170,7 +162,6 @@ public class Drivetrain extends SubsystemBase {
         // Updates the field-relative position.
         private void updateOdometry() {
                 odometry.update(getRawGyroRotation(), getModulePositions());
-                field.setRobotPose(getPose());
         }
 
         // This method is used to control the movement of the chassis.
@@ -269,7 +260,6 @@ public class Drivetrain extends SubsystemBase {
         // This method is used to reset the position of the robot's pose estimator.
         public void resetOdometry(Pose2d pose) {
                 odometry.resetPosition(getRawGyroRotation(), getModulePositions(), pose);
-                
         }
 
         // Sets the gyroscope angle to zero. This can be used to set the direction the
