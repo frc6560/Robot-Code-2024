@@ -30,6 +30,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.swervedrivespecialties.swervelib.MkModuleConfiguration;
 import com.swervedrivespecialties.swervelib.MkSwerveModuleBuilder;
@@ -45,6 +47,8 @@ public class Drivetrain extends SubsystemBase {
          */
 
         private final Pigeon2 pigeon = new Pigeon2(GYRO_ID);
+
+        private Field2d fieldOnlyOdometry;
 
         private final SwerveModule m_frontLeftModule;
         private final SwerveModule m_frontRightModule;
@@ -148,6 +152,9 @@ public class Drivetrain extends SubsystemBase {
                                            // following
                                            // commands
                 );
+
+                this.fieldOnlyOdometry = new Field2d();
+                SmartDashboard.putData("FieldOnlyOdometry", fieldOnlyOdometry);
         }
 
         public SwerveModule[] getModules() {
@@ -157,6 +164,8 @@ public class Drivetrain extends SubsystemBase {
         @Override
         public void periodic() {
                 updateOdometry();
+
+                fieldOnlyOdometry.setRobotPose(getPose());
         }
 
         // Updates the field-relative position.
