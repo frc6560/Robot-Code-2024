@@ -15,6 +15,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.GeometryUtil;
 
 // UTIL:
 import edu.wpi.first.math.geometry.Pose2d;
@@ -115,13 +116,23 @@ public class Drivetrain extends SubsystemBase {
                 // kinematics = new SwerveDriveKinematics();
 
                 odometry = new SwerveDriveOdometry(m_kinematics, getRawGyroRotation(), getModulePositions());
-                resetOdometry(new Pose2d());
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent()) {
+                        if (alliance.get() == DriverStation.Alliance.Red) {
+                                resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
+                        } else {
+                                resetOdometry(new Pose2d());
+                        }
+                } else {
+                        resetOdometry(new Pose2d());
+                }
+                ;
 
                 AutoBuilder.configureHolonomic(
                                 () -> getOdometryPose2dNoApriltags(), // Pose2d supplier
                                 (pose) -> resetOdometry(pose), // Pose2d consumer, used to reset odometry at
-                                                                          // the beginning of
-                                                                          // auto
+                                                               // the beginning of
+                                                               // auto
                                 () -> getChassisSpeeds(),
                                 (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds),
                                 // Constants.m_kinematics, // SwerveDriveKinematics
@@ -142,15 +153,15 @@ public class Drivetrain extends SubsystemBase {
                                         // This will flip the path being followed to the red side of the field.
                                         // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-                                        var alliance = DriverStation.getAlliance();
+                                        // var alliance = DriverStation.getAlliance();
                                         if (alliance.isPresent()) {
                                                 return alliance.get() == DriverStation.Alliance.Red;
                                         }
                                         return false;
                                 },
                                 this // The drive subsystem. Used to properly set the requirements of path
-                                           // following
-                                           // commands
+                                     // following
+                                     // commands
                 );
 
                 this.fieldOnlyOdometry = new Field2d();
@@ -275,6 +286,10 @@ public class Drivetrain extends SubsystemBase {
         // robot is currently facing to the 'forwards' direction.
         public void zeroGyroscope() {
                 resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d(0.0)));
+        }
+
+        public void zeroGyroscope(Rotation2d rotation) {
+                resetOdometry(new Pose2d(getPose().getTranslation(), rotation));
         }
 
         public ChassisSpeeds getChassisSpeeds() {
