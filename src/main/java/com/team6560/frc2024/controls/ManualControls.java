@@ -58,13 +58,13 @@ public class ManualControls implements DriveCommand.Controls {
       this.controlStation = controlStation;
 
     this.speed = new PovNumberStepper(
-        new NumberStepper(Constants.MAX_VELOCITY_METERS_PER_SECOND * 0.15, 0.0,
+        new NumberStepper(Constants.MAX_VELOCITY_METERS_PER_SECOND * 0.4, 0.0,
             Constants.MAX_VELOCITY_METERS_PER_SECOND * 0.6, Constants.MAX_VELOCITY_METERS_PER_SECOND * 0.025),
         xbox,
         PovNumberStepper.PovDirection.VERTICAL);
 
     this.turnSpeed = new PovNumberStepper(
-        new NumberStepper(Constants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.1, 0.0,
+        new NumberStepper(Constants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.175, 0.0,
             Constants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.15,
             Constants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.0025),
         xbox,
@@ -159,12 +159,12 @@ public class ManualControls implements DriveCommand.Controls {
    */
   @Override
   public double driveRotationX() {
-    return modifyAxis(xbox.getRightX() * turnSpeed.get());
+    return -modifyAxis(xbox.getRightX() * turnSpeed.get());
   }
 
   @Override
   public double driveRotationY() {
-    return modifyAxis(xbox.getRightY() * turnSpeed.get());
+    return -modifyAxis(xbox.getRightY() * turnSpeed.get());
   }
 
   /**
