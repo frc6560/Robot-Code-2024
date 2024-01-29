@@ -52,48 +52,34 @@ public class Limelight extends SubsystemBase {
 
   // private final Field2d reflectiveTapeField = new Field2d();
 
-  private final Controls controls;
-  private boolean forceOff = true;
 
-  private Supplier<Pose2d> predictedPose;
-
-  public Limelight(Controls controls, Supplier<Pose2d> predictedPose) {
-    this.controls = controls;
-    this.predictedPose = predictedPose;
-    
-    setForceOff(false);
+  public Limelight() {
 
     ntDispTab("Limelight")
     .add("Horizontal Angle", this::getHorizontalAngle)
     .add("Vertical Angle", this::getVerticalAngle)
-    .add("Has Target", this::hasTarget);
+    .add("Has Target", this::hasTarget)
+    .add("target ID", this::getCurrentApriltagId)
+    .add("taret area", this::getTargetArea);
 
     SmartDashboard.putData("aprilTagField", aprilTagField);
   }
 
 
-  public int getPipeline() {
-    return controls.getLimelightPipeline();
-  }
-
   public double getHorizontalAngle() {
     return ntX.getDouble(0.0);
   }
-
-   public double getTargetArea() {
-     return ntA.getDouble(0.0);
-   }
 
   public double getVerticalAngle() {
     return ntY.getDouble(0.0);
   }
 
-   public boolean hasTarget(){
-     return ntV.getDouble(0.0) == 1.0;
-   }
+  public double getTargetArea() {
+    return ntA.getDouble(0.0);
+  }
 
-  public void setForceOff(boolean value) {
-    forceOff = value;
+  public boolean hasTarget(){
+    return ntV.getDouble(0.0) == 1.0;
   }
  
   public int getCurrentApriltagId() {
@@ -147,10 +133,5 @@ public class Limelight extends SubsystemBase {
     return new Pair<Pose2d, Double> (pose, currentTime);
   }
 
-  @Override
-  public void periodic() {
-    ntPipeline.setNumber(controls.getLimelightPipeline());
-  
-  }
 
 }

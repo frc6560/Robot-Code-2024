@@ -111,7 +111,7 @@ public class ManualControls implements DriveCommand.Controls {
 
   private static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.01);
+    value = deadband(value, 0.1);
 
     // Square the axis
     value = Math.copySign(value * value, value);
@@ -119,15 +119,6 @@ public class ManualControls implements DriveCommand.Controls {
     return value;
   }
 
-  // private static double modifyAxis2(double value) {
-  //   // Deadband
-  //   value = deadband(value, 0.1);
-
-  //   // Square the axis
-  //   value = Math.copySign(value * value, value);
-
-  //   return value;
-  // }
 
   /**
    * Returns the x component of the robot's velocity, as controlled by the Xbox
@@ -167,6 +158,10 @@ public class ManualControls implements DriveCommand.Controls {
     return -modifyAxis(xbox.getRightY() * turnSpeed.get());
   }
 
+  @Override
+  public boolean getAutoTarget(){
+    return xbox.getAButton();
+  }
   /**
    * Returns whether the yaw of the robot's gyroscope should be reset, as
    * controlled by the Xbox controller.

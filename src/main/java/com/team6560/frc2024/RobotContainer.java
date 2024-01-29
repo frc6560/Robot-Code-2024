@@ -4,6 +4,8 @@
 
 package com.team6560.frc2024;
 
+import javax.naming.LimitExceededException;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -14,6 +16,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.team6560.frc2024.commands.DriveCommand;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Drivetrain;
+import com.team6560.frc2024.subsystems.Limelight;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
@@ -29,6 +32,8 @@ public class RobotContainer {
         // The robot's subsystems and commands are defined here...
 
         // not public or private so Robot.java has access to it.
+        final Limelight limelight;
+
         final Drivetrain drivetrain;
         private final DriveCommand driveCommand;
 
@@ -40,8 +45,10 @@ public class RobotContainer {
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
+                limelight = new Limelight();
+
                 drivetrain = new Drivetrain();
-                driveCommand = new DriveCommand(drivetrain, manualControls);
+                driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
 
                 drivetrain.setDefaultCommand(driveCommand);
 
