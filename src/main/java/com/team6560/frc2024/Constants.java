@@ -142,13 +142,19 @@ public final class Constants {
 
   public static final class ShooterConstants {
     public static final double ACCEPTABLE_RPM_DIFF = 20;
-    public static final double ACCEPTABLE_TURRET_DIFF = 1;
+    public static final double ACCEPTABLE_ANGLE_DIFF = 1;
 
     public static final int SHOOTER_LEFT_ID = 21;
     public static final int SHOOTER_RIGHT_ID = 22;
 
-    public static final int ANGLE_MOTOR_ID = 23;
+    public static final int ARC_MOTOR_ID = 23;
 
+
+    public static final double RPM_PER_FALCON_UNIT = 600.0/2480.0;
+
+    public static final double SHOOTER_GEAR_RATIO = 30.0/36.0;
+
+    public static final double ARC_GEAR_RATIO = 189.583;
   }
 
 }
