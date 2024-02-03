@@ -16,7 +16,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.SubsystsemBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.team6560.frc2024.Constants.ShooterConstants;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
