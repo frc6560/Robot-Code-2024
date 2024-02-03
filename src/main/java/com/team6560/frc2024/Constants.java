@@ -140,4 +140,15 @@ public final class Constants {
     public static final double TOP_CONE_MARKER_TO_FLOOR_DISTANCE_METERS = 1.0795;
   }
 
+  public static final class ShooterConstants {
+    public static final double ACCEPTABLE_RPM_DIFF = 20;
+    public static final double ACCEPTABLE_TURRET_DIFF = 1;
+
+    public static final int SHOOTER_LEFT_ID = 21;
+    public static final int SHOOTER_RIGHT_ID = 22;
+
+    public static final int ANGLE_MOTOR_ID = 23;
+
+  }
+
 }
