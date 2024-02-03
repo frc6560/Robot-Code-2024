@@ -70,23 +70,23 @@ public class DriveCommand extends Command {
             if (alliance.get() == DriverStation.Alliance.Red) {
                 drivetrain.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
-                        controls.driveX(),
-                        controls.driveY(),
+                        -controls.driveX(),
+                        -controls.driveY(),
                         controls.driveRotationX(),
                         drivetrain.getGyroscopeRotationNoApriltags())); // perhaps use getRawGyroRotation() instead?
             } else {
                 drivetrain.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
-                        -controls.driveX(),
-                        -controls.driveY(),
+                        controls.driveX(),
+                        controls.driveY(),
                         controls.driveRotationX(),
                         drivetrain.getGyroscopeRotationNoApriltags())); // perhaps use getRawGyroRotation() instead?
             }
         } else {
             drivetrain.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
-                        -controls.driveX(),
-                        -controls.driveY(),
+                        controls.driveX(),
+                        controls.driveY(),
                         controls.driveRotationX(),
                         drivetrain.getGyroscopeRotationNoApriltags())); // perhaps use getRawGyroRotation() instead?
         }

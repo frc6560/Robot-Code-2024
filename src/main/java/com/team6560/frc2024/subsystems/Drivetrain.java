@@ -155,6 +155,7 @@ public class Drivetrain extends SubsystemBase {
 
                                         // var alliance = DriverStation.getAlliance();
                                         if (alliance.isPresent()) {
+                                                System.out.println("Is alliance red: " + (alliance.get() == DriverStation.Alliance.Red));
                                                 return alliance.get() == DriverStation.Alliance.Red;
                                         }
                                         return false;
@@ -274,6 +275,9 @@ public class Drivetrain extends SubsystemBase {
                 ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
 
                 SwerveModuleState[] targetStates = m_kinematics.toSwerveModuleStates(targetSpeeds);
+                // for (SwerveModuleState state : targetStates) {
+                //         state.angle = state.angle.rotateBy(new Rotation2d(180));
+                // }
                 setChassisState(targetStates);
         }
 
