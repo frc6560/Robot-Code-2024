@@ -58,6 +58,7 @@ public class RobotContainer {
                 // SmartDashboard.putData("Short Line", new PathPlannerAuto("Short Lines"));
                 // SmartDashboard.putData("Copy of Short Line", new PathPlannerAuto("Copy of Short Lines"));
                 SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
+                SmartDashboard.putData("New New Auto", new PathPlannerAuto("New New Auto"));
         }
 
         public Command goToPose(Pose2d desiredPose) {
