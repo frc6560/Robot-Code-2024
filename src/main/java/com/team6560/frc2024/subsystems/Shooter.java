@@ -11,11 +11,11 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+// import edu.wpi.first.networktables.NetworkTable;
+// import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.team6560.frc2024.Constants.ShooterConstants;
@@ -36,7 +36,7 @@ public class Shooter extends SubsystemBase {
   private double targetRPM;
   private double targetAngle;
 
-  private NetworkTable ntTable;
+  // private NetworkTable ntTable;
   
 
   public Shooter() {
@@ -91,7 +91,7 @@ public class Shooter extends SubsystemBase {
     // m_transfer = new CANSparkMax(ShooterConstants.ANGLE_MOTOR_ID, MotorType.kBrushless);
     // m_transfer.getEncoder().setPosition(10);
 
-    ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
+    // ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
 
     ntDispTab("Shooter")
       .add("Current RPM", this::getShooterRPM)

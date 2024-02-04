@@ -8,42 +8,52 @@ import com.team6560.frc2024.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
+import com.team6560.frc2024.subsystems.Transfer;
+
+
+
 public class ShooterCommand extends Command {
   /** Creates a new ShooterCommand. */
   public static interface Controls {
     boolean getAimShooter();
 
-    boolean manualMode();
-    double manualAim();
-    double manualShooterSpeed();
+    // boolean manualMode();
+    double getManualAim();
+    double getManualShooterSpeed();
   }
-  private Shooter shooter;
+  private Shooter Shooter;
   private Controls controls;
+  private Transfer Transfer;
 
-  private final double IDLE_RPM = 60;
+  // private final double IDLE_RPM = 60;
 
-  private boolean manualMode;
+  // private boolean manualMode;
 
-  public ShooterCommand(Shooter shooter, Controls controls) {
+  public ShooterCommand(Shooter Shooter, Transfer Transfer, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = shooter;
+    this.Shooter = Shooter;
+    this.Transfer = Transfer;
     this.controls = controls;
 
-    addRequirements(shooter);
+    addRequirements(Shooter);
+    addRequirements(Transfer);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.setTargetRPM(0);
-    manualMode = true; //change later
+    Shooter.setTargetRPM(0);
+    // manualMode = true; //change later
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setManualAim(controls.manualAim());
-    shooter.setTargetRPM(controls.manualShooterSpeed());
+    if (controls.getAimShooter() && Transfer.isInProximity() && Shooter.isReady()) {
+      Transfer.setSpeed(1.0); //maybe add a downframes to fix not properly shooting the ring.
+    }
+    Shooter.setManualAim(controls.getManualAim());
+    Shooter.setTargetRPM(controls.getManualShooterSpeed());
   }
 
   // Called once the command ends or is interrupted.
