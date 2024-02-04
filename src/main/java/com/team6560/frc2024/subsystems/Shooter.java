@@ -100,6 +100,8 @@ public class Shooter extends SubsystemBase {
       .add("Current Arc Angle", this::getArcAngle)
       .add("Target Arc Angle", () -> targetAngle);
 
+    
+
   }
 
   @Override
@@ -115,6 +117,13 @@ public class Shooter extends SubsystemBase {
     }
   }
 
+  public boolean isReady() {
+    if (getRPMDifference() < ShooterConstants.ACCEPTABLE_RPM_DIFF && getAngleDifference() < ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
+      return true;
+    }
+    return false;
+  }
+
   public void setManualAim(double speed) {
     m_arc.set(speed*0.01);
   }
@@ -127,6 +136,14 @@ public class Shooter extends SubsystemBase {
     return m_shooterLeft.getVelocity().getValueAsDouble();
   }
 
+  public double getTargetRPM() {
+    return targetRPM;
+  }
+
+  public double getTargetAngle() {
+    return targetAngle;
+  }
+
   public void setTargetRPM (double input) {
     targetRPM = input;
   }
@@ -135,5 +152,12 @@ public class Shooter extends SubsystemBase {
     targetAngle = angle;
   }
 
+  public double getRPMDifference() {
+    return Math.abs(targetRPM - getShooterRPM());
+  }
+
+  public double getAngleDifference() {
+    return Math.abs(targetAngle - getArcAngle());
+  }
 
 }
