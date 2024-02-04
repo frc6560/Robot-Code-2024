@@ -14,14 +14,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 // import com.revrobotics.CANSparkMax;
 // import com.revrobotics.CANSparkLowLevel.MotorType;
 
-<<<<<<< Updated upstream
-// import edu.wpi.first.networktables.NetworkTable;
-// import edu.wpi.first.networktables.NetworkTableInstance;
-=======
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
->>>>>>> Stashed changes
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.team6560.frc2024.Constants.ShooterConstants;
@@ -42,14 +37,10 @@ public class Shooter extends SubsystemBase {
   private double targetRPM;
   private double targetAngle;
 
-<<<<<<< Updated upstream
-  // private NetworkTable ntTable;
-=======
   private NetworkTable ntTable;
 
   private NetworkTableEntry ntRPM;
   private NetworkTableEntry ntAngle;
->>>>>>> Stashed changes
   
 
   public Shooter() {
@@ -99,7 +90,6 @@ public class Shooter extends SubsystemBase {
     m_arc.getConfigurator().apply(arcGearbox, 0); //not sure if this is the correct way to set gear ratio for the motor in order to get accurate angle position and velocity of the arc
 
     m_arcRequest = new PositionVoltage(0).withSlot(1);
-s
     //Transfer Motor Config
     // m_transfer = new CANSparkMax(ShooterConstants.ANGLE_MOTOR_ID, MotorType.kBrushless);
     // m_transfer.getEncoder().setPosition(10);
