@@ -49,11 +49,11 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.getAimShooter() && Transfer.isInProximity() && Shooter.isReady()) {
-      Transfer.setSpeed(1.0); //maybe add a downframes to fix not properly shooting the ring.
-    }
     Shooter.setManualAim(controls.getManualAim());
     Shooter.setTargetRPM(controls.getManualShooterSpeed());
+    if (controls.getAimShooter() && Transfer.isInProximity() && Shooter.isReadyManualAim()) {
+      Transfer.setSpeed(1.0); //maybe add a downframes to fix not properly shooting the ring.
+    }
   }
 
   // Called once the command ends or is interrupted.

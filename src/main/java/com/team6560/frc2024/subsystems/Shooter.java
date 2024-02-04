@@ -122,10 +122,17 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  public boolean isReady() {
+  public boolean isReadyAutoAim() {
     if (getRPMDifference() < ShooterConstants.ACCEPTABLE_RPM_DIFF && getAngleDifference() < ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
       return true;
-    }
+    }   
+    return false;
+  }
+
+  public boolean isReadyManualAim() {
+    if (getRPMDifference() < ShooterConstants.ACCEPTABLE_RPM_DIFF) {
+      return true;
+    }   
     return false;
   }
 
