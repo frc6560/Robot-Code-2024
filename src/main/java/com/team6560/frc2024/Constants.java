@@ -97,6 +97,10 @@ public final class Constants {
     new ReplanningConfig()
   );
 
+  public static final int TRANSFER_MOTOR = 0;
+
+  public static final int INTAKE_MOTOR = 1;
+
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
     public static final int SECOND_DRIVER_CONTROL_STATION = 1;

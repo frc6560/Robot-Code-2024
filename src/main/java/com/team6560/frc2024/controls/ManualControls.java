@@ -7,6 +7,7 @@ package com.team6560.frc2024.controls;
 import com.team6560.frc2024.Constants;
 // import com.team6560.frc2024.Constants.*;
 import com.team6560.frc2024.commands.DriveCommand;
+import com.team6560.frc2024.commands.IntakeCommand;
 import com.team6560.frc2024.utility.NumberStepper;
 import com.team6560.frc2024.utility.PovNumberStepper;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -18,7 +19,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class ManualControls implements DriveCommand.Controls {
+public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls {
   private XboxController xbox;
 
   private final PovNumberStepper speed;
@@ -117,6 +118,11 @@ public class ManualControls implements DriveCommand.Controls {
     value = Math.copySign(value * value, value);
 
     return value;
+  }
+
+  @Override
+  public boolean getIntake() {
+    return xbox.getRightBumper();
   }
 
   // private static double modifyAxis2(double value) {
