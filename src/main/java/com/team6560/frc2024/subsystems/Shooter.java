@@ -110,9 +110,7 @@ public class Shooter extends SubsystemBase {
     m_shooterLeft.setControl(m_shooterRequest.withVelocity(targetRPM / ShooterConstants.RPM_PER_FALCON_UNIT).withFeedForward(0.1));
     m_shooterRight.setControl(m_shooterRequest.withVelocity(targetRPM / ShooterConstants.RPM_PER_FALCON_UNIT).withFeedForward(0.1));
 
-    double angleDiff = targetAngle - getArcAngle();
-
-    if (Math.abs(angleDiff) > ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
+    if (getAngleDifference() > ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
       m_arc.setControl(m_arcRequest.withPosition(targetAngle).withFeedForward(0.1));
     }
   }
