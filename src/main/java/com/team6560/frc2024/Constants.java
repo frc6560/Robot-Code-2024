@@ -158,13 +158,20 @@ public final class Constants {
   }
 
   public enum ShootingConfigurationConstants {
-    LOL (12.0, 12.0);
+    TWELVE_METERS (12.0, 12.0, 12.0),
+    TWENTY_METERS (20.0, 8.0, 18.0);
 
     private final double angle;
     private final double rpm;
-    ShootingConfigurationConstants(double angle, double rpm) {
+    private final double distance;
+    ShootingConfigurationConstants(double distance, double angle, double rpm) {
+      this.distance = distance;
       this.rpm = rpm;
       this.angle = angle;
+    }
+
+    public double getDistance() {
+      return distance;
     }
 
     public double getAngle(){
