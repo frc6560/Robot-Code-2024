@@ -157,4 +157,22 @@ public final class Constants {
     public static final double ARC_GEAR_RATIO = 189.583;
   }
 
+  public enum ShootingConfigurationConstants {
+    LOL (12.0, 12.0);
+
+    private final double angle;
+    private final double rpm;
+    ShootingConfigurationConstants(double angle, double rpm) {
+      this.rpm = rpm;
+      this.angle = angle;
+    }
+
+    public double getAngle(){
+      return angle;
+    }
+    public double getRPM() {
+      return rpm;
+    }
+  }
+
 }

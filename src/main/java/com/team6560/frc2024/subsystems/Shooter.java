@@ -100,7 +100,6 @@ public class Shooter extends SubsystemBase {
       .add("Current Arc Angle", this::getArcAngle)
       .add("Target Arc Angle", () -> targetAngle);
 
-
   }
 
   @Override
@@ -114,6 +113,10 @@ public class Shooter extends SubsystemBase {
     if (Math.abs(angleDiff) > ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
       m_arc.setControl(m_arcRequest.withPosition(targetAngle).withFeedForward(0.1));
     }
+  }
+
+  public void setManualAim(double speed) {
+    m_arc.set(speed*0.01);
   }
 
   public double getArcAngle() {
