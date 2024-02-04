@@ -5,6 +5,7 @@
 package com.team6560.frc2024.commands;
 
 import com.team6560.frc2024.subsystems.Intake;
+import com.team6560.frc2024.subsystems.Transfer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -12,16 +13,20 @@ public class IntakeCommand extends Command {
 
   private final Intake Intake;
 
+  private final Transfer Transfer;
+
   private final Controls controls;
 
   public static interface Controls {
     boolean getIntake();
   }
   /** Creates a new IntakeCommand. */
-  public IntakeCommand(Intake Intake, Controls controls) {
+  public IntakeCommand(Intake Intake, Transfer Transfer, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Intake);
+    addRequirements(Transfer);
     this.Intake = Intake;
+    this.Transfer = Transfer;
     this.controls = controls;
   }
 
@@ -34,6 +39,14 @@ public class IntakeCommand extends Command {
   public void execute() {
     if (controls.getIntake()) {
       Intake.setSpeed(0.5);
+      if (!Transfer.isInProximity()) {
+        Transfer.setSpeed(0.5);
+      } else {
+        Transfer.setSpeed(0);
+      }
+    } else {
+      Intake.setSpeed(0);
+      Transfer.setSpeed(0);
     }
   }
 
