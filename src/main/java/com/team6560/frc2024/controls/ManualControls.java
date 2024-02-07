@@ -129,7 +129,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   }
 
   @Override
-  public boolean getAimShooter() {
+  public boolean getManualShootShooter() {
     return xbox.getRightTriggerAxis() > 0.5;
   }
 
@@ -141,6 +141,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   @Override
   public double getManualShooterSpeed() {
     return controlStation.getRightY();
+  }
+
+  @Override
+  public boolean aButtonSetManualMode() {
+    return xbox.getAButtonPressed();
   }
 
   // private static double modifyAxis2(double value) {

@@ -10,30 +10,33 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import com.team6560.frc2024.subsystems.Transfer;
 
-
-
 public class ShooterCommand extends Command {
   /** Creates a new ShooterCommand. */
   public static interface Controls {
-    boolean getAimShooter();
+    boolean getManualShootShooter();
+
+    boolean aButtonSetManualMode();
 
     // boolean manualMode();
     double getManualAim();
+
     double getManualShooterSpeed();
   }
+
   private Shooter Shooter;
   private Controls controls;
   private Transfer Transfer;
 
   // private final double IDLE_RPM = 60;
 
-  // private boolean manualMode;
+  private boolean manualMode;
 
   public ShooterCommand(Shooter Shooter, Transfer Transfer, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Shooter = Shooter;
     this.Transfer = Transfer;
     this.controls = controls;
+    this.manualMode = false;
 
     addRequirements(Shooter);
     addRequirements(Transfer);
@@ -49,16 +52,27 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Shooter.setManualAim(controls.getManualAim());
-    Shooter.setTargetRPM(controls.getManualShooterSpeed());
-    if (controls.getAimShooter() && Transfer.isInProximity() && Shooter.isReadyManualAim()) {
-      Transfer.setSpeed(1.0); //maybe add a downframes to fix not properly shooting the ring.
+    if(controls.aButtonSetManualMode()) {
+      manualMode = !manualMode;
     }
+    if (manualMode) {
+      Shooter.setManualAim(controls.getManualAim());
+      Shooter.setTargetRPM(controls.getManualShooterSpeed());
+      if (controls.getManualShootShooter() && Transfer.isInProximity() && Shooter.isReadyManualAim()) {
+        Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
+      }
+    } else {
+      if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
+        Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
+      }
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
