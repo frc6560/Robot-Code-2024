@@ -41,6 +41,8 @@ public class Shooter extends SubsystemBase {
 
   private NetworkTableEntry ntRPM;
   private NetworkTableEntry ntAngle;
+
+  private final double arcTurnSpeed = 0.5;
   
 
   public Shooter() {
@@ -81,12 +83,12 @@ public class Shooter extends SubsystemBase {
     var arcGearbox = new FeedbackConfigs();
     arcGearbox.SensorToMechanismRatio = ShooterConstants.ARC_GEAR_RATIO;
 
-    var arcPIDConfig = new Slot1Configs();
-    arcPIDConfig.kP = 0.1;
-    arcPIDConfig.kD = 0;
-    arcPIDConfig.kI = 0.0001;;
+    // var arcPIDConfig = new Slot1Configs();
+    // arcPIDConfig.kP = 0.1;
+    // arcPIDConfig.kD = 0;
+    // arcPIDConfig.kI = 0.0001;;
 
-    m_arc.getConfigurator().apply(arcPIDConfig, 0);
+    // m_arc.getConfigurator().apply(arcPIDConfig, 0);
     m_arc.getConfigurator().apply(arcGearbox, 0); //not sure if this is the correct way to set gear ratio for the motor in order to get accurate angle position and velocity of the arc
 
     m_arcRequest = new PositionVoltage(0).withSlot(1);
@@ -118,7 +120,9 @@ public class Shooter extends SubsystemBase {
     m_shooterRight.setControl(m_shooterRequest.withVelocity(targetRPM / ShooterConstants.RPM_PER_FALCON_UNIT).withFeedForward(0.1));
 
     if (getAngleDifference() > ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
-      m_arc.setControl(m_arcRequest.withPosition(targetAngle).withFeedForward(0.1));
+      double speed = (getAngleDifference() > 3 * ShooterConstants.ACCEPTABLE_ANGLE_DIFF) ? arcTurnSpeed : getAngleDifference();
+
+      m_arc.set(speed);
     }
   }
 
