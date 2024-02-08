@@ -187,8 +187,11 @@ public class Drivetrain extends SubsystemBase {
 
         // This method is used to control the movement of the chassis.
         public void drive(ChassisSpeeds chassisSpeeds) {
-                SwerveModuleState[] speeds = m_kinematics.toSwerveModuleStates(chassisSpeeds);
-                SwerveDriveKinematics.desaturateWheelSpeeds(speeds, Constants.MAX_VELOCITY_METERS_PER_SECOND);
+                SwerveModuleState[] speeds = DEFAULT_MODULE_STATES;
+                if (chassisSpeeds.vxMetersPerSecond != 0 && chassisSpeeds.vyMetersPerSecond != 0 && chassisSpeeds.omegaRadiansPerSecond != 0) {
+                        speeds = m_kinematics.toSwerveModuleStates(chassisSpeeds);
+                        SwerveDriveKinematics.desaturateWheelSpeeds(speeds, Constants.MAX_VELOCITY_METERS_PER_SECOND);
+                }
                 setChassisState(speeds);
         }
 
