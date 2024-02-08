@@ -19,6 +19,7 @@ public class Transfer extends SubsystemBase {
   private CANSparkMax transferMotor;
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private boolean isAutoShooting;
 
   /** Creates a new Transfer. */
   public Transfer() {
@@ -26,6 +27,7 @@ public class Transfer extends SubsystemBase {
     transferMotor.restoreFactoryDefaults();
     transferMotor.setIdleMode(IdleMode.kBrake);
     transferMotor.setSmartCurrentLimit(25);
+    isAutoShooting = false;
   }
 
    public void setSpeed(double speed) {
@@ -34,6 +36,14 @@ public class Transfer extends SubsystemBase {
 
   public boolean isInProximity() {
     return m_colorSensor.getProximity() < 20;
+  }
+
+  public boolean getIsAutoShooting() {
+    return isAutoShooting;
+  }
+
+  public void setIsAutoShooting(boolean isAutoShooting) {
+    this.isAutoShooting = isAutoShooting;
   }
 
   @Override
