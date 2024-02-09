@@ -38,6 +38,8 @@ public class Shooter extends SubsystemBase {
 
   private NetworkTableEntry ntRPM;
   private NetworkTableEntry ntAngle;
+
+  private final double arcTurnSpeed = 0.5;
   
 
   public Shooter() {
