@@ -19,6 +19,7 @@ import com.team6560.frc2024.commands.IntakeCommand;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Drivetrain;
 import com.team6560.frc2024.subsystems.Intake;
+import com.team6560.frc2024.subsystems.Limelight;
 import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.commands.ShooterCommand;
@@ -41,6 +42,7 @@ public class RobotContainer {
         private final Intake intake;
         private final Shooter shooter;
         private final Transfer transfer;
+        private final Limelight limelight;
         private final DriveCommand driveCommand;
         private final IntakeCommand intakeCommand;
         private final ShooterCommand shooterCommand;
@@ -57,6 +59,7 @@ public class RobotContainer {
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
+                limelight = new Limelight();
                 drivetrain = new Drivetrain();
                 intake = new Intake();
                 shooter = new Shooter();
