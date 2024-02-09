@@ -9,13 +9,17 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 // import edu.wpi.first.apriltag.AprilTagFieldLayout;
 // import edu.wpi.first.math.geometry.Rotation3d;
 // import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 // import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DutyCycle;
 
 // import edu.wpi.first.wpilibj.Filesystem;
 
@@ -101,19 +105,7 @@ public final class Constants {
 
   public static final int INTAKE_MOTOR = 1;
 
-  public static final int TRAP_WRIST_MOTOR = 0;
-
-public static final int ELEVATOR_MOTOR = 0;
-
-public static final int TRAP_FEED_MOTOR = 0;
-
-public static final double TRAP_CLEARANCE_ANGLE = 0;
-
-public static final int TALONFX_POS_TO_ROTATION = 2048;
-
-public static final double TRAP_WRIST_GEAR_RATIO = 0;
-
-public static final int TRAP_ELEVATOR_GEAR_RATIO = 0;
+  public static final double TALONFX_POS_TO_ROTATION = 2048;
 
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
@@ -198,6 +190,42 @@ public static final int TRAP_ELEVATOR_GEAR_RATIO = 0;
     public double getRPM() {
       return rpm;
     }
+  }
+
+  public static final class StingerConstants {
+    public static final int STINGER_ELEVATOR_ID = 19;
+    public static final int STINGER_WRIST_ID = 20;
+    public static final int STINGER_ROLLERS_ID = 21;
+
+
+    public static final double ELEVATOR_kP = 0.1;
+    public static final double ELEVATOR_kD = 0.0;
+    public static final double ELEVATOR_kI = 0.0001;
+
+
+    public static final double WRIST_kP = 0.1;
+    public static final double WRIST_kD = 0.0;
+    public static final double WRIST_kI = 0.0001;
+    public static final double WRIST_kFF = 0.1;
+
+    public static final int WRIST_ENCODER_PORT = 9;
+    public static final double WRIST_GEAR_RATIO = 7.0;
+
+    public static final double TRAP_CLEARANCE_ANGLE = 0;
+  }
+
+  public static final class PoseEstimatorConstants {
+    /**
+     * Standard deviations of model states. Increase these numbers to trust your model's state estimates less. This
+     * matrix is in the form [x, y, theta, s_0, ... s_n]ᵀ, with units in meters and radians, then meters.
+     */
+    public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
+    
+    /**
+     * Standard deviations of the vision measurements. Increase these numbers to trust global measurements from vision
+     * less. This matrix is in the form [x, y, theta]ᵀ, with units in meters and radians.
+     */
+    public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10));
   }
 
 }
