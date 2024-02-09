@@ -101,6 +101,20 @@ public final class Constants {
 
   public static final int INTAKE_MOTOR = 1;
 
+  public static final int TRAP_WRIST_MOTOR = 0;
+
+public static final int ELEVATOR_MOTOR = 0;
+
+public static final int TRAP_FEED_MOTOR = 0;
+
+public static final double TRAP_CLEARANCE_ANGLE = 0;
+
+public static final int TALONFX_POS_TO_ROTATION = 2048;
+
+public static final double TRAP_WRIST_GEAR_RATIO = 0;
+
+public static final int TRAP_ELEVATOR_GEAR_RATIO = 0;
+
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
     public static final int SECOND_DRIVER_CONTROL_STATION = 1;

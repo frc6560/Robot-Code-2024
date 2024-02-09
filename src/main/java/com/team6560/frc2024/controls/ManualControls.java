@@ -28,7 +28,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   private final PovNumberStepper speed;
   private final PovNumberStepper turnSpeed;
 
-  private NetworkTable limelightTable;
+  // private NetworkTable limelightTable;
 
   private NetworkTable climbTable;
 
@@ -80,7 +80,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
       .add("Rotation Joystick", this::driveRotationX);
 
     
-    limelightTable = NetworkTableInstance.getDefault().getTable("Limelight");
+    // limelightTable = NetworkTableInstance.getDefault().getTable("Limelight");
     intakeTable = NetworkTableInstance.getDefault().getTable("Intake");
     armTable = NetworkTableInstance.getDefault().getTable("Arm");
     intakeTable.getEntry("speed").setDouble(0.0);
