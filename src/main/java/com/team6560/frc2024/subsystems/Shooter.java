@@ -14,12 +14,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 // import com.revrobotics.CANSparkMax;
 // import com.revrobotics.CANSparkLowLevel.MotorType;
 
-// import edu.wpi.first.networktables.NetworkTable;
-// import edu.wpi.first.networktables.NetworkTableEntry;
-// import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.team6560.frc2024.Constants.ShooterConstants;
+import com.team6560.frc2024.utility.NetworkTable.NtValueDisplay;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
@@ -34,10 +36,10 @@ public class Shooter extends SubsystemBase {
   private double targetRPM;
   private double targetAngle;
 
-  // private NetworkTable ntTable;
+  NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
 
-  // private NetworkTableEntry ntRPM;
-  // private NetworkTableEntry ntAngle;
+  private NetworkTableEntry ntRPM;
+  private NetworkTableEntry ntAngle;
 
   // private final double arcTurnSpeed = 0.5;
   
@@ -81,11 +83,16 @@ public class Shooter extends SubsystemBase {
     arcPIDConfig.kD = 0;
     arcPIDConfig.kI = 0.0001;
 
+    
+
     ntDispTab("Shooter")
       .add("Current RPM", this::getShooterRPM)
       .add("Target RPM", () -> targetRPM)
       .add("Current Arc Angle", this::getArcAngle)
       .add("Target Arc Angle", () -> targetAngle);
+    
+    SmartDashboard.putNumber("Shooter RPM", 0.0);
+    SmartDashboard.putNumber("Shooter Angle", 0.0);
       
   }
 
@@ -144,6 +151,14 @@ public class Shooter extends SubsystemBase {
 
   public double getAngleDifference() {
     return Math.abs(targetAngle - getArcAngle());
+  }
+
+  public double getSmartDashboardRPM() {
+    return SmartDashboard.getNumber("Shooter RPM", targetRPM);
+  }
+
+  public double getSmartDashboardAngle() {
+    return SmartDashboard.getNumber("Shooter Angle", targetAngle);
   }
 
 }
