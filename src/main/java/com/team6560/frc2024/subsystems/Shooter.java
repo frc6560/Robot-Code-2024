@@ -14,8 +14,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 // import com.revrobotics.CANSparkMax;
 // import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
+// import edu.wpi.first.networktables.NetworkTable;
+// import edu.wpi.first.networktables.NetworkTableEntry;
 // import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -34,12 +34,12 @@ public class Shooter extends SubsystemBase {
   private double targetRPM;
   private double targetAngle;
 
-  private NetworkTable ntTable;
+  // private NetworkTable ntTable;
 
-  private NetworkTableEntry ntRPM;
-  private NetworkTableEntry ntAngle;
+  // private NetworkTableEntry ntRPM;
+  // private NetworkTableEntry ntAngle;
 
-  private final double arcTurnSpeed = 0.5;
+  // private final double arcTurnSpeed = 0.5;
   
 
   public Shooter() {
