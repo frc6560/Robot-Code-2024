@@ -18,7 +18,9 @@ public class IntakeCommand extends Command {
   private final Controls controls;
 
   public static interface Controls {
-    boolean getIntake();
+    boolean getIntakeIn();
+
+    boolean getIntakeOut();
   }
   /** Creates a new IntakeCommand. */
   public IntakeCommand(Intake Intake, Transfer Transfer, Controls controls) {
@@ -37,13 +39,16 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.getIntake()) {
+    if (controls.getIntakeIn()) {
       Intake.setSpeed(0.5);
       if (!Transfer.isInProximity()) {
         Transfer.setSpeed(0.5);
       } else {
         Transfer.setSpeed(0);
       }
+    } else if (controls.getIntakeOut()) {
+      Intake.setSpeed(-0.5);
+      Transfer.setSpeed(-0.5);
     } else {
       Intake.setSpeed(0);
       Transfer.setSpeed(0);

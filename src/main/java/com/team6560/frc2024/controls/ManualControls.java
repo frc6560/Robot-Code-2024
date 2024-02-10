@@ -124,8 +124,13 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   }
 
   @Override
-  public boolean getIntake() {
+  public boolean getIntakeIn() {
     return xbox.getRightBumper();
+  }
+
+  @Override
+  public boolean getIntakeOut() {
+    return xbox.getLeftBumper();
   }
 
   @Override
