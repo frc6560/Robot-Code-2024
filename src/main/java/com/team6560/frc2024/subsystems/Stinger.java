@@ -59,7 +59,7 @@ public class Stinger extends SubsystemBase {
     // VerticalMotorRight.set(TalonFXControlMode.Position, targetPosRotation);
   }
 
-  public void setDistanceVelocity(double targetVelocity) {
+  public void setElevatorVelocity(double targetVelocity) {
     targetVelocity /= 2.5;
     final double slowZone = 7;
 

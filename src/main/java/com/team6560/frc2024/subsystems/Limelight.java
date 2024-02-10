@@ -46,7 +46,7 @@ public class Limelight extends SubsystemBase {
   // private final Field2d reflectiveTapeField = new Field2d();
 
   // private final Controls controls;
-  private boolean forceOff = true;
+  // private boolean forceOff = true;
 
   public Limelight(
     //Controls controls
