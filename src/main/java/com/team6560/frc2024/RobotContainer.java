@@ -4,38 +4,42 @@
 
 package com.team6560.frc2024;
 
-import javax.naming.LimitExceededException;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathConstraints;
 
 // import java.io.File;
 
 import com.team6560.frc2024.commands.DriveCommand;
+import com.team6560.frc2024.commands.IntakeCommand;
+import com.team6560.frc2024.commands.ShooterCommand;
+import com.team6560.frc2024.commands.TrapCommand;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Drivetrain;
+import com.team6560.frc2024.subsystems.Intake;
 import com.team6560.frc2024.subsystems.Limelight;
+import com.team6560.frc2024.subsystems.Shooter;
+import com.team6560.frc2024.subsystems.Trap;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-// import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public class RobotContainer {
         // The robot's subsystems and commands are defined here...
 
         // not public or private so Robot.java has access to it.
         final Limelight limelight;
+        final Shooter shooter;
+        final Intake intake;
+        final Trap trap;
 
         final Drivetrain drivetrain;
         private final DriveCommand driveCommand;
+        private final ShooterCommand ShooterCommand;
+        private final IntakeCommand intakeCommand;
+        private final TrapCommand trapCommand;
+        
 
         private final ManualControls manualControls = new ManualControls(new XboxController(0), new XboxController(1));
 
@@ -46,13 +50,22 @@ public class RobotContainer {
          */
         public RobotContainer() {
                 limelight = new Limelight();
-
+                trap = new Trap();
+                shooter = new Shooter(limelight, trap);
+                intake = new Intake();
                 drivetrain = new Drivetrain();
+
+
                 driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
+                ShooterCommand = new ShooterCommand(shooter, trap, limelight, manualControls);
+                intakeCommand = new IntakeCommand(intake, manualControls);
+                trapCommand = new TrapCommand(trap, manualControls);
+
 
                 drivetrain.setDefaultCommand(driveCommand);
-
-                NamedCommands.registerCommand("print hello", Commands.print("hello"));
+                shooter.setDefaultCommand(ShooterCommand);
+                intake.setDefaultCommand(intakeCommand);
+                trap.setDefaultCommand(trapCommand);
 
                 configureBindings();
                 autoChooser = AutoBuilder.buildAutoChooser();
@@ -65,23 +78,6 @@ public class RobotContainer {
                 SmartDashboard.putData("Short Line", new PathPlannerAuto("Short Lines"));
                 SmartDashboard.putData("Copy of Short Line", new PathPlannerAuto("Copy of Short Lines"));
                 SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
-        }
-
-        public Command goToPose(Pose2d desiredPose) {
-
-                // Pose2d currPose = drivetrain.getPose();
-
-                // ChassisSpeeds currChassisSpeeds = drivetrain.getChassisSpeeds();
-
-                // double currSpeed = Math
-                // .abs(Math.hypot(currChassisSpeeds.vxMetersPerSecond,
-                // currChassisSpeeds.vyMetersPerSecond));
-
-                // Rotation2d heading = Rotation2d
-                // .fromRadians(Math.atan2(currChassisSpeeds.vyMetersPerSecond,
-                // currChassisSpeeds.vxMetersPerSecond));
-
-                return AutoBuilder.pathfindToPose(desiredPose, new PathConstraints(1.0, 1.0, 1.0, 1.0));
         }
 
         /**

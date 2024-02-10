@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 // import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.I2C.Port;
 
 // import edu.wpi.first.wpilibj.Filesystem;
 
@@ -96,6 +97,72 @@ public final class Constants {
     DRIVETRAIN_WHEELBASE_METERS,// Drive base radius (distance from center to furthest module) 
     new ReplanningConfig()
   );
+
+public static final double TRANSFER_FEED_OUTPUT = 0;
+
+public static final double INTAKE_FEED_RATE = 0;
+
+public static final double INTAKE_REVERSE_RATE = 0;
+
+public static final int INTAKE_FEED_MOTOR = 0;
+
+public static final double LIMELIGHT_ANGLE = 0;
+
+public static final double LIMELIGHT_HEIGHT = 0;
+
+public static final double APRILTAG_7_HEIGHT = 0;
+
+public static final int ARC_MOTOR = 0;
+
+public static final int SHOOTER_RIGHT_MOTOR = 0;
+
+public static final int SHOOTER_LEFT_MOTOR = 0;
+
+public static final int SHOOTER_FEED_MOTOR = 0;
+
+public static final Port SHOOTER_COLOR_SENSOR_ID = null;
+
+public static final double SHOOTER_ARC_GEAR_RATIO = 0;
+
+public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 0;
+
+public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 0;
+
+public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 0;
+
+public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 0;
+
+public static final double SHOOTER_INTAKE_POS = 0;
+
+public static final int TRAP_WRIST_MOTOR = 0;
+
+public static final int TRAP_ELEVATOR_MOTOR = 0;
+
+public static final int TRAP_FEED_MOTOR = 0;
+
+public static final Port TRAP_COLOR_SENSOR_ID = null;
+
+public static final double TRAP_WRIST_GEAR_RATIO = 0;
+
+public static final double TRAP_ELEVATOR_GEAR_RATIO = 0;
+
+public static final double TRAP_CLEARANCE_ANGLE = 0;
+
+public static final double TRANSFER_INTAKE_OUTPUT = 0;
+
+public static final double SHOOTER_GROUND_INTAKE_ANGLE = 0;
+
+public static final double SUB_ANGLE = 0;
+
+public static final double SHOOTER_SUB_RPM = 0;
+
+public static final double SHOOTER_SUB_ANGLE = 0;
+
+public static final double SHOOTER_MIN_POS = 0;
+
+public static final double SHOOTER_MAX_POS = 0;
+
+public static final double FALCON_MAX_RPM = 0;
 
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;

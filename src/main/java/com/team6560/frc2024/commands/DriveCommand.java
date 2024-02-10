@@ -78,10 +78,10 @@ public class DriveCommand extends Command {
         double controllerInput = controls.driveRotationX();
 
         double limelightInput = limelight.getHorizontalAngle();
-        double llDeadband = 1;
-        double rotateSpeed = 0.3;
+        double llDeadband = 1; // in degrees
+        double rotateSpeed = 0.3; // multiplyer for max speed
 
-        if (controllerInput == 0 && controls.getAutoTarget()){
+        if (controllerInput == 0 && controls.getAutoTarget()){ 
             double speed = 0;
             double p = 0.3;
 
@@ -90,7 +90,7 @@ public class DriveCommand extends Command {
             }
 
             speed = -limelightInput * p * rotateSpeed;
-            System.out.println(speed);
+
             return speed;
         }
 

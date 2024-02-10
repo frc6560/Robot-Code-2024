@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
+import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -38,39 +39,66 @@ public class Shooter extends SubsystemBase {
     feedMotor = new CANSparkMax(Constants.SHOOTER_FEED_MOTOR, MotorType.kBrushless);
 
     colorSensor = new ColorSensorV3(Constants.SHOOTER_COLOR_SENSOR_ID);
+
+    ntDispTab("Shooter")
+    .add("Shooter RPM", this::getShooterRPM)
+    .add("Current Draw Shooter", this::getCurrentDraw)
+    .add("Vertical Angle Shooter", this::getShooterVerticalAngle)
+    .add("Feeder Proximity Sensor", this::getTransferSensorTriggered);
   }
 
   @Override
   public void periodic() {
   }
-
   public void setRPM(double speed){
     targetRPM = speed;
-    shooterMotorRight.set(0); // TODO: Fix this to pid controlled
-    shooterMotorLeft.set(0);
+    speed /=  Constants.FALCON_MAX_RPM;
+    
+    shooterMotorRight.set(speed); // TODO: Fix this to pid controlled
+    shooterMotorLeft.set(speed);
   }
 
   public void setVerticalAngle(double angle){
+    angle = Math.min(Math.max(angle, Constants.SHOOTER_MIN_POS), Constants.SHOOTER_MAX_POS);
+    
     targetAngle = angle;
+    
     arcMotor.setPosition(angle * Constants.SHOOTER_ARC_GEAR_RATIO);
   }
+
+  public void setTransfer(double output){
+    feedMotor.set(output);
+  }
+ 
+
 
   public boolean readyToShoot(){
     return (
       Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
-      Math.abs(getShooterVerticalAngle() - targetAngle) < Constants.SHOOTER_ACCEPTABLE_VERTICAL_DIFF &&
-      limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF && 
+      Math.abs(getShooterVerticalAngle() - targetAngle) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF &&
+      (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ) && 
       trap.isClearOfShooter()
     );
   }
 
 
-  public boolean getShooterSensorTriggered(){
+  public boolean getTransferSensorTriggered(){
     return colorSensor.getProximity() > Constants.SENSOR_TRIGGER_PROXIMITY_VALUE;
+  }
+
+  public boolean canIntakeNote(){
+    return (
+      Math.abs(getShooterVerticalAngle() - Constants.SHOOTER_INTAKE_POS) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF &&
+      !getTransferSensorTriggered()
+    );
   }
 
   public double getShooterRPM(){
     return shooterMotorLeft.getVelocity().getValueAsDouble();
+  }
+
+  public double getCurrentDraw(){
+    return shooterMotorLeft.getTorqueCurrent().getValueAsDouble();
   }
 
   public double getShooterVerticalAngle(){

@@ -9,12 +9,15 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
 
+import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Trap extends SubsystemBase {
   
   final CANSparkMax wristMotor;
   final CANSparkMax trapElevator;
+
   final CANSparkMax feedMotor;
 
   final ColorSensorV3 colorSensor;
@@ -25,6 +28,12 @@ public class Trap extends SubsystemBase {
     this.feedMotor = new CANSparkMax(Constants.TRAP_FEED_MOTOR, MotorType.kBrushless);
 
     colorSensor = new ColorSensorV3(Constants.TRAP_COLOR_SENSOR_ID);
+
+    ntDispTab("Trap")
+      .add("Elevator Position", this::getExtention)
+      .add("Wrist Angle", this::getAngle)
+      .add("Feed speed Stinger", this::getFeedRate)
+      .add("Trap Sensor Triggered", this::getSensorTriggered);
   }
 
   @Override

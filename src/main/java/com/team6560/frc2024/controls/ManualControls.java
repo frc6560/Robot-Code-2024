@@ -24,8 +24,6 @@ public class ManualControls implements DriveCommand.Controls {
   private final PovNumberStepper speed;
   private final PovNumberStepper turnSpeed;
 
-  private NetworkTable limelightTable;
-
   private NetworkTable climbTable;
 
   private NetworkTable intakeTable;
@@ -76,7 +74,6 @@ public class ManualControls implements DriveCommand.Controls {
       .add("Rotation Joystick", this::driveRotationX);
 
     
-    limelightTable = NetworkTableInstance.getDefault().getTable("Limelight");
     intakeTable = NetworkTableInstance.getDefault().getTable("Intake");
     armTable = NetworkTableInstance.getDefault().getTable("Arm");
     intakeTable.getEntry("speed").setDouble(0.0);
@@ -119,35 +116,19 @@ public class ManualControls implements DriveCommand.Controls {
     return value;
   }
 
+  
+  // ------------------------------ DRIVETRAIN ------------------------------ \\
 
-  /**
-   * Returns the x component of the robot's velocity, as controlled by the Xbox
-   * controller.
-   *
-   * @return the x component of the robot's velocity
-   */
   @Override
   public double driveX() {
     return - modifyAxis(xbox.getLeftY() * speed.get());
   }
 
-  /**
-   * Returns the y component of the robot's velocity, as controlled by the Xbox
-   * controller.
-   *
-   * @return the y component of the robot's velocity
-   */
   @Override
   public double driveY() {
     return - modifyAxis(xbox.getLeftX() * speed.get());
   }
 
-  /**
-   * Returns the angular velocity of the robot, as controlled by the Xbox
-   * controller.
-   *
-   * @return the angular velocity of the robot
-   */
   @Override
   public double driveRotationX() {
     return -modifyAxis(xbox.getRightX() * turnSpeed.get());
@@ -159,24 +140,44 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   @Override
-  public boolean getAutoTarget(){
-    return xbox.getAButton();
-  }
-  /**
-   * Returns whether the yaw of the robot's gyroscope should be reset, as
-   * controlled by the Xbox controller.
-   *
-   * @return whether the yaw of the robot's gyroscope should be reset
-   */
-  @Override
   public boolean driveResetYaw() {
     return xbox.getStartButton();
   }
 
-
   @Override
   public boolean driveResetGlobalPose() {
     return xbox.getBackButton();
+  }
+
+  
+  // ------------------------------ SHOOTER ------------------------------ \\
+
+  @Override
+  public boolean getAutoTarget(){
+    return xbox.getAButton();
+  }
+
+  public boolean getAim(){
+    return xbox.getLeftBumper();
+  }
+
+  public boolean getShoot(){
+    return xbox.getRightBumper();
+  }
+  
+  public boolean getSafeAim(){
+    return xbox.getYButton();
+  }
+  
+
+  // ------------------------------ INTAKE ------------------------------ \\
+
+  public boolean getRunIntake(){
+    return xbox.getRightTriggerAxis() > 0.35;
+  }
+
+  public boolean getRunInverseIntake(){
+    return xbox.getLeftTriggerAxis() > 0.35;
   }
 
 }
