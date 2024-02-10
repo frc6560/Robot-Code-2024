@@ -35,7 +35,7 @@ public class Transfer extends SubsystemBase {
   }
 
   public boolean isInProximity() {
-    return m_colorSensor.getProximity() < 20;
+    return m_colorSensor.getProximity() > 2000;
   }
 
   public boolean getIsAutoShooting() {
