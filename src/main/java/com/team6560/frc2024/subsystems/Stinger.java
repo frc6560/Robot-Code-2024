@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team6560.frc2024.Constants;
+import com.team6560.frc2024.Constants.StingerConstants;;
 
 public class Stinger extends SubsystemBase {
 
@@ -22,9 +23,9 @@ public class Stinger extends SubsystemBase {
   final int MIN_ROTATION = 0;
 
   public Stinger() {
-    this.wristMotor = new CANSparkMax(Constants.TRAP_WRIST_MOTOR, MotorType.kBrushless);
-    this.elevatorMotor = new TalonFX(Constants.ELEVATOR_MOTOR);
-    this.rollerMotor = new CANSparkMax(Constants.TRAP_FEED_MOTOR, MotorType.kBrushless);
+    this.wristMotor = new CANSparkMax(StingerConstants.STINGER_WRIST_ID, MotorType.kBrushless);
+    this.elevatorMotor = new TalonFX(StingerConstants.STINGER_ELEVATOR_ID);
+    this.rollerMotor = new CANSparkMax(StingerConstants.STINGER_ROLLERS_ID, MotorType.kBrushless);
 
     elevatorMotor.getConfigurator().apply(new TalonFXConfiguration());
 
@@ -43,7 +44,7 @@ public class Stinger extends SubsystemBase {
   }
 
   public void setAngle(double angle) {
-    wristMotor.getEncoder().setPosition(angle * Constants.TRAP_WRIST_GEAR_RATIO);
+    wristMotor.getEncoder().setPosition(angle * StingerConstants.WRIST_GEAR_RATIO);
   }
 
   public void setElevatorPos(double targetPosRotation) {
@@ -58,7 +59,7 @@ public class Stinger extends SubsystemBase {
     // VerticalMotorRight.set(TalonFXControlMode.Position, targetPosRotation);
   }
 
-  public void setDistanceVelocity(double targetVelocity) {
+  public void setElevatorVelocity(double targetVelocity) {
     targetVelocity /= 2.5;
     final double slowZone = 7;
 
@@ -82,11 +83,11 @@ public class Stinger extends SubsystemBase {
   }
 
   public double getAngle() {
-    return wristMotor.getEncoder().getPosition() / Constants.TRAP_WRIST_GEAR_RATIO;
+    return wristMotor.getEncoder().getPosition() / StingerConstants.WRIST_GEAR_RATIO;
   }
 
   public double getExtension() {
-    return elevatorMotor.getPosition().getValue() / Constants.TRAP_ELEVATOR_GEAR_RATIO;
+    return elevatorMotor.getPosition().getValue();
   }
 
   public double getFeedRate() {
@@ -94,7 +95,7 @@ public class Stinger extends SubsystemBase {
   }
 
   public boolean isClearOfShooter() {
-    return getAngle() < Constants.TRAP_CLEARANCE_ANGLE;
+    return getAngle() < StingerConstants.TRAP_CLEARANCE_ANGLE;
   }
 
 }
