@@ -64,7 +64,7 @@ public class Stinger extends SubsystemBase {
 
     if (getExtension() < MIN_ROTATION && targetVelocity < 0) {
       targetVelocity = 0;
-    } else if (getExtension() < slowZone && targetVelocity < 0) {
+    } else if (getExtension() < (MIN_ROTATION + slowZone) && targetVelocity < 0) {
       targetVelocity = Math.max(targetVelocity, -0.25);
     }
 
