@@ -119,6 +119,11 @@ public static final int LEFT_CLIMB_MOTOR = 0;
 
 public static final int RIGHT_CLIMB_MOTOR = 0; 
 
+public static final double CLIMB_TOP_SOFT_LIMITS = 0.0; 
+
+public static final double CLIMB_MAX_VERTICAL_ROTATION = 0.0; 
+
+public static final double CLIMB_MIN_VERTICAL_ROTATION = 0.0; 
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
     public static final int SECOND_DRIVER_CONTROL_STATION = 1;
