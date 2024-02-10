@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.team6560.frc2024.Constants.ShooterConstants;
-import com.team6560.frc2024.utility.NetworkTable.NtValueDisplay;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
@@ -38,12 +37,11 @@ public class Shooter extends SubsystemBase {
 
   NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
 
-  private NetworkTableEntry ntRPM;
-  private NetworkTableEntry ntAngle;
+  // private NetworkTableEntry ntRPM;
+  // private NetworkTableEntry ntAngle;
 
   // private final double arcTurnSpeed = 0.5;
   
-
   public Shooter() {
     targetRPM = 0;
     targetAngle = 0;

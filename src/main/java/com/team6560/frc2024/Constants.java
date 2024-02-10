@@ -8,18 +8,16 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
+import com.team6560.frc2024.utility.ShooterConfigMap;
+import com.team6560.frc2024.utility.ShooterConfigMap.Point;
 
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
 // import edu.wpi.first.apriltag.AprilTagFieldLayout;
 // import edu.wpi.first.math.geometry.Rotation3d;
 // import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 // import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DutyCycle;
 
 // import edu.wpi.first.wpilibj.Filesystem;
 
@@ -167,30 +165,18 @@ public final class Constants {
     public static final double ARC_GEAR_RATIO = 189.583;
   }
 
-  public enum ShootingConfigurationConstants {
-    TWELVE_METERS (12.0, 12.0, 12.0),
-    TWENTY_METERS (20.0, 8.0, 18.0);
+  public static final class ShooterConfigs {
+    public static ShooterConfigMap shooterMap = new ShooterConfigMap();
 
-    private final double angle;
-    private final double rpm;
-    private final double distance;
-    ShootingConfigurationConstants(double distance, double angle, double rpm) {
-      this.distance = distance;
-      this.rpm = rpm;
-      this.angle = angle;
-    }
-
-    public double getDistance() {
-      return distance;
-    }
-
-    public double getAngle(){
-      return angle;
-    }
-    public double getRPM() {
-      return rpm;
+    static {
+      shooterMap.add(
+        new Point(20.0, 20.0, 20.0),
+        new Point (30.0, 30.0, 30.0)
+        );
     }
   }
+
+  
 
   public static final class StingerConstants {
     public static final int STINGER_ELEVATOR_ID = 19;
@@ -212,20 +198,6 @@ public final class Constants {
     public static final double WRIST_GEAR_RATIO = 7.0;
 
     public static final double TRAP_CLEARANCE_ANGLE = 0;
-  }
-
-  public static final class PoseEstimatorConstants {
-    /**
-     * Standard deviations of model states. Increase these numbers to trust your model's state estimates less. This
-     * matrix is in the form [x, y, theta, s_0, ... s_n]ᵀ, with units in meters and radians, then meters.
-     */
-    public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
-    
-    /**
-     * Standard deviations of the vision measurements. Increase these numbers to trust global measurements from vision
-     * less. This matrix is in the form [x, y, theta]ᵀ, with units in meters and radians.
-     */
-    public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10));
   }
 
 }
