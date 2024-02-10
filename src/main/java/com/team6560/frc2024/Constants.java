@@ -115,6 +115,10 @@ public static final double TRAP_WRIST_GEAR_RATIO = 0;
 
 public static final int TRAP_ELEVATOR_GEAR_RATIO = 0;
 
+public static final int LEFT_CLIMB_MOTOR = 0; 
+
+public static final int RIGHT_CLIMB_MOTOR = 0; 
+
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
     public static final int SECOND_DRIVER_CONTROL_STATION = 1;
