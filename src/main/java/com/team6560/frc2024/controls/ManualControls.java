@@ -111,7 +111,7 @@ public class ManualControls implements DriveCommand.Controls {
 
   private static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.01);
+    value = deadband(value, 0.10);
 
     // Square the axis
     value = Math.copySign(value * value, value);
