@@ -49,7 +49,7 @@ public class LightWorkNoReaction extends SubsystemBase {
     }
     isFlashOn = !isFlashOn;
     if (mode == CandleColorModes.HOLD_MODE) {
-      candle.setLEDs(0,17,255); // ask Alex for team's RGB for blue
+      candle.setLEDs(0, 187, 255);
     } else if (mode == CandleColorModes.INTAKE_MODE && isFlashOn) {
       candle.setLEDs(255, 93, 13); 
     } else if (mode == CandleColorModes.SHOOT_MODE) {
