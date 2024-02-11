@@ -61,8 +61,8 @@ public class RobotContainer {
         public RobotContainer() {
                 limelight = new Limelight();
                 drivetrain = new Drivetrain();
-                intake = new Intake();
                 shooter = new Shooter();
+                intake = new Intake(shooter);
                 transfer = new Transfer();
                 driveCommand = new DriveCommand(drivetrain, manualControls);
                 intakeCommand = new IntakeCommand(intake, transfer, manualControls);
