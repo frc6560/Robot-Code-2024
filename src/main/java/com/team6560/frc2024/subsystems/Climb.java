@@ -4,16 +4,9 @@
 
 package com.team6560.frc2024.subsystems;
 
-// import static com.team6560.frc2024.Constants.CLIMB_TOP_SOFT_LIMITS;
-// import static com.team6560.frc2024.Constants.LEFT_CLIMB_MOTOR;
-
-// import static com.team6560.frc2024.Constants;
-
 import com.revrobotics.CANSparkMax;
-// import com.revrobotics.ControlType;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
-// import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -48,11 +41,14 @@ public class Climb extends SubsystemBase {
     leftClimbMotor.restoreFactoryDefaults();
     leftClimbMotor.setIdleMode(IdleMode.kBrake);
     leftClimbMotor.setSmartCurrentLimit(25);
-    leftClimbMotorPID = rightClimbMotor.getPIDController();
+    leftClimbMotorPID = leftClimbMotor.getPIDController();
     leftClimbMotorPID.setI(0.0);
     leftClimbMotorPID.setD(0.0);
     leftClimbMotorPID.setIZone(0.0);
     leftClimbMotorPID.setFF(0.0);
+    // leftClimbMotorPID.setOutputRange(Constants.CLIMB_MIN_VERTICAL_ROTATION,
+    // Constants.CLIMB_MAX_VERTICAL_ROTATION);
+
     leftClimbMotor.follow(rightClimbMotor);
 
     NtValueDisplay.ntDispTab("Climb")
@@ -74,12 +70,34 @@ public class Climb extends SubsystemBase {
     rightClimbMotorPID.setReference(targetPosRotation, ControlType.kPosition);
   }
 
+  public void setHeightVelocity(double targetVelocity) {
+    final double slowZone = 10;
+    if (getVerticalPose() < Constants.CLIMB_MIN_VERTICAL_ROTATION && targetVelocity < 0) {
+      targetVelocity = 0;
+    } else if (getVerticalPose() < (Constants.CLIMB_MIN_VERTICAL_ROTATION + slowZone) && targetVelocity < 0) {
+      targetVelocity = Math.max(targetVelocity, -0.25);
+    }
+
+    if (getVerticalPose() > Constants.CLIMB_MAX_VERTICAL_ROTATION && targetVelocity > 0) {
+      targetVelocity = 0;
+    } else if (getVerticalPose() > (Constants.CLIMB_MAX_VERTICAL_ROTATION - slowZone) && targetVelocity > 0) {
+      targetVelocity = Math.min(targetVelocity, 0.25);
+
+      rightClimbMotor.set(targetVelocity);
+    }
+
+  }
+
   public double getleftVelocity() {
     return leftClimbMotor.getEncoder().getVelocity();
   }
 
   public double getRightVelocity() {
     return rightClimbMotor.getEncoder().getVelocity();
+  }
+
+  public double getVerticalPose() {
+    return rightClimbMotor.getEncoder().getPosition();
   }
 
 }
