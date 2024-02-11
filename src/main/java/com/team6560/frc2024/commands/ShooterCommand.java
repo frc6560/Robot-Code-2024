@@ -9,7 +9,8 @@ import com.team6560.frc2024.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import com.team6560.frc2024.subsystems.Transfer;
-
+import com.team6560.frc2024.Constants.CandleColorModes;
+import com.team6560.frc2024.subsystems.LightWorkNoReaction;
 public class ShooterCommand extends Command {
   /** Creates a new ShooterCommand. */
   public static interface Controls {
@@ -23,23 +24,26 @@ public class ShooterCommand extends Command {
     double getManualShooterSpeed();
   }
 
-  private Shooter Shooter;
-  private Controls controls;
-  private Transfer Transfer;
+  private final Shooter Shooter;
+  private final Controls controls;
+  private final Transfer Transfer;
+  private final LightWorkNoReaction Light;
 
   // private final double IDLE_RPM = 60;
 
   private boolean manualMode;
 
-  public ShooterCommand(Shooter Shooter, Transfer Transfer, Controls controls) {
+  public ShooterCommand(Shooter Shooter, Transfer Transfer, LightWorkNoReaction Light,  Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Shooter = Shooter;
     this.Transfer = Transfer;
     this.controls = controls;
+    this.Light = Light;
     this.manualMode = false;
 
     addRequirements(Shooter);
     addRequirements(Transfer);
+    addRequirements(Light);
   }
 
   // Called when the command is initially scheduled.
@@ -52,7 +56,10 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(controls.aButtonSetManualMode()) {
+    if (controls.aButtonSetManualMode() && !manualMode) {
+      manualMode = !manualMode;
+      Light.setColorMode(CandleColorModes.NO_MODE);
+    } else if (controls.aButtonSetManualMode()) {
       manualMode = !manualMode;
     }
     if (manualMode) {
@@ -62,6 +69,7 @@ public class ShooterCommand extends Command {
         Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
       }
     } else {
+      Light.setColorMode(CandleColorModes.SHOOT_MODE);
       if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
         Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
       }

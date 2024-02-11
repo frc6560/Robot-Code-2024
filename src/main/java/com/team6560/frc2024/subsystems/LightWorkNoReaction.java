@@ -10,13 +10,13 @@ import com.ctre.phoenix.led.CANdle;
 import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.Constants.CandleColorModes;
 
-public class LightWorkNoSweat extends SubsystemBase {
+public class LightWorkNoReaction extends SubsystemBase {
   private final CANdle candle; 
   private CandleColorModes mode;
   private boolean isFlashOn;
   private int isFlashOnCounter;
   /** Creates a new LightWorkNoSweat. */
-  public LightWorkNoSweat() {
+  public LightWorkNoReaction() {
     this.candle = new CANdle(Constants.CANdleID);
     this.mode = CandleColorModes.NO_MODE; 
     this.isFlashOn = false;
@@ -26,7 +26,7 @@ public class LightWorkNoSweat extends SubsystemBase {
     return mode; 
   }
 
-  public void setColor(CandleColorModes mode){
+  public void setColorMode(CandleColorModes mode){
     this.mode = mode;
   }
 

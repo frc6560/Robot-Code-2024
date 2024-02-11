@@ -10,6 +10,7 @@ import com.team6560.frc2024.commands.DriveCommand;
 import com.team6560.frc2024.commands.IntakeCommand;
 import com.team6560.frc2024.commands.ShooterCommand;
 import com.team6560.frc2024.commands.ClimbCommand;
+import com.team6560.frc2024.commands.LightWorkNoReactionCommand;
 
 
 import com.team6560.frc2024.utility.NumberStepper;
@@ -23,7 +24,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls, ShooterCommand.Controls, ClimbCommand.Controls {
+public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls, ShooterCommand.Controls, ClimbCommand.Controls, LightWorkNoReactionCommand.Controls {
   private XboxController xbox;
 
   private final PovNumberStepper speed;
@@ -130,8 +131,18 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   }
 
   @Override
+  public boolean getIntakeInReleased() {
+    return xbox.getRightBumperReleased();
+  }
+
+  @Override
   public boolean getIntakeOut() {
     return xbox.getLeftBumper();
+  }
+  
+  @Override
+  public boolean getIntakeOutReleased() {
+    return xbox.getLeftBumperReleased();
   }
 
   @Override
