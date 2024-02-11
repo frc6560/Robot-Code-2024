@@ -115,6 +115,10 @@ public class Shooter extends SubsystemBase {
     return false;
   }
 
+  public void setStowPos() {
+    setTargetAngle(0); // change these values later
+  }
+
   public void setManualAim(double speed) {
     m_arc.set(speed);
   }
