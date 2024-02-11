@@ -114,6 +114,7 @@ public static final double CLIMB_TOP_SOFT_LIMITS = 0.0;
 public static final double CLIMB_MAX_VERTICAL_ROTATION = 0.0; 
 
 public static final double CLIMB_MIN_VERTICAL_ROTATION = 0.0; 
+
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
     public static final int SECOND_DRIVER_CONTROL_STATION = 1;
@@ -207,6 +208,29 @@ public static final double CLIMB_MIN_VERTICAL_ROTATION = 0.0;
     public static final double WRIST_GEAR_RATIO = 7.0;
 
     public static final double TRAP_CLEARANCE_ANGLE = 0;
+  }
+
+  public enum StingerConfigs {
+    //add position here
+    STOW(0, 90),
+    HUMAN_STATION_INTAKE(10, 90),
+    SHOOTER_TRANSFER(0, 7);
+
+    private double elevatorPos;
+    private double stingerAngle;
+
+    private StingerConfigs(double elevatorPos, double stingerAngle) {
+      this.elevatorPos = elevatorPos;
+      this.stingerAngle = stingerAngle;
+    }
+
+    public double getElevatorPos() {
+      return elevatorPos;
+    }
+
+    public double getStingerAngle() {
+      return stingerAngle;
+    }
   }
 
 }

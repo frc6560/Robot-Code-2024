@@ -95,7 +95,7 @@ public class Stinger extends SubsystemBase {
   }
 
   public boolean isClearOfShooter() {
-    return getAngle() < StingerConstants.TRAP_CLEARANCE_ANGLE;
+    return getAngle() > StingerConstants.TRAP_CLEARANCE_ANGLE;
   }
 
 }
