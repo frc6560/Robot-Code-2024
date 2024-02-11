@@ -189,6 +189,8 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
         new Point (30.0, 30.0, 30.0)
         );
     }
+
+    public static final double STINGER_TRANSFER_ANGLE = 10.0;
   }
 
   
@@ -213,6 +215,9 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
     public static final double WRIST_GEAR_RATIO = 7.0;
 
     public static final double TRAP_CLEARANCE_ANGLE = 0;
+    public static final double STINGER_ANGLE_ACCEPTABLE_DIFF = 0.1;
+    public static final double STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF = 0.1;
+    
   }
 
   public enum StingerConfigs {

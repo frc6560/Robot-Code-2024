@@ -8,6 +8,7 @@ import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Stinger;
 import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.Constants.StingerConfigs;
+import com.team6560.frc2024.Constants.StingerConstants;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -27,6 +28,9 @@ public class StingerCommand extends Command {
   private final Shooter shooter;
   private final Transfer transfer;
   private final Controls controls;
+
+  private boolean shooterStingerAligned = false, correctShooterRpm = false;
+
 
 
   public StingerCommand(Stinger stinger, Shooter shooter, Transfer transfer, Controls controls) {
@@ -52,6 +56,43 @@ public class StingerCommand extends Command {
     stinger.setAngle(pos.getStingerAngle());
   }
 
+  public boolean isAutoTransferReady() {
+    return (!transfer.isInProximity() && stinger.stingerRollerHasNote());
+  }
+
+  public void autoTransferToShooter() { 
+    if (!shooterStingerAligned) {
+      setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
+    }
+
+    if (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
+          && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
+        shooterStingerAligned = true;
+      }
+
+    if (shooterStingerAligned && !correctShooterRpm) {
+        shooter.setTargetRPM(10); //placeholder value
+    }
+
+    if (shooterStingerAligned && shooter.isReadyManualAim()) {
+          correctShooterRpm = true;
+        }
+
+    if (shooterStingerAligned && correctShooterRpm) {
+      stinger.setRoller(-10);
+      transfer.setSpeed(10);
+    }
+
+    if (shooterStingerAligned && correctShooterRpm && transfer.isInProximity()) {
+      transfer.setSpeed(0);
+      shooter.setTargetRPM(0);
+      stinger.setRoller(0);
+
+      shooterStingerAligned = false;
+      correctShooterRpm = false;
+    }
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -63,7 +104,7 @@ public class StingerCommand extends Command {
   @Override
   public void execute() {
     
-    if (transfer.isInProximity() || shooter.isReadyManualAim() || shooter.isReadyAutoAim()) { //if there is a note in robot, stinger moves out of the way
+    if (transfer.isInProximity() || shooter.isReadyManualAim()) { //if there is a note in robot, stinger moves out of the way
       setBothPosPresets(StingerConfigs.STOW);
       stinger.setRoller(0);
       return;

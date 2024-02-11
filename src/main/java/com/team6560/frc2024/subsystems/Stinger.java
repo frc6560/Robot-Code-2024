@@ -7,7 +7,9 @@ package com.team6560.frc2024.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +21,9 @@ public class Stinger extends SubsystemBase {
   final CANSparkMax wristMotor;
   final TalonFX elevatorMotor;
   final CANSparkMax rollerMotor;
+
+  final SparkLimitSwitch rollerLimitSwitch;
+
   final int MAX_ROTATION = 100;
   final int MIN_ROTATION = 0;
 
@@ -37,6 +42,8 @@ public class Stinger extends SubsystemBase {
     elevatorPIDConfig.kD = 0;
 
     elevatorMotor.getConfigurator().apply(elevatorPIDConfig);
+
+    rollerLimitSwitch = rollerMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
   }
 
   @Override
@@ -96,6 +103,10 @@ public class Stinger extends SubsystemBase {
 
   public boolean isClearOfShooter() {
     return getAngle() > StingerConstants.TRAP_CLEARANCE_ANGLE;
+  }
+
+  public boolean stingerRollerHasNote() {
+    return rollerLimitSwitch.isPressed();
   }
 
 }
