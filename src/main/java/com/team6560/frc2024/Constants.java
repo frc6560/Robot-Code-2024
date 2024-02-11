@@ -113,6 +113,8 @@ public static final double CLIMB_TOP_SOFT_LIMITS = 0.0;
 
 public static final double CLIMB_MAX_VERTICAL_ROTATION = 0.0; 
 
+public static final int CANdleID = 0;
+
 public static final double CLIMB_MIN_VERTICAL_ROTATION = 0.0; 
 
   public static final class ControllerIds {
@@ -231,6 +233,12 @@ public static final double CLIMB_MIN_VERTICAL_ROTATION = 0.0;
     public double getStingerAngle() {
       return stingerAngle;
     }
+  }
+
+  public enum CandleColorModes {
+    INTAKE_MODE, HOLD_MODE, SHOOT_MODE, NO_MODE;
+
+    CandleColorModes() {};
   }
 
 }
