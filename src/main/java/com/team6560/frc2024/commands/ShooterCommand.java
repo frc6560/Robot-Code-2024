@@ -18,6 +18,8 @@ public class ShooterCommand extends Command {
 
     boolean aButtonSetManualMode();
 
+    boolean setStowPos();
+
     // boolean manualMode();
     double getManualAim();
 
@@ -63,10 +65,14 @@ public class ShooterCommand extends Command {
       manualMode = !manualMode;
     }
     if (manualMode) {
-      Shooter.setManualAim(controls.getManualAim());
-      Shooter.setTargetRPM(controls.getManualShooterSpeed());
-      if (controls.getManualShootShooter() && Transfer.isInProximity() && Shooter.isReadyManualAim()) {
+      if (controls.setStowPos()) {
+        Shooter.setStowPos();
+      } else {
+        Shooter.setManualAim(controls.getManualAim());
+        Shooter.setTargetRPM(controls.getManualShooterSpeed());
+        if (controls.getManualShootShooter() && Transfer.isInProximity() && Shooter.isReadyManualAim()) {
         Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
+        }
       }
     } else {
       Light.setColorMode(CandleColorModes.SHOOT_MODE);

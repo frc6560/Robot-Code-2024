@@ -10,6 +10,7 @@ import com.team6560.frc2024.commands.DriveCommand;
 import com.team6560.frc2024.commands.IntakeCommand;
 import com.team6560.frc2024.commands.ShooterCommand;
 import com.team6560.frc2024.commands.ClimbCommand;
+import com.team6560.frc2024.commands.StingerCommand;
 import com.team6560.frc2024.commands.LightWorkNoReactionCommand;
 
 
@@ -24,7 +25,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls, ShooterCommand.Controls, ClimbCommand.Controls, LightWorkNoReactionCommand.Controls {
+public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls, ShooterCommand.Controls, StingerCommand.Controls, ClimbCommand.Controls, LightWorkNoReactionCommand.Controls {
   private XboxController xbox;
 
   private final PovNumberStepper speed;
@@ -125,6 +126,9 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     return value;
   }
 
+
+
+  /* INTAKE */
   @Override
   public boolean getIntakeIn() {
     return xbox.getRightBumper();
@@ -144,7 +148,8 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   public boolean getIntakeOutReleased() {
     return xbox.getLeftBumperReleased();
   }
-
+  
+  /* SHOOTER */
   @Override
   public boolean getManualShootShooter() {
     return xbox.getRightTriggerAxis() > 0.5;
@@ -166,9 +171,41 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   }
 
   @Override
+  public boolean setStowPos() {
+    return xbox.getBButtonPressed();
+  }
+
+  @Override
   public double getClimbControls() {
     return controlStation.getRightY(); 
   }
+
+  /* STINGER */
+  @Override
+  public boolean manualStow() {
+    return xbox.getBButtonPressed();
+  }
+
+  @Override
+  public boolean manualStingerIntakePos() {
+    return controlStation.getYButtonPressed();
+  }
+
+  @Override
+  public boolean manualStingerShooterTransfer() {
+    return controlStation.getBButtonPressed();
+  }
+
+  @Override
+  public double manualElevatorVelControl() {
+    return controlStation.getLeftY();
+  }
+
+  public double manualStingerAngleControl() {
+    return controlStation.getLeftX();
+  }
+
+
 
   // private static double modifyAxis2(double value) {
   //   // Deadband

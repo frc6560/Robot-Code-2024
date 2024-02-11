@@ -73,7 +73,8 @@ public class StingerCommand extends Command {
       setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
     else if (controls.manualStingerShooterTransfer()) 
       setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-    else setBothPosPresets(StingerConfigs.STOW);
+    else if (controls.manualStow()) 
+      setBothPosPresets(StingerConfigs.STOW);
 
 
 

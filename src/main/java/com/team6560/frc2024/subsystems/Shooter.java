@@ -20,6 +20,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.Constants.ShooterConstants;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
@@ -115,6 +116,10 @@ public class Shooter extends SubsystemBase {
     return false;
   }
 
+  public void setStowPos() {
+    setTargetAngle(0); // change these values later
+  }
+
   public void setManualAim(double speed) {
     m_arc.set(speed);
   }
@@ -133,6 +138,10 @@ public class Shooter extends SubsystemBase {
 
   public double getTargetAngle() {
     return targetAngle;
+  }
+
+  public boolean canIntake() {
+    return (getArcAngle() > Constants.MIN_ARC_ANGLE_FOR_INTAKE || getArcAngle() < Constants.MAX_ARC_ANGLE_FOR_INTAKE);
   }
 
   public void setTargetRPM (double input) {
