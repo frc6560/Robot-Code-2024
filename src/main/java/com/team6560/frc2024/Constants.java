@@ -190,7 +190,8 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
         );
     }
 
-    public static final double STINGER_TRANSFER_ANGLE = 10.0;
+    public static final double STINGER_TRANSFER_ANGLE = 10.0; //placeholder values
+    public static final double CLIMB_ANGLE = 90.0; //placeholder values
   }
 
   
@@ -224,7 +225,9 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
     //add position here
     STOW(0, 90),
     HUMAN_STATION_INTAKE(10, 90),
+    SHOOT_IN_TRAP(20,90), //placeholder values
     SHOOTER_TRANSFER(0, 7);
+
 
     private double elevatorPos;
     private double stingerAngle;
@@ -245,8 +248,9 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
 
   public enum ClimbConfigs {
     //add position here
-    CLIMB_STOW(0),
-    CLIMB_EXTENDED(0); 
+    CLIMB_STOW(0), //placeholder values
+    CLIMB_RETRACTED(0), //placeholder values
+    CLIMB_EXTENDED(0); //placeholder values
     
 
     private double climbPos; 
@@ -258,6 +262,10 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
     public double getClimbPos() {
       return climbPos;
     }
+  }
+
+  public static final class ClimbConstants {
+    public static final double CLIMB_ACCEPTABLE_DIFF = 1;
   }
 
   public enum CandleColorModes {
