@@ -243,6 +243,23 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
     }
   }
 
+  public enum ClimbConfigs {
+    //add position here
+    CLIMB_STOW(0),
+    CLIMB_EXTENDED(0); 
+    
+
+    private double climbPos; 
+    
+    private ClimbConfigs(double climbPos) {
+      this.climbPos = climbPos;
+    }
+    
+    public double getClimbPos() {
+      return climbPos;
+    }
+  }
+
   public enum CandleColorModes {
     INTAKE_MODE, HOLD_MODE, SHOOT_MODE, NO_MODE;
 
