@@ -66,7 +66,7 @@ public class ShooterCommand extends Command {
 
       if (controls.getSafeAim()){
         shooter.setRPM(Constants.SHOOTER_SUB_RPM);
-        shooter.setRPM(Constants.SHOOTER_SUB_ANGLE);
+        shooter.setVerticalAngle(Constants.SHOOTER_SUB_ANGLE);
       } else {
         shooter.setRPM(getShootRPM(dist));
         shooter.setVerticalAngle(getShootAngle(dist));
@@ -78,6 +78,7 @@ public class ShooterCommand extends Command {
 
     } else if (controls.getRunIntake()){
       shooter.setVerticalAngle(Constants.SHOOTER_GROUND_INTAKE_ANGLE);
+      shooter.setRPM(0.0);
 
       if(!shooter.getTransferSensorTriggered()){
 
@@ -85,6 +86,8 @@ public class ShooterCommand extends Command {
       } else {
         shooter.setTransfer(0.0);
       }
+    } else {
+      shooter.setRPM(0.0);
     }
 
   }

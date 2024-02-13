@@ -5,6 +5,7 @@
 package com.team6560.frc2024.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -23,7 +24,7 @@ public class Shooter extends SubsystemBase {
 
   final CANSparkMax feedMotor;
 
-  final ColorSensorV3 colorSensor;
+  // final ColorSensorV3 colorSensor;
 
   double targetRPM = 0;
   double targetAngle = 0;
@@ -38,13 +39,33 @@ public class Shooter extends SubsystemBase {
 
     feedMotor = new CANSparkMax(Constants.SHOOTER_FEED_MOTOR, MotorType.kBrushless);
 
-    colorSensor = new ColorSensorV3(Constants.SHOOTER_COLOR_SENSOR_ID);
+    // colorSensor = new ColorSensorV3(Constants.SHOOTER_COLOR_SENSOR_ID);
+
+
+    setupMotors();
+
+
 
     ntDispTab("Shooter")
     .add("Shooter RPM", this::getShooterRPM)
     .add("Current Draw Shooter", this::getCurrentDraw)
     .add("Vertical Angle Shooter", this::getShooterVerticalAngle)
     .add("Feeder Proximity Sensor", this::getTransferSensorTriggered);
+  }
+
+  private void setupMotors(){
+    arcMotor.setNeutralMode(NeutralModeValue.Coast);
+    arcMotor.setInverted(false);
+    arcMotor.setPosition(0.0);
+
+    shooterMotorLeft.setNeutralMode(NeutralModeValue.Coast);
+    shooterMotorLeft.setInverted(false);
+
+    shooterMotorRight.setNeutralMode(NeutralModeValue.Coast);
+    shooterMotorRight.setInverted(true);
+
+    feedMotor.restoreFactoryDefaults();
+    feedMotor.setInverted(false);
   }
 
   @Override
@@ -83,15 +104,16 @@ public class Shooter extends SubsystemBase {
 
 
   public boolean getTransferSensorTriggered(){
-    return colorSensor.getProximity() > Constants.SENSOR_TRIGGER_PROXIMITY_VALUE;
+    // return colorSensor.getProximity() > Constants.SENSOR_TRIGGER_PROXIMITY_VALUE;
+    return false;
   }
 
-  public boolean canIntakeNote(){
-    return (
-      Math.abs(getShooterVerticalAngle() - Constants.SHOOTER_INTAKE_POS) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF &&
-      !getTransferSensorTriggered()
-    );
-  }
+  // public boolean canIntakeNote(){
+  //   return (
+  //     Math.abs(getShooterVerticalAngle() - Constants.SHOOTER_INTAKE_POS) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF &&
+  //     !getTransferSensorTriggered()
+  //   );
+  // }
 
   public double getShooterRPM(){
     return shooterMotorLeft.getVelocity().getValueAsDouble();

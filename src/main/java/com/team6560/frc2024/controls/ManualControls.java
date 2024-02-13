@@ -180,4 +180,19 @@ public class ManualControls implements DriveCommand.Controls {
     return xbox.getLeftTriggerAxis() > 0.35;
   }
 
+
+  // ------------------------------ TRAP ------------------------------ \\
+
+  public double getTrapExtention(){
+    return controlStation.getLeftY() / 5;
+  }
+
+  public double getTrapRotation(){
+    return controlStation.getRightX() / 5;
+  }
+
+  public double getRunTrap(){
+    double speed = 0.2;
+    return controlStation.getRightBumper() ? speed : controlStation.getLeftBumper() ? -speed : 0;
+  }
 }

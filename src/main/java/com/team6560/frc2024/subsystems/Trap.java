@@ -6,28 +6,49 @@ package com.team6560.frc2024.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
 
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.networktables.NetworkTableInstance.NetworkMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Trap extends SubsystemBase {
   
   final CANSparkMax wristMotor;
-  final CANSparkMax trapElevator;
+  final TalonFX trapElevator;
 
   final CANSparkMax feedMotor;
 
-  final ColorSensorV3 colorSensor;
+  // final ColorSensorV3 colorSensor;
 
   public Trap() {
     this.wristMotor = new CANSparkMax(Constants.TRAP_WRIST_MOTOR, MotorType.kBrushless);
-    this.trapElevator = new CANSparkMax(Constants.TRAP_ELEVATOR_MOTOR, MotorType.kBrushless);
+    this.trapElevator = new TalonFX(Constants.TRAP_ELEVATOR_MOTOR);
     this.feedMotor = new CANSparkMax(Constants.TRAP_FEED_MOTOR, MotorType.kBrushless);
 
-    colorSensor = new ColorSensorV3(Constants.TRAP_COLOR_SENSOR_ID);
+
+    wristMotor.restoreFactoryDefaults();
+    wristMotor.setInverted(false);
+    wristMotor.setIdleMode(IdleMode.kBrake);
+    
+    trapElevator.setInverted(false);
+    trapElevator.setNeutralMode(NeutralModeValue.Brake);
+
+    feedMotor.restoreFactoryDefaults();
+    feedMotor.setInverted(false);
+    feedMotor.setIdleMode(IdleMode.kBrake);
+
+
+    wristMotor.getEncoder().setPosition(0.0);
+    trapElevator.setPosition(0.0);
+
+    // colorSensor = new ColorSensorV3(Constants.TRAP_COLOR_SENSOR_ID);
 
     ntDispTab("Trap")
       .add("Elevator Position", this::getExtention)
@@ -46,7 +67,7 @@ public class Trap extends SubsystemBase {
   }
 
   public void setExtention(double angle){
-    trapElevator.getEncoder().setPosition(angle * Constants.TRAP_ELEVATOR_GEAR_RATIO);
+    // trapElevator.getEncoder().setPosition(angle * Constants.TRAP_ELEVATOR_GEAR_RATIO);
   }
 
   public void setFeed(double output){
@@ -59,7 +80,7 @@ public class Trap extends SubsystemBase {
   }
 
   public double getExtention(){
-    return trapElevator.getEncoder().getPosition() / Constants.TRAP_ELEVATOR_GEAR_RATIO;
+    return trapElevator.getPosition().getValueAsDouble();//getEncoder().getPosition() / Constants.TRAP_ELEVATOR_GEAR_RATIO;
   }
 
   public double getFeedRate(){
@@ -67,7 +88,8 @@ public class Trap extends SubsystemBase {
   }
 
   public boolean getSensorTriggered(){
-    return colorSensor.getProximity() > 2000;
+    // return colorSensor.getProximity() > 2000;
+    return false;
   }
 
   public boolean isClearOfShooter(){
