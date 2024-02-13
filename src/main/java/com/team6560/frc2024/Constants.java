@@ -99,15 +99,15 @@ public final class Constants {
     new ReplanningConfig()
   );
 
-  public static final int TRANSFER_MOTOR = 0;
+  public static final int TRANSFER_MOTOR = 16;
 
-  public static final int INTAKE_MOTOR = 1;
+  public static final int INTAKE_MOTOR = 15;
 
   public static final double TALONFX_POS_TO_ROTATION = 2048;
 
-public static final int LEFT_CLIMB_MOTOR = 0; 
+public static final int LEFT_CLIMB_MOTOR = 22; 
 
-public static final int RIGHT_CLIMB_MOTOR = 0; 
+public static final int RIGHT_CLIMB_MOTOR = 23; 
 
 public static final double CLIMB_TOP_SOFT_LIMITS = 0.0; 
 
@@ -167,10 +167,10 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
     public static final double ACCEPTABLE_RPM_DIFF = 20;
     public static final double ACCEPTABLE_ANGLE_DIFF = 1;
 
-    public static final int SHOOTER_LEFT_ID = 21;
-    public static final int SHOOTER_RIGHT_ID = 22;
+    public static final int SHOOTER_LEFT_ID = 17;
+    public static final int SHOOTER_RIGHT_ID = 18;
 
-    public static final int ARC_MOTOR_ID = 23;
+    public static final int ARC_MOTOR_ID = 14;
 
 
     public static final double RPM_PER_FALCON_UNIT = 600.0/2480.0;
