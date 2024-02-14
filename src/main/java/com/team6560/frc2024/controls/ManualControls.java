@@ -168,16 +168,24 @@ public class ManualControls implements DriveCommand.Controls {
   public boolean getSafeAim(){
     return xbox.getYButton();
   }
+
+  public double getManualArc(){
+    return controlStation.getRightTriggerAxis() - controlStation.getLeftTriggerAxis();
+  }
+
+  public boolean getRunShooter(){
+    return controlStation.getBButton();
+  }
   
 
   // ------------------------------ INTAKE ------------------------------ \\
 
   public boolean getRunIntake(){
-    return xbox.getRightTriggerAxis() > 0.35;
+    return controlStation.getRightBumper();
   }
 
   public boolean getRunInverseIntake(){
-    return xbox.getLeftTriggerAxis() > 0.35;
+    return controlStation.getLeftBumper();
   }
 
 
@@ -193,6 +201,6 @@ public class ManualControls implements DriveCommand.Controls {
 
   public double getRunTrap(){
     double speed = 0.2;
-    return controlStation.getRightBumper() ? speed : controlStation.getLeftBumper() ? -speed : 0;
+    return controlStation.getXButton() ? speed : controlStation.getAButton() ? -speed : 0;
   }
 }

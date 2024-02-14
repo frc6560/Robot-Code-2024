@@ -13,6 +13,9 @@ import com.team6560.frc2024.subsystems.Limelight;
 import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Trap;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ShooterCommand extends Command {
@@ -20,6 +23,8 @@ public class ShooterCommand extends Command {
   final ManualControls controls;
   final Limelight limelight;
   final Trap trap;
+  final NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
+  final NetworkTableEntry manualShooter;
 
   class AimTrajectory{
     double rpm;
@@ -51,6 +56,9 @@ public class ShooterCommand extends Command {
 
     aimMap.put(0.0, new AimTrajectory(3000, 30));
     aimMap.put(10.0, new AimTrajectory(6000, 60));
+
+    manualShooter = ntTable.getEntry("Manual Arc");
+    manualShooter.setBoolean(false);
   }
 
   @Override
@@ -60,6 +68,11 @@ public class ShooterCommand extends Command {
 
   @Override
   public void execute() {
+    if(manualShooter.getBoolean(false)){
+      shooter.setManualAngle(controls.getManualArc());
+      shooter.setRPM(controls.getRunShooter() ? 50000 : 0);
+    }
+    
     if (controls.getAim() || controls.getSafeAim()) {
       double dist = limelight.getDistance();
 
@@ -81,13 +94,19 @@ public class ShooterCommand extends Command {
       shooter.setRPM(0.0);
 
       if(!shooter.getTransferSensorTriggered()){
-
         shooter.setTransfer(Constants.TRANSFER_INTAKE_OUTPUT);
       } else {
         shooter.setTransfer(0.0);
       }
+    } else if(controls.getRunInverseIntake()){
+      shooter.setVerticalAngle(Constants.SHOOTER_GROUND_INTAKE_ANGLE);
+      shooter.setRPM(-0.10);
+      shooter.setTransfer(-0.5);
+
+    
     } else {
       shooter.setRPM(0.0);
+      shooter.setTransfer(0.0);
     }
 
   }

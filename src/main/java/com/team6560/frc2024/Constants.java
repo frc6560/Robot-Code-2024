@@ -100,11 +100,11 @@ public final class Constants {
 
 
 
-public static final int INTAKE_FEED_MOTOR = 31;
+public static final int INTAKE_FEED_MOTOR = 15;
 
-public static final double INTAKE_FEED_RATE = 0.7;
+public static final double INTAKE_FEED_RATE = 0.6;
 
-public static final double INTAKE_REVERSE_RATE = -0.2;
+public static final double INTAKE_REVERSE_RATE = -0.3;
 
 
 

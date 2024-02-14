@@ -65,7 +65,7 @@ public class Shooter extends SubsystemBase {
     shooterMotorRight.setInverted(true);
 
     feedMotor.restoreFactoryDefaults();
-    feedMotor.setInverted(false);
+    feedMotor.setInverted(true);
   }
 
   @Override
@@ -73,7 +73,7 @@ public class Shooter extends SubsystemBase {
   }
   public void setRPM(double speed){
     targetRPM = speed;
-    speed /=  Constants.FALCON_MAX_RPM;
+    // speed /=  Constants.FALCON_MAX_RPM;
     
     shooterMotorRight.set(speed); // TODO: Fix this to pid controlled
     shooterMotorLeft.set(speed);
@@ -85,6 +85,10 @@ public class Shooter extends SubsystemBase {
     targetAngle = angle;
     
     arcMotor.setPosition(angle * Constants.SHOOTER_ARC_GEAR_RATIO);
+  }
+
+  public void setManualAngle(double output){ // should not be used in real code, just for testing rn
+    arcMotor.set(output);
   }
 
   public void setTransfer(double output){

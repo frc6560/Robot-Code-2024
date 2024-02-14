@@ -1,5 +1,6 @@
 package com.team6560.frc2024.subsystems;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -13,6 +14,8 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     this.feedMotor = new CANSparkMax(Constants.INTAKE_FEED_MOTOR, MotorType.kBrushless);
+    feedMotor.restoreFactoryDefaults();
+    feedMotor.setIdleMode(IdleMode.kCoast);
 
     ntDispTab("Intake")
     .add("Intake Feed Speed", this::getFeedSpeed)

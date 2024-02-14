@@ -30,7 +30,10 @@ public class TrapCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    trap.setExtention(controls.getTrapExtention());
+    trap.setFeed(controls.getRunTrap());
+
+    trap.setAngle(controls.getTrapRotation());
   }
 
   // Called once the command ends or is interrupted.

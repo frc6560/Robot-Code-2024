@@ -34,10 +34,10 @@ public class Trap extends SubsystemBase {
 
 
     wristMotor.restoreFactoryDefaults();
-    wristMotor.setInverted(false);
+    wristMotor.setInverted(true);
     wristMotor.setIdleMode(IdleMode.kBrake);
     
-    trapElevator.setInverted(false);
+    trapElevator.setInverted(true);
     trapElevator.setNeutralMode(NeutralModeValue.Brake);
 
     feedMotor.restoreFactoryDefaults();
@@ -63,11 +63,13 @@ public class Trap extends SubsystemBase {
 
   
   public void setAngle(double angle){
-    wristMotor.getEncoder().setPosition(angle * Constants.TRAP_WRIST_GEAR_RATIO);
+    // wristMotor.getEncoder().setPosition(angle * Constants.TRAP_WRIST_GEAR_RATIO);
+    wristMotor.set(angle);
   }
 
   public void setExtention(double angle){
-    // trapElevator.getEncoder().setPosition(angle * Constants.TRAP_ELEVATOR_GEAR_RATIO);
+    // trapElevator.setPosition(angle, 20);
+    trapElevator.set(angle);
   }
 
   public void setFeed(double output){
