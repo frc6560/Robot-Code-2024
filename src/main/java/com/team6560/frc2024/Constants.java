@@ -163,6 +163,13 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0;
     public static final double TOP_CONE_MARKER_TO_FLOOR_DISTANCE_METERS = 1.0795;
   }
 
+  public static final class AprilTagConstants {
+    public final static double LIMELIGHT_ANGLE_DEGREES = 15.0;
+    //in inches
+    public final static double LIMELIGHT_HEIGHT = 10;
+    public final static double ID_3_HEIGHT = 51.875, ID_4_HEIGHT = 51.875, ID_7_HEIGHT = 51.875, ID_8_HEIGHT = 51.875;  
+  }
+
   public static final class ShooterConstants {
     public static final double ACCEPTABLE_RPM_DIFF = 20;
     public static final double ACCEPTABLE_ANGLE_DIFF = 1;

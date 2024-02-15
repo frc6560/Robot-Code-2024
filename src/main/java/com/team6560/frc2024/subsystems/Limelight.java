@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -20,6 +21,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 import java.util.Arrays;
+
+import com.team6560.frc2024.Constants.AprilTagConstants;
 
 public class Limelight extends SubsystemBase {
   /** Creates a new Limelight. */
@@ -37,6 +40,7 @@ public class Limelight extends SubsystemBase {
   private final NetworkTableEntry ntA = networkTable.getEntry("ta");
   private final NetworkTableEntry ntL = networkTable.getEntry("tl");
   private final NetworkTableEntry ntcL = networkTable.getEntry("cl");
+  private final NetworkTableEntry ntID = networkTable.getEntry("tid");
   private final NetworkTableEntry ntBotPose = networkTable.getEntry("botpose_wpiblue");
   private final NetworkTableEntry ntTargetPose = networkTable.getEntry("targetpose_robotspace");
   private final NetworkTableEntry ntPipeline = networkTable.getEntry("pipeline");
@@ -87,6 +91,28 @@ public class Limelight extends SubsystemBase {
     // 11 additional ms is recommended for image capture latency
     // divided by 1000.0 to convert ms to s
     return (ntL.getDouble(0.0) + ntcL.getDouble(11.0))/1000.0;
+  }
+
+  public double getID() {
+    return ntID.getDouble(0.0);
+  }
+
+  public double getDistance() {
+    if (!hasTarget())
+      return 0.0;
+    
+    int id = (int) getID();
+    double heightDifference = 0;
+
+    switch (id) {
+      case 3: heightDifference = (AprilTagConstants.ID_3_HEIGHT - AprilTagConstants.LIMELIGHT_HEIGHT);
+      case 4: heightDifference = (AprilTagConstants.ID_4_HEIGHT - AprilTagConstants.LIMELIGHT_HEIGHT);
+      case 7: heightDifference = (AprilTagConstants.ID_7_HEIGHT - AprilTagConstants.LIMELIGHT_HEIGHT);
+      case 8: heightDifference = (AprilTagConstants.ID_8_HEIGHT - AprilTagConstants.LIMELIGHT_HEIGHT);
+    }
+
+
+    return heightDifference/(Math.tan(AprilTagConstants.LIMELIGHT_ANGLE_DEGREES + getVerticalAngle()));
   }
 
   public Pose2d getTargetPose() {
