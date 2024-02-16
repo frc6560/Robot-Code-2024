@@ -158,15 +158,16 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   public boolean getAim(){
-    return controlStation.getRightBumper();
+    // return controlStation.getRightBumper();
+    return false;
   }
 
   public boolean getShoot(){
-    return xbox.getRightTriggerAxis() > 0.2;
+    return controlStation.getRightTriggerAxis() > 0.2;
   }
   
   public boolean getSafeAim(){
-    return controlStation.getLeftBumper();
+    return controlStation.getLeftTriggerAxis() > 0.2;
   }
 
   // public double getManualArc(){
