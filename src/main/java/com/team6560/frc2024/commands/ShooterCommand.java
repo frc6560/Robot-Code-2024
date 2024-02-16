@@ -36,6 +36,7 @@ public class ShooterCommand extends Command {
   // private final double IDLE_RPM = 60;
 
   private boolean manualMode;
+  private boolean shooterAutoMoving;
 
   public ShooterCommand(Shooter Shooter, Limelight limelight, Transfer Transfer, LightWorkNoReaction Light,  Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.

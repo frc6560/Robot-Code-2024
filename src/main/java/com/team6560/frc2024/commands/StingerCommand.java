@@ -29,7 +29,7 @@ public class StingerCommand extends Command {
   private final Transfer transfer;
   private final Controls controls;
 
-  private boolean stingerMoving;
+  private boolean stingerAutoMoving;
   private boolean shooterStingerAligned = false, correctShooterRpm = false;
   private boolean stingerToIntakePos = false;
 
@@ -79,10 +79,10 @@ public class StingerCommand extends Command {
         }
 
       if (stingerToIntakePos) {
-        stinger.setRoller(10); //placeholder value
+        stinger.setRoller(1); //placeholder value
       }
 
-      if (stingerToIntakePos && stinger.stingerRollerHasNote()) {
+      if (stinger.stingerRollerHasNote()) {
         stinger.setRoller(0);
 
         stingerToIntakePos = false;
@@ -91,8 +91,7 @@ public class StingerCommand extends Command {
   }
 
   public void autoTransferToShooter() { 
-    if (isAutoTransferReady() || transfer.isInProximity()) return;
-
+    if (stinger.stingerRollerHasNote() || transfer.isInProximity()) return;
     else {
       if (!shooterStingerAligned) {
         setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
