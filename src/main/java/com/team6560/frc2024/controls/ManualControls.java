@@ -118,7 +118,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   private static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.01);
+    value = deadband(value, 0.10);
 
     // Square the axis
     value = Math.copySign(value * value, value);
@@ -247,12 +247,12 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
    */
   @Override
   public double driveRotationX() {
-    return -modifyAxis(xbox.getRightX() * turnSpeed.get());
+    return modifyAxis(xbox.getRightX() * turnSpeed.get());
   }
 
   @Override
   public double driveRotationY() {
-    return -modifyAxis(xbox.getRightY() * turnSpeed.get());
+    return modifyAxis(xbox.getRightY() * turnSpeed.get());
   }
 
   /**

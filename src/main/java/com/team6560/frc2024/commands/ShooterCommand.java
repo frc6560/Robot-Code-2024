@@ -44,7 +44,7 @@ public class ShooterCommand extends Command {
     this.Transfer = Transfer;
     this.controls = controls;
     this.Light = Light;
-    this.manualMode = false;
+    this.manualMode = true;
 
     addRequirements(Shooter, limelight);
     addRequirements(Transfer);

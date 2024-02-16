@@ -29,6 +29,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -75,10 +78,12 @@ public class Drivetrain extends SubsystemBase {
         private final SwerveDriveOdometry odometry;
 
         public Drivetrain() {
+                ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
                 m_frontLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
-                                // .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-                                // .withSize(2, 4)
-                                // .withPosition(6, 0))
+                                .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
+                                .withSize(2, 4)
+                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_LEFT_MODULE_STEER_MOTOR)
@@ -87,6 +92,9 @@ public class Drivetrain extends SubsystemBase {
                                 .build();
 
                 m_frontRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
+                .withSize(2, 4)
+                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_RIGHT_MODULE_STEER_MOTOR)
@@ -95,6 +103,9 @@ public class Drivetrain extends SubsystemBase {
                                 .build();
 
                 m_backLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
+                                .withSize(2, 4)
+                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.BACK_LEFT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_LEFT_MODULE_STEER_MOTOR)
@@ -103,6 +114,9 @@ public class Drivetrain extends SubsystemBase {
                                 .build();
 
                 m_backRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
+                                .withSize(2, 4)
+                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_RIGHT_MODULE_STEER_MOTOR)
@@ -188,7 +202,7 @@ public class Drivetrain extends SubsystemBase {
         // This method is used to control the movement of the chassis.
         public void drive(ChassisSpeeds chassisSpeeds) {
                 SwerveModuleState[] speeds = DEFAULT_MODULE_STATES;
-                if (chassisSpeeds.vxMetersPerSecond != 0 && chassisSpeeds.vyMetersPerSecond != 0 && chassisSpeeds.omegaRadiansPerSecond != 0) {
+                if (chassisSpeeds.vxMetersPerSecond != 0.0 || chassisSpeeds.vyMetersPerSecond != 0.0 || chassisSpeeds.omegaRadiansPerSecond != 0.0) {
                         speeds = m_kinematics.toSwerveModuleStates(chassisSpeeds);
                         SwerveDriveKinematics.desaturateWheelSpeeds(speeds, Constants.MAX_VELOCITY_METERS_PER_SECOND);
                 }
