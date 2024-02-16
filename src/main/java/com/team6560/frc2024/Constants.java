@@ -127,7 +127,7 @@ public static final int SHOOTER_LEFT_MOTOR = 17;
 
 public static final int SHOOTER_FEED_MOTOR = 16;
 
-public static final Port SHOOTER_COLOR_SENSOR_ID = null;
+public static final Port SHOOTER_COLOR_SENSOR_PORT = Port.kOnboard;
 
 public static final double TRANSFER_FEED_OUTPUT = 1;
 
@@ -142,7 +142,7 @@ public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 1;
 
 public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1;
 
-public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 250;
+public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 200;
 
 
 
@@ -153,7 +153,7 @@ public static final int TRAP_ELEVATOR_MOTOR = 19;
 
 public static final int TRAP_FEED_MOTOR = 21;
 
-public static final Port TRAP_COLOR_SENSOR_ID = null;
+public static final int TRAP_LIMIT_SWITCH_ID = 0;
 
 
 public static final double TRAP_WRIST_GEAR_RATIO = 01;

@@ -15,7 +15,7 @@ import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.networktables.NetworkTableInstance.NetworkMode;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Trap extends SubsystemBase {
@@ -25,36 +25,50 @@ public class Trap extends SubsystemBase {
 
   final CANSparkMax feedMotor;
 
-  // final ColorSensorV3 colorSensor;
+  final DigitalInput limitSwitch = new DigitalInput(Constants.TRAP_LIMIT_SWITCH_ID);
 
   public Trap() {
     this.wristMotor = new CANSparkMax(Constants.TRAP_WRIST_MOTOR, MotorType.kBrushless);
     this.trapElevator = new TalonFX(Constants.TRAP_ELEVATOR_MOTOR);
     this.feedMotor = new CANSparkMax(Constants.TRAP_FEED_MOTOR, MotorType.kBrushless);
 
-
-    wristMotor.restoreFactoryDefaults();
-    wristMotor.setInverted(true);
-    wristMotor.setIdleMode(IdleMode.kBrake);
-    
-    trapElevator.setInverted(true);
-    trapElevator.setNeutralMode(NeutralModeValue.Brake);
-
-    feedMotor.restoreFactoryDefaults();
-    feedMotor.setInverted(false);
-    feedMotor.setIdleMode(IdleMode.kBrake);
-
-
-    wristMotor.getEncoder().setPosition(0.0);
-    trapElevator.setPosition(0.0);
-
-    // colorSensor = new ColorSensorV3(Constants.TRAP_COLOR_SENSOR_ID);
+    setupMotors();
 
     ntDispTab("Trap")
       .add("Elevator Position", this::getExtention)
       .add("Wrist Angle", this::getAngle)
       .add("Feed speed Stinger", this::getFeedRate)
       .add("Trap Sensor Triggered", this::getSensorTriggered);
+  }
+
+  private void setupMotors(){
+    wristMotor.restoreFactoryDefaults();
+    wristMotor.setInverted(true);
+    wristMotor.setIdleMode(IdleMode.kBrake);
+
+    wristMotor.getPIDController().setP(0);
+
+
+
+    
+    trapElevator.setInverted(true);
+    trapElevator.setNeutralMode(NeutralModeValue.Brake);
+
+    // trapElevator
+
+
+
+
+
+    feedMotor.restoreFactoryDefaults();
+    feedMotor.setInverted(false);
+    feedMotor.setIdleMode(IdleMode.kBrake);
+
+    feedMotor.getPIDController().setP(0);
+
+
+    wristMotor.getEncoder().setPosition(0.0);
+    trapElevator.setPosition(0.0);
   }
 
   @Override
@@ -90,8 +104,7 @@ public class Trap extends SubsystemBase {
   }
 
   public boolean getSensorTriggered(){
-    // return colorSensor.getProximity() > 2000;
-    return false;
+    return limitSwitch.get();
   }
 
   public boolean isClearOfShooter(){

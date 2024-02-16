@@ -12,8 +12,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -41,8 +39,7 @@ public class Shooter extends SubsystemBase {
 
     feedMotor = new CANSparkMax(Constants.SHOOTER_FEED_MOTOR, MotorType.kBrushless);
 
-    // colorSensorPort = , 0)
-    colorSensor = new ColorSensorV3(Port.kOnboard);
+    colorSensor = new ColorSensorV3(Constants.SHOOTER_COLOR_SENSOR_PORT);
 
 
     setupMotors();
@@ -90,10 +87,6 @@ public class Shooter extends SubsystemBase {
     arcMotor.setPosition(angle * Constants.SHOOTER_ARC_GEAR_RATIO);
   }
 
-  // public void setManualAngle(double output){ // should not be used in real code, just for testing rn
-  //   arcMotor.set(output);
-  // }
-
   public void setArcOutput(double output){
     arcMotor.set(output);
   }
@@ -118,12 +111,6 @@ public class Shooter extends SubsystemBase {
     return colorSensor.getProximity() > Constants.SENSOR_TRIGGER_PROXIMITY_VALUE;
   }
 
-  // public boolean canIntakeNote(){
-  //   return (
-  //     Math.abs(getShooterVerticalAngle() - Constants.SHOOTER_INTAKE_POS) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF &&
-  //     !getTransferSensorTriggered()
-  //   );
-  // }
 
   public double getShooterRPM(){
     return shooterMotorLeft.getVelocity().getValueAsDouble();

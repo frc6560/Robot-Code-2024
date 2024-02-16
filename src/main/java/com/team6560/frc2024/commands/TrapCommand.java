@@ -10,7 +10,6 @@ import com.team6560.frc2024.subsystems.Trap;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TrapCommand extends Command {
-  /** Creates a new TrapCommand. */
   final Trap trap;
   final ManualControls controls;
 
@@ -19,28 +18,19 @@ public class TrapCommand extends Command {
     this.controls = controls;
 
     addRequirements(trap);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // trap.setExtention(controls.getTrapExtention());
-    // trap.setFeed(controls.getRunTrap());
-
-    // trap.setAngle(controls.getTrapRotation());
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
