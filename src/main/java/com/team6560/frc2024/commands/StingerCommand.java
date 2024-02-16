@@ -29,7 +29,7 @@ public class StingerCommand extends Command {
   private final Transfer transfer;
   private final Controls controls;
 
-  private boolean stingerAutoMoving;
+  
   private boolean isDoneTransfer = true, shooterStingerAligned = false, correctShooterRpm = false, maxTransferSensorReached = false, transferHasNote = false;
   private boolean stingerToIntakePos = false;
 
@@ -92,6 +92,7 @@ public class StingerCommand extends Command {
 
   public void autoTransferToShooter() { 
     if (transfer.isInProximity() && isDoneTransfer) return;
+    
     else {
       isDoneTransfer = false;
 
