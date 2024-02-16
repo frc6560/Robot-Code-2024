@@ -91,7 +91,7 @@ public class StingerCommand extends Command {
   }
 
   public void autoTransferToShooter() { 
-    if (stinger.stingerRollerHasNote() || transfer.isInProximity()) return;
+    if (!stinger.stingerRollerHasNote() || transfer.isInProximity()) return;
     else {
       if (!shooterStingerAligned) {
         setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
