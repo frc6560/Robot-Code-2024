@@ -25,8 +25,7 @@ public class IntakeCommand extends Command {
   /** Creates a new IntakeCommand. */
   public IntakeCommand(Intake Intake, Transfer Transfer, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Intake);
-    addRequirements(Transfer);
+    addRequirements(Intake,Transfer);
     this.Intake = Intake;
     this.Transfer = Transfer;
     this.controls = controls;
@@ -39,9 +38,7 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(controls.getIntakeIn() + "hi");
     if (controls.getIntakeIn()) {
-      System.out.println("yay1");
       Intake.setSpeed(0.5);
       if (!Transfer.isInProximity()) {
         Transfer.setSpeed(0.5);

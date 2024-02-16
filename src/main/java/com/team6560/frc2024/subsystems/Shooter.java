@@ -15,6 +15,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 // import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 // import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,10 +34,13 @@ public class Shooter extends SubsystemBase {
 
   private final TalonFX m_arc;
   
-  private double targetRPM;
-  private double targetAngle;
+  // private double targetRPM;
+  // private double targetAngle;
 
   NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
+  NetworkTableEntry targetRPM = ntTable.getEntry("targetRPM");
+  NetworkTableEntry targetAngle = ntTable.getEntry("targetAngle");
+
 
   // private NetworkTableEntry ntRPM;
   // private NetworkTableEntry ntAngle;
@@ -44,8 +48,8 @@ public class Shooter extends SubsystemBase {
   // private final double arcTurnSpeed = 0.5;
   
   public Shooter() {
-    targetRPM = 0;
-    targetAngle = 0;
+    // targetRPM = 0;
+    // targetAngle = 0;
 
 
     //Shooter Motor Config
@@ -86,20 +90,17 @@ public class Shooter extends SubsystemBase {
 
     ntDispTab("Shooter")
       .add("Current RPM", this::getShooterRPM)
-      .add("Target RPM", () -> targetRPM)
-      .add("Current Arc Angle", this::getArcAngle)
-      .add("Target Arc Angle", () -> targetAngle);
-    
-    SmartDashboard.putNumber("Shooter RPM", 0.0);
-    SmartDashboard.putNumber("Shooter Angle", 0.0);
-      
+      .add("Current Arc Angle", this::getArcAngle);
+
+    targetRPM.setDouble(0.0);
+    targetAngle.setDouble(0.0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_shooterLeft.set(targetRPM / ShooterConstants.RPM_PER_FALCON_UNIT);
-    m_shooterRight.set(targetRPM / ShooterConstants.RPM_PER_FALCON_UNIT);
+    m_shooterLeft.set(targetRPM.getDouble(0.0) / ShooterConstants.RPM_PER_FALCON_UNIT);
+    m_shooterRight.set(targetRPM.getDouble(0.0) / ShooterConstants.RPM_PER_FALCON_UNIT);
   }
 
   public boolean isReadyAutoAim() {
@@ -133,11 +134,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getTargetRPM() {
-    return targetRPM;
+    return targetRPM.getDouble(0.0);
   }
 
   public double getTargetAngle() {
-    return targetAngle;
+    return targetAngle.getDouble(0.0);
   }
 
   public boolean canIntake() {
@@ -145,27 +146,19 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setTargetRPM (double input) {
-    targetRPM = input;
+    targetRPM.setDouble(input);
   }
 
   public void setTargetAngle (double angle) {
-    targetAngle = angle;
+    targetAngle.setDouble(angle);
   }
 
   public double getRPMDifference() {
-    return Math.abs(targetRPM - getShooterRPM());
+    return Math.abs(targetRPM.getDouble(0.0) - getShooterRPM());
   }
 
   public double getAngleDifference() {
-    return Math.abs(targetAngle - getArcAngle());
-  }
-
-  public double getSmartDashboardRPM() {
-    return SmartDashboard.getNumber("Shooter RPM", targetRPM);
-  }
-
-  public double getSmartDashboardAngle() {
-    return SmartDashboard.getNumber("Shooter Angle", targetAngle);
+    return Math.abs(targetAngle.getDouble(0.0) - getArcAngle());
   }
 
 }

@@ -157,12 +157,12 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public double getManualAim() {
-    return controlStation.getLeftY();
+    return controlStation.getRightY();
   }
 
   @Override
   public double getManualShooterSpeed() {
-    return controlStation.getLeftX();
+    return controlStation.getRightX();
   }
 
   @Override
@@ -177,7 +177,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public double getClimbControls() {
-    return controlStation.getRightY(); 
+    return xbox.getRightY(); 
   }
 
   /* STINGER */

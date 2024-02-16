@@ -47,15 +47,15 @@ public class RobotContainer {
         private final Shooter shooter;
         private final Transfer transfer;
         // private final Climb climb; 
-        private final Limelight limelight;
+        // private final Limelight limelight;
         private final LightWorkNoReaction lightWorkNoReaction;
         private final DriveCommand driveCommand;
         private final IntakeCommand intakeCommand;
         private final ShooterCommand shooterCommand;
-        private final AutoIntakeCommand autoIntakeCommand;
-        private final AutoShooterCommand autoShooterCommand;
-        private final AutoTransferCommand autoTransferCommand;
-        private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
+       // private final AutoIntakeCommand autoIntakeCommand;
+       // private final AutoShooterCommand autoShooterCommand;
+      //  private final AutoTransferCommand autoTransferCommand;
+        // private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
       
 
 
@@ -67,7 +67,7 @@ public class RobotContainer {
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
-                limelight = new Limelight();
+                // limelight = new Limelight();
                 drivetrain = new Drivetrain();
                 shooter = new Shooter();
                 intake = new Intake(shooter);
@@ -76,25 +76,27 @@ public class RobotContainer {
                 lightWorkNoReaction = new LightWorkNoReaction();
                 driveCommand = new DriveCommand(drivetrain, manualControls);
                 intakeCommand = new IntakeCommand(intake, transfer, manualControls);
-                shooterCommand = new ShooterCommand(shooter, limelight, transfer, lightWorkNoReaction, manualControls);
-                autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
-                autoShooterCommand = new AutoShooterCommand(shooter);
-                autoTransferCommand = new AutoTransferCommand(transfer);
-                lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, manualControls);
+                shooterCommand = new ShooterCommand(shooter, transfer, lightWorkNoReaction, manualControls);
+              //  autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
+              //  autoShooterCommand = new AutoShooterCommand(shooter);
+              //  autoTransferCommand = new AutoTransferCommand(transfer);
+                // lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, manualControls);
 
                 drivetrain.setDefaultCommand(driveCommand);
                 intake.setDefaultCommand(intakeCommand);
                 shooter.setDefaultCommand(shooterCommand);
-                lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
+                // lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
 
                 NamedCommands.registerCommand("print hello", Commands.print("hello"));
-                NamedCommands.registerCommand("startShooter", autoShooterCommand);
-                NamedCommands.registerCommand("startIntake", autoIntakeCommand);
-                NamedCommands.registerCommand("shoot", autoTransferCommand.withTimeout(0.5));
+        //        NamedCommands.registerCommand("startShooter", autoShooterCommand);
+        //        NamedCommands.registerCommand("startIntake", autoIntakeCommand);
+        //        NamedCommands.registerCommand("shoot", autoTransferCommand.withTimeout(0.5));
 
                 configureBindings();
                 autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
+
+                System.out.println("\n\n\n\n\n\nAGHHHHHHHHHHH\n\n\n\n\n\n");
         }
 
         private void configureBindings() {
