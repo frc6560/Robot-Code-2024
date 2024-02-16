@@ -28,7 +28,7 @@ public class ShooterCommand extends Command {
   }
 
   private final Shooter Shooter;
-  // private final Limelight limelight;
+  private final Limelight limelight;
   private final Controls controls;
   private final Transfer Transfer;
   private final LightWorkNoReaction Light;
@@ -37,10 +37,10 @@ public class ShooterCommand extends Command {
 
   private boolean manualMode;
 
-  public ShooterCommand(Shooter Shooter, Transfer Transfer, LightWorkNoReaction Light,  Controls controls) {
+  public ShooterCommand(Shooter Shooter, Limelight limelight, Transfer Transfer, LightWorkNoReaction Light,  Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Shooter = Shooter;
-    // this.limelight = limelight;
+    this.limelight = limelight;
     this.Transfer = Transfer;
     this.controls = controls;
     this.Light = Light;
