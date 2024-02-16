@@ -158,24 +158,24 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   public boolean getAim(){
-    return xbox.getLeftBumper();
+    return controlStation.getRightBumper();
   }
 
   public boolean getShoot(){
-    return xbox.getRightBumper();
+    return xbox.getRightTriggerAxis() > 0.2;
   }
   
   public boolean getSafeAim(){
-    return xbox.getYButton();
+    return controlStation.getLeftBumper();
   }
 
-  public double getManualArc(){
-    return controlStation.getRightTriggerAxis() - controlStation.getLeftTriggerAxis();
-  }
+  // public double getManualArc(){
+  //   return controlStation.getRightTriggerAxis() - controlStation.getLeftTriggerAxis();
+  // }
 
-  public boolean getRunShooter(){
-    return controlStation.getBButton();
-  }
+  // public boolean getRunShooter(){
+  //   return controlStation.getBButton();
+  // }
   
 
   // ------------------------------ INTAKE ------------------------------ \\
@@ -184,23 +184,23 @@ public class ManualControls implements DriveCommand.Controls {
     return controlStation.getRightBumper();
   }
 
-  public boolean getRunInverseIntake(){
-    return controlStation.getLeftBumper();
-  }
+  // public boolean getRunInverseIntake(){
+  //   return controlStation.getLeftBumper();
+  // }
 
 
   // ------------------------------ TRAP ------------------------------ \\
 
-  public double getTrapExtention(){
-    return controlStation.getLeftY() / 5;
-  }
+  // public double getTrapExtention(){
+  //   return controlStation.getLeftY() / 5;
+  // }
 
-  public double getTrapRotation(){
-    return controlStation.getRightX() / 5;
-  }
+  // public double getTrapRotation(){
+  //   return controlStation.getRightX() / 5;
+  // }
 
-  public double getRunTrap(){
-    double speed = 0.2;
-    return controlStation.getXButton() ? speed : controlStation.getAButton() ? -speed : 0;
-  }
+  // public double getRunTrap(){
+  //   double speed = 0.2;
+  //   return controlStation.getXButton() ? speed : controlStation.getAButton() ? -speed : 0;
+  // }
 }

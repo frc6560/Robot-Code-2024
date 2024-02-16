@@ -29,10 +29,7 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.getRunInverseIntake()){
-      intake.setIntakeFeed(Constants.INTAKE_REVERSE_RATE);
-
-    } else if (controls.getRunIntake()){
+    if (controls.getRunIntake()){
       intake.setIntakeFeed(Constants.INTAKE_FEED_RATE);
       
     } else {

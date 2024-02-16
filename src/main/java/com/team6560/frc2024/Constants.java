@@ -142,7 +142,7 @@ public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 1;
 
 public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1;
 
-public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 2000;
+public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 250;
 
 
 

@@ -12,6 +12,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -24,7 +26,7 @@ public class Shooter extends SubsystemBase {
 
   final CANSparkMax feedMotor;
 
-  // final ColorSensorV3 colorSensor;
+  final ColorSensorV3 colorSensor;
 
   double targetRPM = 0;
   double targetAngle = 0;
@@ -39,7 +41,8 @@ public class Shooter extends SubsystemBase {
 
     feedMotor = new CANSparkMax(Constants.SHOOTER_FEED_MOTOR, MotorType.kBrushless);
 
-    // colorSensor = new ColorSensorV3(Constants.SHOOTER_COLOR_SENSOR_ID);
+    // colorSensorPort = , 0)
+    colorSensor = new ColorSensorV3(Port.kOnboard);
 
 
     setupMotors();
@@ -50,7 +53,7 @@ public class Shooter extends SubsystemBase {
     .add("Shooter RPM", this::getShooterRPM)
     .add("Current Draw Shooter", this::getCurrentDraw)
     .add("Vertical Angle Shooter", this::getShooterVerticalAngle)
-    .add("Feeder Proximity Sensor", this::getTransferSensorTriggered);
+    .add("Feeder Proximity Sensor", ()->colorSensor.getProximity());
   }
 
   private void setupMotors(){
@@ -73,7 +76,7 @@ public class Shooter extends SubsystemBase {
   }
   public void setRPM(double speed){
     targetRPM = speed;
-    // speed /=  Constants.FALCON_MAX_RPM;
+    speed /=  Constants.FALCON_MAX_RPM;
     
     shooterMotorRight.set(speed); // TODO: Fix this to pid controlled
     shooterMotorLeft.set(speed);
@@ -87,7 +90,11 @@ public class Shooter extends SubsystemBase {
     arcMotor.setPosition(angle * Constants.SHOOTER_ARC_GEAR_RATIO);
   }
 
-  public void setManualAngle(double output){ // should not be used in real code, just for testing rn
+  // public void setManualAngle(double output){ // should not be used in real code, just for testing rn
+  //   arcMotor.set(output);
+  // }
+
+  public void setArcOutput(double output){
     arcMotor.set(output);
   }
 
@@ -98,18 +105,17 @@ public class Shooter extends SubsystemBase {
 
 
   public boolean readyToShoot(){
-    return (
-      Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
-      Math.abs(getShooterVerticalAngle() - targetAngle) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF &&
-      (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ) && 
-      trap.isClearOfShooter()
+    return ( true
+      // Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
+      // Math.abs(getShooterVerticalAngle() - targetAngle) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF &&
+      // (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ) && 
+      // trap.isClearOfShooter()
     );
   }
 
 
   public boolean getTransferSensorTriggered(){
-    // return colorSensor.getProximity() > Constants.SENSOR_TRIGGER_PROXIMITY_VALUE;
-    return false;
+    return colorSensor.getProximity() > Constants.SENSOR_TRIGGER_PROXIMITY_VALUE;
   }
 
   // public boolean canIntakeNote(){
@@ -128,6 +134,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterVerticalAngle(){
-    return arcMotor.getPosition().getValueAsDouble();
+    return arcMotor.getRotorVelocity().getValueAsDouble();
   }
 }

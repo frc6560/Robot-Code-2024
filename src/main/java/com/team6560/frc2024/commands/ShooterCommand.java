@@ -68,44 +68,35 @@ public class ShooterCommand extends Command {
 
   @Override
   public void execute() {
-    if(manualShooter.getBoolean(false)){
-      shooter.setManualAngle(controls.getManualArc());
-      shooter.setRPM(controls.getRunShooter() ? 50000 : 0);
-    }
-    
-    if (controls.getAim() || controls.getSafeAim()) {
+    if (controls.getSafeAim() || controls.getAim()){
       double dist = limelight.getDistance();
 
+      if(controls.getSafeAim()){
+        shooter.setArcOutput(1);
+        shooter.setRPM(6000);
 
-      if (controls.getSafeAim()){
-        shooter.setRPM(Constants.SHOOTER_SUB_RPM);
-        shooter.setVerticalAngle(Constants.SHOOTER_SUB_ANGLE);
       } else {
-        shooter.setRPM(getShootRPM(dist));
-        shooter.setVerticalAngle(getShootAngle(dist));
+        shooter.setArcOutput(0);
+        shooter.setRPM(getShootRPM(0));
       }
-      
+
       if (controls.getShoot() && shooter.readyToShoot()){
         shooter.setTransfer(Constants.TRANSFER_FEED_OUTPUT);
+      } else {
+        shooter.setTransfer(0);
       }
 
     } else if (controls.getRunIntake()){
-      shooter.setVerticalAngle(Constants.SHOOTER_GROUND_INTAKE_ANGLE);
-      shooter.setRPM(0.0);
-
+      shooter.setArcOutput(-1);
+      
       if(!shooter.getTransferSensorTriggered()){
         shooter.setTransfer(Constants.TRANSFER_INTAKE_OUTPUT);
       } else {
         shooter.setTransfer(0.0);
       }
-    } else if(controls.getRunInverseIntake()){
-      shooter.setVerticalAngle(Constants.SHOOTER_GROUND_INTAKE_ANGLE);
-      shooter.setRPM(-0.10);
-      shooter.setTransfer(-0.5);
-
-    
     } else {
       shooter.setRPM(0.0);
+      shooter.setArcOutput(0.0);
       shooter.setTransfer(0.0);
     }
 
@@ -130,6 +121,8 @@ public class ShooterCommand extends Command {
   }
 
   public double getShootRPM(double dist){
+    if(dist == 0) return 0;
+
     double lowerDist = findClosest(dist)[0];
     double upperDist = findClosest(dist)[1];
     
@@ -141,6 +134,8 @@ public class ShooterCommand extends Command {
   }
 
   public double getShootAngle(double dist){
+    if(dist == 0) return 0;
+    
     double lowerDist = findClosest(dist)[0];
     double upperDist = findClosest(dist)[1];
     
