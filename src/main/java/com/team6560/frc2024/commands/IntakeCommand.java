@@ -39,7 +39,9 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(controls.getIntakeIn() + "hi");
     if (controls.getIntakeIn()) {
+      System.out.println("yay1");
       Intake.setSpeed(0.5);
       if (!Transfer.isInProximity()) {
         Transfer.setSpeed(0.5);
