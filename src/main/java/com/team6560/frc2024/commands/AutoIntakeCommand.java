@@ -17,8 +17,7 @@ public class AutoIntakeCommand extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Intake = Intake;
     this.Transfer = Transfer;
-    addRequirements(Intake);
-    addRequirements(Transfer);
+    addRequirements(Intake, Transfer);
   }
 
   // Called when the command is initially scheduled.
