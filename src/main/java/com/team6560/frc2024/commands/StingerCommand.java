@@ -30,7 +30,7 @@ public class StingerCommand extends Command {
   private final Controls controls;
 
   private boolean stingerAutoMoving;
-  private boolean shooterStingerAligned = false, correctShooterRpm = false;
+  private boolean isDoneTransfer = true, shooterStingerAligned = false, correctShooterRpm = false, maxTransferSensorReached = false, transferHasNote = false;
   private boolean stingerToIntakePos = false;
 
 
@@ -91,8 +91,10 @@ public class StingerCommand extends Command {
   }
 
   public void autoTransferToShooter() { 
-    if (!stinger.stingerRollerHasNote() || transfer.isInProximity()) return;
+    if (transfer.isInProximity() && isDoneTransfer) return;
     else {
+      isDoneTransfer = false;
+
       if (!shooterStingerAligned) {
         setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
       }
@@ -110,18 +112,73 @@ public class StingerCommand extends Command {
             correctShooterRpm = true;
           }
 
-      if (shooterStingerAligned && correctShooterRpm) {
-        stinger.setRoller(-10);
-        transfer.setSpeed(10);
+      if (shooterStingerAligned && correctShooterRpm && !transferHasNote) {
+        stinger.setRoller(-1);
+        transfer.setSpeed(1);
+
+        if (transfer.getTransferSensorValue() > 460) maxTransferSensorReached = true;
+        if (maxTransferSensorReached && transfer.getTransferSensorValue() < 210) transferHasNote = true;
+          
       }
 
-      if (shooterStingerAligned && correctShooterRpm && transfer.isInProximity()) {
+      if (shooterStingerAligned && correctShooterRpm && transferHasNote) {
         transfer.setSpeed(0);
         shooter.setTargetRPM(0);
         stinger.setRoller(0);
 
+        setBothPosPresets(StingerConfigs.STOW);
+
         shooterStingerAligned = false;
         correctShooterRpm = false;
+        maxTransferSensorReached = false;
+        transferHasNote = false;
+        isDoneTransfer = true;
+      }
+    }
+  }
+
+  public void autoTransferFromShooter() {
+    if (stinger.stingerRollerHasNote() && isDoneTransfer) return;
+
+    else {
+      isDoneTransfer = false;
+
+      if (!shooterStingerAligned) {
+        setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
+      }
+
+      if (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
+            && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
+        shooterStingerAligned = true;
+      }
+
+      if (shooterStingerAligned && !correctShooterRpm) {
+        shooter.setTargetRPM(10); //placeholder value
+      }
+
+      if (shooterStingerAligned && shooter.isReadyManualAim()) {
+        correctShooterRpm = true;
+      }
+
+      if (shooterStingerAligned && correctShooterRpm && !transferHasNote) {
+        stinger.setRoller(1);
+        transfer.setSpeed(-1);
+
+        if (stinger.stingerRollerHasNote()) transferHasNote = true;
+      }
+
+      if (shooterStingerAligned && correctShooterRpm && transferHasNote) {
+        transfer.setSpeed(0);
+        shooter.setTargetRPM(0);
+        stinger.setRoller(0);
+
+        setBothPosPresets(StingerConfigs.STOW);
+
+        shooterStingerAligned = false;
+        correctShooterRpm = false;
+        maxTransferSensorReached = false;
+        transferHasNote = false;
+        isDoneTransfer = true;
       }
     }
   }
@@ -136,12 +193,6 @@ public class StingerCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    if (transfer.isInProximity() || shooter.isReadyManualAim()) { //if there is a note in robot, stinger moves out of the way
-      setBothPosPresets(StingerConfigs.STOW);
-      stinger.setRoller(0);
-      return;
-    }
 
     if (controls.manualStingerIntakePos()) 
       setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
