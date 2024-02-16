@@ -37,7 +37,7 @@ public class ShooterConfigMap {
 
     private List<Point> shooterConfigs = new ArrayList<Point>();
 
-    public Pair<Double, Double> get(double distance) {
+    public double[] get(double distance) {
         int highDist = 0, lowDist = 0;
 
         for (int i = 0; i < shooterConfigs.size(); i++) 
@@ -55,7 +55,7 @@ public class ShooterConfigMap {
         double resRPM = (rpmDiff * highActualDistDiff)/highLowDistDiff + shooterConfigs.get(lowDist).getRPM();
         double resAngle = (angleDiff * highActualDistDiff)/highLowDistDiff + shooterConfigs.get(lowDist).getRPM();
 
-        return new Pair<Double,Double>(resRPM, resAngle);
+        return new double[] {resRPM, resAngle};
     }
 
     public void add(Point... points) {

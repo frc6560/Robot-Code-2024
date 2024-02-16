@@ -8,7 +8,7 @@ import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Limelight;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
+import com.team6560.frc2024.Constants.ShooterConfigs;
 import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.Constants.CandleColorModes;
 import com.team6560.frc2024.subsystems.LightWorkNoReaction;
@@ -56,6 +56,12 @@ public class ShooterCommand extends Command {
   public void initialize() {
     Shooter.setTargetRPM(0);
     // manualMode = true; //change later
+  }
+
+  public void autoShooterAim() {
+     double[] shooterData = ShooterConfigs.shooterMap.get(limelight.getDistance());
+     Shooter.setTargetRPM(shooterData[1]);
+     Shooter.setTargetAngle(shooterData[2]);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

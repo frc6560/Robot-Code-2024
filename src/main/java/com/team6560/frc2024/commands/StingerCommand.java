@@ -29,7 +29,9 @@ public class StingerCommand extends Command {
   private final Transfer transfer;
   private final Controls controls;
 
+  private boolean stingerMoving;
   private boolean shooterStingerAligned = false, correctShooterRpm = false;
+  private boolean stingerToIntakePos = false;
 
 
 
@@ -60,36 +62,68 @@ public class StingerCommand extends Command {
     return (!transfer.isInProximity() && stinger.stingerRollerHasNote());
   }
 
-  public void autoTransferToShooter() { 
-    if (!shooterStingerAligned) {
-      setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-    }
-
-    if (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
-          && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
-        shooterStingerAligned = true;
-      }
-
-    if (shooterStingerAligned && !correctShooterRpm) {
-        shooter.setTargetRPM(10); //placeholder value
-    }
-
-    if (shooterStingerAligned && shooter.isReadyManualAim()) {
-          correctShooterRpm = true;
+  public void autoIntakeHumanStation() {
+    if (isAutoTransferReady()) 
+      autoTransferToShooter();
+    else if (transfer.isInProximity()) 
+      return;
+    else {
+      if (!stingerToIntakePos)
+        setElevatorPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
+      
+      if (!stingerToIntakePos 
+          && Math.abs(stinger.getAngle() - StingerConfigs.HUMAN_STATION_INTAKE.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
+          && Math.abs(stinger.getExtension() - StingerConfigs.HUMAN_STATION_INTAKE.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
+          
+          stingerToIntakePos = true;
         }
 
-    if (shooterStingerAligned && correctShooterRpm) {
-      stinger.setRoller(-10);
-      transfer.setSpeed(10);
+      if (stingerToIntakePos) {
+        stinger.setRoller(10); //placeholder value
+      }
+
+      if (stingerToIntakePos && stinger.stingerRollerHasNote()) {
+        stinger.setRoller(0);
+
+        stingerToIntakePos = false;
+      }
     }
+  }
 
-    if (shooterStingerAligned && correctShooterRpm && transfer.isInProximity()) {
-      transfer.setSpeed(0);
-      shooter.setTargetRPM(0);
-      stinger.setRoller(0);
+  public void autoTransferToShooter() { 
+    if (isAutoTransferReady() || transfer.isInProximity()) return;
 
-      shooterStingerAligned = false;
-      correctShooterRpm = false;
+    else {
+      if (!shooterStingerAligned) {
+        setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
+      }
+
+      if (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
+            && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
+          shooterStingerAligned = true;
+        }
+
+      if (shooterStingerAligned && !correctShooterRpm) {
+          shooter.setTargetRPM(10); //placeholder value
+      }
+
+      if (shooterStingerAligned && shooter.isReadyManualAim()) {
+            correctShooterRpm = true;
+          }
+
+      if (shooterStingerAligned && correctShooterRpm) {
+        stinger.setRoller(-10);
+        transfer.setSpeed(10);
+      }
+
+      if (shooterStingerAligned && correctShooterRpm && transfer.isInProximity()) {
+        transfer.setSpeed(0);
+        shooter.setTargetRPM(0);
+        stinger.setRoller(0);
+
+        shooterStingerAligned = false;
+        correctShooterRpm = false;
+      }
     }
   }
 
