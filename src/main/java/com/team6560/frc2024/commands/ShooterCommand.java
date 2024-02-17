@@ -71,7 +71,7 @@ public class ShooterCommand extends Command {
       double dist = limelight.getDistance();
 
       if(controls.getSafeAim()){
-        shooter.setArcOutput(0.8);
+        shooter.setArcOutput(0.2);
         shooter.setRPM(6000);
 
       } else {
