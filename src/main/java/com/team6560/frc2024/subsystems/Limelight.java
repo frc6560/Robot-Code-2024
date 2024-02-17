@@ -97,7 +97,7 @@ public class Limelight extends SubsystemBase {
     return ntID.getDouble(0.0);
   }
 
-  public double getDistance() {
+  public double getSpeakerDistance() {
     if (!hasTarget())
       return 0.0;
     
