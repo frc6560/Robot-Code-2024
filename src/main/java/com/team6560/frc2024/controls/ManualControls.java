@@ -175,6 +175,8 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     return xbox.getBButtonPressed();
   }
 
+
+  /*CLIMB */
   @Override
   public double getClimbControls() {
     return xbox.getRightY(); 
@@ -193,7 +195,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public boolean manualStingerShooterTransfer() {
-    return controlStation.getBButtonPressed();
+    return controlStation.getAButtonPressed();
   }
 
   @Override

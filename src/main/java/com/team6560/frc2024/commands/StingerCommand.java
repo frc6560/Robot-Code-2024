@@ -16,6 +16,10 @@ public class StingerCommand extends Command {
   /** Creates a new StingerCommand. */
 
   public static interface Controls {
+    // boolean doAutoIntakeHumanStation();
+    // boolean doAutoTransferToShooter();
+    // boolean doAutoTransferFromShooter();
+
     double manualElevatorVelControl();
     double manualStingerAngleControl();
 
@@ -63,9 +67,7 @@ public class StingerCommand extends Command {
   }
 
   public void autoIntakeHumanStation() {
-    if (isAutoTransferReady()) 
-      autoTransferToShooter();
-    else if (transfer.isInProximity()) 
+    if (isAutoTransferReady() || transfer.isInProximity()) 
       return;
     else {
       if (!stingerToIntakePos)
@@ -195,20 +197,14 @@ public class StingerCommand extends Command {
   @Override
   public void execute() {
 
+
+
     if (controls.manualStingerIntakePos()) 
       setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
     else if (controls.manualStingerShooterTransfer()) 
       setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
     else if (controls.manualStow()) 
       setBothPosPresets(StingerConfigs.STOW);
-
-
-
-    // if (controls.manualStingerIntakePos()) 
-    //   setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
-    // else if (controls.manualStingerShooterTransfer()) 
-    //   setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-    // else setBothPosPresets(StingerConfigs.STOW);
 
     if (!controls.manualStow() && (controls.manualStingerIntakePos() || controls.manualStingerShooterTransfer()))
       stinger.setRoller(10.0 * (controls.manualStingerIntakePos() ? 1.0 : -1.0));

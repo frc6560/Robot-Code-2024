@@ -15,15 +15,13 @@ import com.team6560.frc2024.subsystems.LightWorkNoReaction;
 public class ShooterCommand extends Command {
   /** Creates a new ShooterCommand. */
   public static interface Controls {
+
     boolean getManualShootShooter();
-
     boolean aButtonSetManualMode();
-
     boolean setStowPos();
 
     // boolean manualMode();
     double getManualAim();
-
     double getManualShooterSpeed();
   }
 
@@ -57,10 +55,10 @@ public class ShooterCommand extends Command {
     // manualMode = true; //change later
   }
 
-  public void autoShooterAim() {
-     double[] shooterData = ShooterConfigs.shooterMap.get(limelight.getDistance());
-     Shooter.setTargetRPM(shooterData[1]);
-     Shooter.setTargetAngle(shooterData[2]);
+  public double[] autoShooterAim() {
+    
+    return ShooterConfigs.shooterMap.getRPMandAngle(limelight.getDistance());
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -72,6 +70,7 @@ public class ShooterCommand extends Command {
     } else if (controls.aButtonSetManualMode()) {
       manualMode = !manualMode;
     }
+
     if (manualMode) {
       if (controls.setStowPos()) {
         Shooter.setStowPos();
@@ -84,8 +83,17 @@ public class ShooterCommand extends Command {
       }
     } else {
       Light.setColorMode(CandleColorModes.SHOOT_MODE);
-      if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
-        Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
+      if (limelight.hasTarget()){
+        double[] shooterAim = autoShooterAim();
+
+        if (shooterAim.equals(null)) ;
+        else {
+          Shooter.setTargetRPM(shooterAim[1]);
+          Shooter.setTargetAngle(shooterAim[2]);
+          if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
+            Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
+          }
+        }
       }
     }
 
