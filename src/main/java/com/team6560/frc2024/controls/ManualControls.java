@@ -121,22 +121,22 @@ public class ManualControls implements DriveCommand.Controls {
 
   @Override
   public double driveX() {
-    return - modifyAxis(xbox.getLeftY() * speed.get());
+    return modifyAxis(xbox.getLeftY() * speed.get());
   }
 
   @Override
   public double driveY() {
-    return - modifyAxis(xbox.getLeftX() * speed.get());
+    return modifyAxis(xbox.getLeftX() * speed.get());
   }
 
   @Override
   public double driveRotationX() {
-    return -modifyAxis(xbox.getRightX() * turnSpeed.get());
+    return modifyAxis(xbox.getRightX() * turnSpeed.get());
   }
 
   @Override
   public double driveRotationY() {
-    return -modifyAxis(xbox.getRightY() * turnSpeed.get());
+    return modifyAxis(xbox.getRightY() * turnSpeed.get());
   }
 
   @Override

@@ -17,7 +17,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
-
 public class ShooterCommand extends Command {
   final Shooter shooter;
   final ManualControls controls;
@@ -72,7 +71,7 @@ public class ShooterCommand extends Command {
       double dist = limelight.getDistance();
 
       if(controls.getSafeAim()){
-        shooter.setArcOutput(1);
+        shooter.setArcOutput(0.8);
         shooter.setRPM(6000);
 
       } else {
@@ -87,7 +86,8 @@ public class ShooterCommand extends Command {
       }
 
     } else if (controls.getRunIntake()){
-      shooter.setArcOutput(-1);
+      shooter.setArcOutput(-0.3);
+      shooter.setRPM(0.0);
       
       if(!shooter.getTransferSensorTriggered()){
         shooter.setTransfer(Constants.TRANSFER_INTAKE_OUTPUT);

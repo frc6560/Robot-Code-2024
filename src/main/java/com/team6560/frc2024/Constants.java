@@ -41,7 +41,7 @@ public final class Constants {
    *
    * Should be measured from center to center.
    */
-  public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57785;
+  public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57785; 
   /**
    * The front-to-back distance between the drivetrain wheels.
    *
@@ -49,25 +49,27 @@ public final class Constants {
    */
   public static final double DRIVETRAIN_WHEELBASE_METERS = 0.57785;
 
-  public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 8;
-  public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 10;
-  public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 4;
-  public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(342.685546875);
+  
 
-  public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 5;
-  public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 9;
-  public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 1;
-  public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(258.310546875);
+  public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 6;
+  public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 11;
+  public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2;
+  public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(22.04);
 
-  public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 7;
-  public static final int BACK_LEFT_MODULE_STEER_MOTOR = 12;
-  public static final int BACK_LEFT_MODULE_STEER_ENCODER = 3;
-  public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(137.021484375);
+  public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 7;
+  public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 12;
+  public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 3;
+  public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(289.20);
 
-  public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 6;
-  public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 11;
-  public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 2;
-  public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(185.2734375);
+  public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5;
+  public static final int BACK_LEFT_MODULE_STEER_MOTOR = 9;
+  public static final int BACK_LEFT_MODULE_STEER_ENCODER = 1;
+  public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(140.58);
+
+  public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 8;
+  public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 10;
+  public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 4;
+  public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(124.18);
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
       SdsModuleConfigurations.MK4I_L2.getDriveReduction() *
@@ -142,7 +144,7 @@ public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 1;
 
 public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1;
 
-public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 200;
+public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 150;
 
 
 
@@ -173,7 +175,7 @@ public static final double TRAP_HANDOFF_EXTENTION = 4.1;
 
 
 
-public static final double TRANSFER_INTAKE_OUTPUT = 0.8;
+public static final double TRANSFER_INTAKE_OUTPUT = 0.3;
 
 
 public static final double SHOOTER_GROUND_INTAKE_ANGLE = 0;
