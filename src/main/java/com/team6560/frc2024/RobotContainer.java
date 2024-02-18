@@ -56,9 +56,9 @@ public class RobotContainer {
         private final IntakeCommand intakeCommand;
         private final StingerCommand stingerCommand;
         private final ShooterCommand shooterCommand;
-       // private final AutoIntakeCommand autoIntakeCommand;
-       // private final AutoShooterCommand autoShooterCommand;
-      //  private final AutoTransferCommand autoTransferCommand;
+        // private final AutoIntakeCommand autoIntakeCommand;
+        // private final AutoShooterCommand autoShooterCommand;
+        // private final AutoTransferCommand autoTransferCommand;
         // private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
         private final ClimbCommand climbCommand;
       
@@ -84,9 +84,9 @@ public class RobotContainer {
                 intakeCommand = new IntakeCommand(intake, transfer, manualControls);
                 stingerCommand = new StingerCommand(stinger, shooter, transfer, manualControls);
                 shooterCommand = new ShooterCommand(shooter, limelight, transfer, lightWorkNoReaction, manualControls);
-              //  autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
-              //  autoShooterCommand = new AutoShooterCommand(shooter);
-              //  autoTransferCommand = new AutoTransferCommand(transfer);
+                // autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
+                // autoShooterCommand = new AutoShooterCommand(shooter);
+                // autoTransferCommand = new AutoTransferCommand(transfer);
                 // lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, manualControls);
                 climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
 
@@ -98,9 +98,9 @@ public class RobotContainer {
                 climb.setDefaultCommand(climbCommand);
 
                 NamedCommands.registerCommand("print hello", Commands.print("hello"));
-        //        NamedCommands.registerCommand("startShooter", autoShooterCommand);
-        //        NamedCommands.registerCommand("startIntake", autoIntakeCommand);
-        //        NamedCommands.registerCommand("shoot", autoTransferCommand.withTimeout(0.5));
+                // NamedCommands.registerCommand("startShooter", autoShooterCommand);
+                // NamedCommands.registerCommand("startIntake", autoIntakeCommand);
+                // NamedCommands.registerCommand("shoot", autoTransferCommand.withTimeout(0.5));
 
                 configureBindings();
                 autoChooser = AutoBuilder.buildAutoChooser();
