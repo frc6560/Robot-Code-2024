@@ -20,6 +20,8 @@ public class StingerCommand extends Command {
     // boolean doAutoTransferToShooter();
     // boolean doAutoTransferFromShooter();
 
+    boolean isStingerAutoMode();
+
     double manualElevatorVelControl();
     double manualStingerAngleControl();
 
@@ -32,6 +34,8 @@ public class StingerCommand extends Command {
   private final Shooter shooter;
   private final Transfer transfer;
   private final Controls controls;
+
+  private boolean autoMode;
 
   
   private boolean isDoneTransfer = true, shooterStingerAligned = false, correctShooterRpm = false, maxTransferSensorReached = false, transferHasNote = false;
@@ -195,20 +199,29 @@ public class StingerCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute() { 
+    if (controls.isStingerAutoMode()) autoMode = !autoMode;
 
+    if (autoMode) {
+      
+      if (controls.manualStingerIntakePos()) 
+        autoIntakeHumanStation();
+      else if (controls.manualStingerShooterTransfer()) 
+        autoTransferToShooter();
+    } 
+    
+    else {
+      if (controls.manualStingerIntakePos()) 
+        setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
+      else if (controls.manualStingerShooterTransfer()) 
+        setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
+      else if (controls.manualStow()) 
+        setBothPosPresets(StingerConfigs.STOW);
 
-
-    if (controls.manualStingerIntakePos()) 
-      setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
-    else if (controls.manualStingerShooterTransfer()) 
-      setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-    else if (controls.manualStow()) 
-      setBothPosPresets(StingerConfigs.STOW);
-
-    if (!controls.manualStow() && (controls.manualStingerIntakePos() || controls.manualStingerShooterTransfer()))
-      stinger.setRoller(10.0 * (controls.manualStingerIntakePos() ? 1.0 : -1.0));
-    else stinger.setRoller(0);
+      if (!controls.manualStow() && (controls.manualStingerIntakePos() || controls.manualStingerShooterTransfer()))
+        stinger.setRoller((controls.manualStingerIntakePos() ? 1.0 : -1.0));
+      else stinger.setRoller(0);  
+    }
   }
 
   // Called once the command ends or is interrupted.

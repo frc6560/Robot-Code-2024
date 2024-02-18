@@ -112,7 +112,7 @@ public class Limelight extends SubsystemBase {
     }
 
 
-    return heightDifference/(Math.tan(AprilTagConstants.LIMELIGHT_ANGLE_DEGREES + getVerticalAngle()));
+    return heightDifference/(Math.tan((AprilTagConstants.LIMELIGHT_ANGLE_DEGREES + getVerticalAngle()) * Math.PI/180.0));
   }
 
   public Pose2d getTargetPose() {
