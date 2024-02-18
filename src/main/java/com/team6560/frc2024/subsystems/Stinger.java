@@ -9,8 +9,10 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 // import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkAnalogSensor;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkAnalogSensor.Mode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team6560.frc2024.Constants;
@@ -18,11 +20,11 @@ import com.team6560.frc2024.Constants.StingerConstants;;
 
 public class Stinger extends SubsystemBase {
 
-  final CANSparkMax wristMotor;
+  final CANSparkMax wristMotor; 
   final TalonFX elevatorMotor;
   final CANSparkMax rollerMotor;
 
-  final SparkLimitSwitch rollerLimitSwitch;
+  final SparkAnalogSensor rollerLimitSwitch;
 
   final int MAX_ROTATION = 100;
   final int MIN_ROTATION = 0;
@@ -43,7 +45,7 @@ public class Stinger extends SubsystemBase {
 
     elevatorMotor.getConfigurator().apply(elevatorPIDConfig);
 
-    rollerLimitSwitch = rollerMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+    rollerLimitSwitch = rollerMotor.getAnalog(Mode.kAbsolute);
   }
 
   @Override
@@ -106,7 +108,7 @@ public class Stinger extends SubsystemBase {
   }
 
   public boolean stingerRollerHasNote() {
-    return rollerLimitSwitch.isPressed();
+    return rollerLimitSwitch.getVoltage() > 1.0;
   }
 
 }
