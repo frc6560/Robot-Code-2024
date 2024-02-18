@@ -83,21 +83,21 @@ public class Shooter extends SubsystemBase {
     m_arc = new TalonFX(ShooterConstants.ARC_MOTOR_ID);
     m_arc.getConfigurator().apply(new TalonFXConfiguration());
 
-    // private final PositionVoltage m_voltagePosition = new PositionVoltage(0, 0, true, 0, 0, false, false, false);
+    // private final PositionVoltage m_voltagePosition = new PositionVoltage(0, 0, true, 0, 0, false, false, false); 
 
     var arcPIDConfig = new Slot0Configs();
     arcPIDConfig.kS = 0;
     arcPIDConfig.kV = 0;
-    arcPIDConfig.kP = 0.1;
+    arcPIDConfig.kP = 0.7;
     arcPIDConfig.kD = 0;
-    arcPIDConfig.kI = 0.0001;
+    arcPIDConfig.kI = 0.051;
 
     m_arc.getConfigurator().apply(arcPIDConfig);
 
     m_request = new PositionVoltage(0).withSlot(0);
 
     ntDispTab("Shooter")
-      .add("Current RPM", this::getShooterRPM)
+      .add("Current RPS", this::getShooterRPM)
       .add("Current Arc Angle", this::getArcAngle);
 
     targetRPM.setDouble(0.0);
@@ -107,8 +107,8 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_shooterLeft.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT);
-    m_shooterRight.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT);
+    m_shooterLeft.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT / 95.0);
+    m_shooterRight.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT / 95.0);
     m_arc.setControl(m_request.withPosition(targetAngle.getDouble(0.0)));
   }
 

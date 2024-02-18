@@ -179,7 +179,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   /*CLIMB */
   @Override
   public double getClimbControls() {
-    return xbox.getRightY(); 
+    return controlStation.getRightY(); 
   }
 
   /* STINGER */
