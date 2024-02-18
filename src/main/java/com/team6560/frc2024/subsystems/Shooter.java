@@ -6,6 +6,7 @@ package com.team6560.frc2024.subsystems;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
 // import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -34,6 +35,8 @@ public class Shooter extends SubsystemBase {
   // private final VelocityVoltage m_shooterRequest;
 
   private final TalonFX m_arc;
+
+  final PositionVoltage m_request;
   
   // private double targetRPM;
   // private double targetAngle;
@@ -89,7 +92,9 @@ public class Shooter extends SubsystemBase {
     arcPIDConfig.kD = 0;
     arcPIDConfig.kI = 0.0001;
 
-    
+    m_arc.getConfigurator().apply(arcPIDConfig);
+
+    m_request = new PositionVoltage(0).withSlot(0);
 
     ntDispTab("Shooter")
       .add("Current RPM", this::getShooterRPM)
@@ -104,7 +109,7 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     m_shooterLeft.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT);
     m_shooterRight.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT);
-    m_arc.setPosition(targetAngle.getDouble(0.0));
+    m_arc.setControl(m_request.withPosition(targetAngle.getDouble(0.0)));
   }
 
   public boolean isReadyAutoAim() {
