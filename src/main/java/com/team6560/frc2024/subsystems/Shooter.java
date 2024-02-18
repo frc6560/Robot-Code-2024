@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
@@ -16,6 +17,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -55,11 +57,12 @@ public class Shooter extends SubsystemBase {
     .add("Current Draw Shooter", this::getCurrentDraw)
     .add("Vertical Position Shooter", this::getShooterArcPosition)
     .add("Vertical Angle Shooter", this::getShooterArcAngleDegrees)
+    .add("Transfer Triggered", this::getTransferSensorTriggered)
     .add("Feeder Proximity Sensor", ()->colorSensor.getProximity());
   }
 
   private void setupMotors(){
-    arcMotor.setNeutralMode(NeutralModeValue.Coast);
+    arcMotor.setNeutralMode(NeutralModeValue.Brake);
     arcMotor.setInverted(false);
     
     // in init function
@@ -82,11 +85,23 @@ public class Shooter extends SubsystemBase {
 
     arcMotor.getConfigurator().apply(arcConfigs);
 
+    TalonFX[] shooterMotors = new TalonFX[]{shooterMotorLeft,shooterMotorRight};
 
-    shooterMotorLeft.setNeutralMode(NeutralModeValue.Coast);
+    for (TalonFX motor: shooterMotors){
+      motor.setNeutralMode(NeutralModeValue.Coast);
+
+      // in init function, set slot 0 gains
+      var slot0Configs = new Slot0Configs();
+      slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
+      slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+      slot0Configs.kP = 0.11; // An error of 1 rps results in 0.11 V output
+      slot0Configs.kI = 0; // no output for integrated error
+      slot0Configs.kD = 0; // no output for error derivative
+
+      motor.getConfigurator().apply(slot0Configs);
+    }
+    
     shooterMotorLeft.setInverted(false);
-
-    shooterMotorRight.setNeutralMode(NeutralModeValue.Coast);
     shooterMotorRight.setInverted(true);
 
     feedMotor.restoreFactoryDefaults();
@@ -100,10 +115,13 @@ public class Shooter extends SubsystemBase {
 
   public void setRPM(double speed){
     targetRPM = speed;
-    speed /=  Constants.FALCON_MAX_RPM;
-    
-    shooterMotorRight.set(speed); // TODO: Fix this to pid controlled
-    shooterMotorLeft.set(speed);
+    speed = speed / 60;
+
+
+    final VelocityVoltage m_request = new VelocityVoltage(speed).withSlot(0);
+
+    shooterMotorRight.setControl(m_request);
+    shooterMotorLeft.setControl(m_request);
   }
 
   public void setArcPosition(double position){    

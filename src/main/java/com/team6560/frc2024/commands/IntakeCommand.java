@@ -7,15 +7,18 @@ package com.team6560.frc2024.commands;
 import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Intake;
+import com.team6560.frc2024.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class IntakeCommand extends Command {
   final Intake intake;
+  final Shooter shooter;
   final ManualControls controls;
 
-  public IntakeCommand(Intake intake, ManualControls controls) {
+  public IntakeCommand(Intake intake, Shooter shooter , ManualControls controls) {
     this.intake = intake;
+    this.shooter = shooter;
     this.controls = controls;
 
     addRequirements(intake);
@@ -29,7 +32,7 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.getRunIntake()){
+    if (controls.getRunIntake() && shooter.getShooterArcPosition() < Constants.SHOOTER_ARC_ACCEPTABLE_INTACE_POS){
       intake.setIntakeFeed(Constants.INTAKE_FEED_RATE);
       
     } else {

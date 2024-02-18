@@ -53,6 +53,7 @@ public class Limelight extends SubsystemBase {
     .add("Vertical Angle", this::getVerticalAngle)
     .add("Has Target", this::hasTarget)
     .add("target ID", this::getCurrentApriltagId)
+    .add("Distance", this::getDistance)
     .add("taret area", this::getTargetArea);
 
     SmartDashboard.putData("aprilTagField", aprilTagField);
@@ -82,15 +83,7 @@ public class Limelight extends SubsystemBase {
   public double getDistance(){
     if (!hasTarget()) return 0.0;
 
-    double a = Constants.LIMELIGHT_ANGLE;
-    double lh = Constants.LIMELIGHT_HEIGHT;
-    double th = Constants.APRILTAG_7_HEIGHT;
-
-    double h = lh - th;
-
-    double theta = a + getVerticalAngle();
-
-    return h / Math.tan(theta);
+    return getVerticalAngle() * Constants.LIMELIGHT_EQ_SLOPE + Constants.LIMELIGHT_EQ_Y_INT;
   }
 
 

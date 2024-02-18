@@ -109,22 +109,24 @@ public static final double INTAKE_REVERSE_RATE = -0.3;
 
 public static final double TRANSFER_FEED_RATE = 1;
 
-public static final double TRANSFER_INTAKE_RATE = 0.3;
+public static final double TRANSFER_INTAKE_RATE = 0.4;
 
 
-public static final double SHOOTER_GROUND_INTAKE_POSITION = 0;
+public static final double SHOOTER_GROUND_INTAKE_POSITION = 5;
 
-public static final double SHOOTER_WALL_INTAKE_POSITION = 66.5;
+public static final double SHOOTER_WALL_INTAKE_POSITION = 200;
 
-public static final double SHOOTER_SUBWOOFER_POSITION = 0;
+public static final double SHOOTER_SUBWOOFER_POSITION = 45;
 
-public static final double SHOOTER_SUBWOOFER_RPM = 6000;
+public static final double SHOOTER_SUBWOOFER_RPM = 5000;
 
 public static final double TRAP_CLEARANCE_ANGLE = 0;
 
 public static final double TRAP_WALL_EXTENTION = 8.1;
 
 public static final double TRAP_HANDOFF_EXTENTION = 4.1;
+
+public static final double SHOOTER_ARC_ACCEPTABLE_INTACE_POS = 20;
 
 
 public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 100;
@@ -157,7 +159,11 @@ public static final double LIMELIGHT_X = (12.03) * METERS_PER_INCH; // offset fr
 
 public static final double LIMELIGHT_Y = (12.97) * METERS_PER_INCH;
 
-public static final double APRILTAG_7_HEIGHT = 48;
+public static final double APRILTAG_7_HEIGHT = 57.125;
+
+public static final double LIMELIGHT_EQ_SLOPE = -(3.5179 - 1.9177)/(10);
+
+public static final double LIMELIGHT_EQ_Y_INT = 3.5179;
 
 
 
@@ -188,6 +194,7 @@ public static final int TRAP_ELEVATOR_MOTOR = 19;
 public static final int TRAP_FEED_MOTOR = 21;
 
 public static final int TRAP_LIMIT_SWITCH_ID = 0;
+
 
 
 

@@ -158,16 +158,16 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   public boolean getAim(){
-    // return controlStation.getRightBumper();
-    return false;
-  }
-
-  public boolean getShoot(){
-    return controlStation.getRightTriggerAxis() > 0.2;
+    return controlStation.getRightBumper();
+    // return false;
   }
   
   public boolean getSafeAim(){
     return controlStation.getLeftTriggerAxis() > 0.2;
+  }
+
+  public boolean getShoot(){
+    return controlStation.getRightTriggerAxis() > 0.2;
   }
 
   // public double getManualArc(){
@@ -204,4 +204,16 @@ public class ManualControls implements DriveCommand.Controls {
   //   double speed = 0.2;
   //   return controlStation.getXButton() ? speed : controlStation.getAButton() ? -speed : 0;
   // }
+
+
+  
+
+  // ------------------------------ CLIMB ------------------------------ \\
+
+  public double getClimb(){
+    double r = xbox.getRightTriggerAxis();
+    double l = xbox.getLeftTriggerAxis();
+    return r > 0.1 ? r : l > 0.1 ? -l : 0;
+
+  }
 }

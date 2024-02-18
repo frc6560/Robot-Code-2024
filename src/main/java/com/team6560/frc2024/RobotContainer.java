@@ -6,6 +6,7 @@ package com.team6560.frc2024;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.team6560.frc2024.commands.ClimbCommand;
 
 // import java.io.File;
 
@@ -14,6 +15,7 @@ import com.team6560.frc2024.commands.IntakeCommand;
 import com.team6560.frc2024.commands.ShooterCommand;
 import com.team6560.frc2024.commands.TrapCommand;
 import com.team6560.frc2024.controls.ManualControls;
+import com.team6560.frc2024.subsystems.Climb;
 import com.team6560.frc2024.subsystems.Drivetrain;
 import com.team6560.frc2024.subsystems.Intake;
 import com.team6560.frc2024.subsystems.Limelight;
@@ -33,12 +35,14 @@ public class RobotContainer {
         final Shooter shooter;
         final Intake intake;
         final Trap trap;
+        final Climb climb;
 
         final Drivetrain drivetrain;
         private final DriveCommand driveCommand;
         private final ShooterCommand ShooterCommand;
         private final IntakeCommand intakeCommand;
         private final TrapCommand trapCommand;
+        private final ClimbCommand climbCommand;
         
 
         private final ManualControls manualControls = new ManualControls(new XboxController(0), new XboxController(1));
@@ -54,18 +58,21 @@ public class RobotContainer {
                 shooter = new Shooter(limelight, trap);
                 intake = new Intake();
                 drivetrain = new Drivetrain();
+                climb = new Climb();
 
 
                 driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
                 ShooterCommand = new ShooterCommand(shooter, trap, limelight, manualControls);
-                intakeCommand = new IntakeCommand(intake, manualControls);
+                intakeCommand = new IntakeCommand(intake, shooter, manualControls);
                 trapCommand = new TrapCommand(trap, manualControls);
+                climbCommand = new ClimbCommand(climb, manualControls);
 
 
                 drivetrain.setDefaultCommand(driveCommand);
                 shooter.setDefaultCommand(ShooterCommand);
                 intake.setDefaultCommand(intakeCommand);
                 trap.setDefaultCommand(trapCommand);
+                climb.setDefaultCommand(climbCommand);
 
                 configureBindings();
                 autoChooser = AutoBuilder.buildAutoChooser();

@@ -24,6 +24,8 @@ public class ShooterCommand extends Command {
   final Trap trap;
   final NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
   final NetworkTableEntry manualShooter;
+  final NetworkTableEntry shooterSetAngle;
+  final NetworkTableEntry shooterSetRPM;
 
   class AimTrajectory{
     double rpm;
@@ -53,11 +55,16 @@ public class ShooterCommand extends Command {
 
     addRequirements(shooter);
 
-    aimMap.put(0.0, new AimTrajectory(3000, 30));
-    aimMap.put(10.0, new AimTrajectory(6000, 60));
+    aimMap.put(0.0, new AimTrajectory(2000, 45));
+    aimMap.put(10.0, new AimTrajectory(5000, 20));
 
     manualShooter = ntTable.getEntry("Manual Arc");
     manualShooter.setBoolean(false);
+
+    shooterSetAngle = ntTable.getEntry("Go to Position");
+    shooterSetAngle.setDouble(0.0);
+    shooterSetRPM = ntTable.getEntry("Go to rpm");
+    shooterSetRPM.setDouble(0.0);
   }
 
   @Override
@@ -67,16 +74,20 @@ public class ShooterCommand extends Command {
 
   @Override
   public void execute() {
+
+    // shooter.setArcPosition(shooterSetAngle.getDouble(0.0));
+    // shooter.setRPM(shooterSetRPM.getDouble(0.0));
     if (controls.getSafeAim() || controls.getAim()){
-      double dist = limelight.getDistance();
+      double angle = limelight.getVerticalAngle();
 
       if(controls.getSafeAim()){
-        shooter.setArcOutput(0.2);
-        shooter.setRPM(Constants.SHOOTER_SUBWOOFER_RPM);
-
+        // shooter.setArcPosition(Constants.SHOOTER_SUBWOOFER_POSITION);
+        // shooter.setRPM(Constants.SHOOTER_SUBWOOFER_RPM);
+        shooter.setArcPosition(shooterSetAngle.getDouble(0.0));
+        shooter.setRPM(shooterSetRPM.getDouble(0.0));
       } else {
-        shooter.setArcOutput(0);
-        shooter.setRPM(getShootRPM(0));
+        shooter.setArcPosition(getShootAngle(angle));
+        shooter.setRPM(getShootRPM(angle));
       }
 
       if (controls.getShoot() && shooter.readyToShoot()){
@@ -86,7 +97,7 @@ public class ShooterCommand extends Command {
       }
 
     } else if (controls.getRunIntake()){
-      shooter.setArcOutput(-0.3);
+      shooter.setArcPosition(Constants.SHOOTER_GROUND_INTAKE_POSITION);
       shooter.setRPM(0.0);
       
       if(!shooter.getTransferSensorTriggered()){
@@ -95,9 +106,9 @@ public class ShooterCommand extends Command {
         shooter.setTransfer(0.0);
       }
     } else {
-      shooter.setRPM(0.0);
-      shooter.setArcOutput(0.0);
-      shooter.setTransfer(0.0);
+      // shooter.setRPM(0.0);
+      // shooter.setArcPosition(Constants.SHOOTER_GROUND_INTAKE_POSITION);
+      // shooter.setTransfer(0.0);
     }
 
   }
