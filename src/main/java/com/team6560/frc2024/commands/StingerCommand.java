@@ -115,7 +115,7 @@ public class StingerCommand extends Command {
           shooter.setTargetRPM(10); //placeholder value
       }
 
-      if (shooterStingerAligned && shooter.isReadyManualAim()) {
+      if (shooterStingerAligned && shooter.isReadyRPM()) {
             correctShooterRpm = true;
           }
 
@@ -163,7 +163,7 @@ public class StingerCommand extends Command {
         shooter.setTargetRPM(10); //placeholder value
       }
 
-      if (shooterStingerAligned && shooter.isReadyManualAim()) {
+      if (shooterStingerAligned && shooter.isReadyRPM()) {
         correctShooterRpm = true;
       }
 

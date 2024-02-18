@@ -10,6 +10,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 // import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 // import com.ctre.phoenix6.controls.PositionVoltage;
 // import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -36,7 +37,8 @@ public class Shooter extends SubsystemBase {
 
   private final TalonFX m_arc;
 
-  final PositionVoltage m_request;
+  private final PositionVoltage m_arcRequest;
+  private final VelocityVoltage m_shooterRequest;
   
   // private double targetRPM;
   // private double targetAngle;
@@ -79,6 +81,8 @@ public class Shooter extends SubsystemBase {
     m_shooterLeft.setInverted(false);
     m_shooterRight.setInverted(true);
 
+    m_shooterRequest = new VelocityVoltage(0.0).withSlot(0);
+
     //Arc Motor Config
     m_arc = new TalonFX(ShooterConstants.ARC_MOTOR_ID);
     m_arc.getConfigurator().apply(new TalonFXConfiguration());
@@ -94,7 +98,7 @@ public class Shooter extends SubsystemBase {
 
     m_arc.getConfigurator().apply(arcPIDConfig);
 
-    m_request = new PositionVoltage(0).withSlot(0);
+    m_arcRequest = new PositionVoltage(0).withSlot(0);
 
     ntDispTab("Shooter")
       .add("Current RPS", this::getShooterRPM)
@@ -107,19 +111,18 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_shooterLeft.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT / 95.0);
-    m_shooterRight.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT / 95.0);
-    m_arc.setControl(m_request.withPosition(targetAngle.getDouble(0.0)));
+    m_shooterLeft.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS));
+    m_arc.setControl(m_arcRequest.withPosition(targetAngle.getDouble(0.0)));
   }
 
-  public boolean isReadyAutoAim() {
+  public boolean isReadyRPMAndAngle() {
     if (getRPMDifference() < ShooterConstants.ACCEPTABLE_RPM_DIFF && getAngleDifference() < ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
       return true;
     }   
     return false;
   }
 
-  public boolean isReadyManualAim() {
+  public boolean isReadyRPM() {
     if (getRPMDifference() < ShooterConstants.ACCEPTABLE_RPM_DIFF) {
       return true;
     }   
@@ -139,7 +142,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterRPM() {
-    return m_shooterLeft.getRotorVelocity().getValueAsDouble() / ShooterConstants.RPM_PER_FALCON_UNIT * 95.0;
+    return m_shooterLeft.getRotorVelocity().getValueAsDouble() / ShooterConstants.RPM_TO_RPS;
   }
 
   public double getTargetRPM() {

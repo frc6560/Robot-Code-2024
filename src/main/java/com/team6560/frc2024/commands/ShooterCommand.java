@@ -12,17 +12,23 @@ import com.team6560.frc2024.Constants.ShooterConfigs;
 import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.Constants.CandleColorModes;
 import com.team6560.frc2024.subsystems.LightWorkNoReaction;
+
 public class ShooterCommand extends Command {
   /** Creates a new ShooterCommand. */
   public static interface Controls {
 
     boolean getManualShootShooter();
-    boolean aButtonSetManualMode();
+
+    boolean aButtonSetShootMode();
+
+    boolean aButtonSetShootModeReleased();
+
     boolean setStowPos();
 
     // boolean manualMode();
-    double getManualAim();
-    double getManualShooterSpeed();
+    // double getManualAim();
+
+    // double getManualShooterSpeed();
   }
 
   private final Shooter Shooter;
@@ -31,29 +37,28 @@ public class ShooterCommand extends Command {
   private final Transfer Transfer;
   private final LightWorkNoReaction Light;
 
-  // private final double IDLE_RPM = 60;
-
-  private boolean manualMode;
+  private final double IDLE_RPM = 60.0;
   // private boolean shooterAutoMoving;
 
-  public ShooterCommand(Shooter Shooter, Limelight limelight, Transfer Transfer, LightWorkNoReaction Light,  Controls controls) {
+  public ShooterCommand(Shooter Shooter, Limelight limelight, Transfer Transfer, LightWorkNoReaction Light,
+      Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Shooter = Shooter;
     this.limelight = limelight;
     this.Transfer = Transfer;
     this.controls = controls;
     this.Light = Light;
-    this.manualMode = true;
 
     addRequirements(Shooter, Transfer, Light);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   public double[] autoShooterAim() {
-    
+
     return ShooterConfigs.shooterMap.getRPMandAngle(limelight.getSpeakerDistance());
 
   }
@@ -61,39 +66,29 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.aButtonSetManualMode() && !manualMode) {
-      manualMode = !manualMode;
-      Light.setColorMode(CandleColorModes.NO_MODE);
-    } else if (controls.aButtonSetManualMode()) {
-      manualMode = !manualMode;
-    }
-
-    if (manualMode) {
-      if (controls.setStowPos()) {
-        Shooter.setStowPos();
-      } else {
-        // Shooter.setManualAim(controls.getManualAim());
-        // Shooter.setTargetRPM(controls.getManualShooterSpeed());
-        if (controls.getManualShootShooter() && Transfer.isInProximity() && Shooter.isReadyManualAim()) {
-        Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
-        }
-      }
-    } else {
+    if (controls.aButtonSetShootMode()) {
       Light.setColorMode(CandleColorModes.SHOOT_MODE);
-      if (limelight.hasTarget()){
-        double[] shooterAim = autoShooterAim();
-
-        if (shooterAim.equals(null)) ;
-        else {
-          // Shooter.setTargetRPM(shooterAim[1]);
-          // Shooter.setTargetAngle(shooterAim[2]);
-          if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
-            Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
-          }
-        }
+      if (controls.getManualShootShooter() && Shooter.isReadyRPMAndAngle()) {
+        Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
       }
+      // if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
+      //   Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
+      // }
+      if (limelight.hasTarget()) {
+        double[] shooterAim = autoShooterAim();
+        if (!shooterAim.equals(null)) {
+          Shooter.setTargetRPM(shooterAim[0]);
+          Shooter.setTargetAngle(shooterAim[1]);
+        }
+      } else {
+        Shooter.setTargetRPM(IDLE_RPM);
+      }
+    } else if (controls.aButtonSetShootModeReleased()) {
+      Light.setColorMode(CandleColorModes.NO_MODE);
+      Shooter.setStowPos();
+      Shooter.setTargetRPM(0.0);
+      Shooter.setTargetAngle(0.0);
     }
-
   }
 
   // Called once the command ends or is interrupted.

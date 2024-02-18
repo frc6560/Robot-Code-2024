@@ -155,19 +155,24 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     return xbox.getRightTriggerAxis() > 0.5;
   }
 
+  // @Override
+  // public double getManualAim() {
+  //   return controlStation.getRightY();
+  // }
+
+  // @Override
+  // public double getManualShooterSpeed() {
+  //   return controlStation.getRightX();
+  // }
+
   @Override
-  public double getManualAim() {
-    return controlStation.getRightY();
+  public boolean aButtonSetShootMode() {
+    return xbox.getAButton();
   }
 
   @Override
-  public double getManualShooterSpeed() {
-    return controlStation.getRightX();
-  }
-
-  @Override
-  public boolean aButtonSetManualMode() {
-    return xbox.getAButtonPressed();
+  public boolean aButtonSetShootModeReleased() {
+    return xbox.getAButtonReleased();
   }
 
   @Override
