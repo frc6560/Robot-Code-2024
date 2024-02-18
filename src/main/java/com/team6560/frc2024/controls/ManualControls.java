@@ -184,6 +184,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   /* STINGER */
   @Override
+  public boolean isStingerAutoMode() {
+    return controlStation.getXButton();
+  }
+
+  @Override
   public boolean manualStow() {
     return xbox.getBButtonPressed();
   }
@@ -272,6 +277,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   @Override
   public boolean driveResetGlobalPose() {
     return xbox.getBackButton();
+  }
+
+  @Override
+  public boolean isAutoAimOn() {
+    return xbox.getAButton();
   }
 
 }
