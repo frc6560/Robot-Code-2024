@@ -62,10 +62,6 @@ public class Climb extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setSpeed(double speed) {
-    rightClimbMotor.set(speed);
-  }
-
   public void setHeight(double targetPosRotation) {
     rightClimbMotorPID.setReference(targetPosRotation, ControlType.kPosition);
   }

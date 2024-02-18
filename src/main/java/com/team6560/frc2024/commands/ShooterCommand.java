@@ -19,9 +19,9 @@ public class ShooterCommand extends Command {
 
     boolean getManualShootShooter();
 
-    boolean aButtonSetShootMode();
+    boolean getSetShootMode();
 
-    boolean aButtonSetShootModeReleased();
+    boolean getSetShootModeReleased();
 
     boolean setStowPos();
 
@@ -66,7 +66,7 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.aButtonSetShootMode()) {
+    if (controls.getSetShootMode()) {
       Light.setColorMode(CandleColorModes.SHOOT_MODE);
       if (controls.getManualShootShooter() && Shooter.isReadyRPMAndAngle()) {
         Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
@@ -83,7 +83,7 @@ public class ShooterCommand extends Command {
       } else {
         Shooter.setTargetRPM(IDLE_RPM);
       }
-    } else if (controls.aButtonSetShootModeReleased()) {
+    } else if (controls.getSetShootModeReleased()) {
       Light.setColorMode(CandleColorModes.NO_MODE);
       Shooter.setStowPos();
       Shooter.setTargetRPM(0.0);

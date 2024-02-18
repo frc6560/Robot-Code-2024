@@ -131,22 +131,22 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   /* INTAKE */
   @Override
   public boolean getIntakeIn() {
-    return xbox.getRightBumper();
+    return controlStation.getRightBumper();
   }
 
   @Override
   public boolean getIntakeInReleased() {
-    return xbox.getRightBumperReleased();
+    return controlStation.getRightBumperReleased();
   }
 
   @Override
   public boolean getIntakeOut() {
-    return xbox.getLeftBumper();
+    return controlStation.getLeftBumper();
   }
   
   @Override
   public boolean getIntakeOutReleased() {
-    return xbox.getLeftBumperReleased();
+    return controlStation.getLeftBumperReleased();
   }
   
   /* SHOOTER */
@@ -155,24 +155,14 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     return xbox.getRightTriggerAxis() > 0.5;
   }
 
-  // @Override
-  // public double getManualAim() {
-  //   return controlStation.getRightY();
-  // }
-
-  // @Override
-  // public double getManualShooterSpeed() {
-  //   return controlStation.getRightX();
-  // }
-
   @Override
-  public boolean aButtonSetShootMode() {
-    return xbox.getAButton();
+  public boolean getSetShootMode() {
+    return controlStation.getBButton();
   }
 
   @Override
-  public boolean aButtonSetShootModeReleased() {
-    return xbox.getAButtonReleased();
+  public boolean getSetShootModeReleased() {
+    return controlStation.getBButtonReleased();
   }
 
   @Override
@@ -214,20 +204,8 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   }
 
   public double manualStingerAngleControl() {
-    return controlStation.getLeftX();
+    return controlStation.getRightX();
   }
-
-
-
-  // private static double modifyAxis2(double value) {
-  //   // Deadband
-  //   value = deadband(value, 0.1);
-
-  //   // Square the axis
-  //   value = Math.copySign(value * value, value);
-
-  //   return value;
-  // }
 
   /**
    * Returns the x component of the robot's velocity, as controlled by the Xbox

@@ -11,6 +11,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.team6560.frc2024.commands.AutoIntakeCommand;
 import com.team6560.frc2024.commands.AutoShooterCommand;
 import com.team6560.frc2024.commands.AutoTransferCommand;
+import com.team6560.frc2024.commands.ClimbCommand;
 
 // import java.io.File;
 
@@ -22,11 +23,12 @@ import com.team6560.frc2024.subsystems.Drivetrain;
 import com.team6560.frc2024.subsystems.Intake;
 import com.team6560.frc2024.subsystems.Limelight;
 import com.team6560.frc2024.subsystems.Shooter;
+import com.team6560.frc2024.subsystems.Stinger;
 import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.subsystems.LightWorkNoReaction;
 import com.team6560.frc2024.commands.LightWorkNoReactionCommand;
 import com.team6560.frc2024.commands.ShooterCommand;
-
+import com.team6560.frc2024.commands.StingerCommand;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
@@ -46,16 +48,19 @@ public class RobotContainer {
         private final Intake intake;
         private final Shooter shooter;
         private final Transfer transfer;
-        // private final Climb climb; 
+        private final Stinger stinger;
+        private final Climb climb;
         private final Limelight limelight;
         private final LightWorkNoReaction lightWorkNoReaction;
         private final DriveCommand driveCommand;
         private final IntakeCommand intakeCommand;
+        private final StingerCommand stingerCommand;
         private final ShooterCommand shooterCommand;
        // private final AutoIntakeCommand autoIntakeCommand;
        // private final AutoShooterCommand autoShooterCommand;
       //  private final AutoTransferCommand autoTransferCommand;
         // private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
+        private final ClimbCommand climbCommand;
       
 
 
@@ -71,21 +76,26 @@ public class RobotContainer {
                 drivetrain = new Drivetrain();
                 shooter = new Shooter();
                 intake = new Intake(shooter);
+                stinger = new Stinger();
                 transfer = new Transfer();
-                // climb = new Climb();
+                climb = new Climb();
                 lightWorkNoReaction = new LightWorkNoReaction();
                 driveCommand = new DriveCommand(drivetrain, manualControls, limelight);
                 intakeCommand = new IntakeCommand(intake, transfer, manualControls);
+                stingerCommand = new StingerCommand(stinger, shooter, transfer, manualControls);
                 shooterCommand = new ShooterCommand(shooter, limelight, transfer, lightWorkNoReaction, manualControls);
               //  autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
               //  autoShooterCommand = new AutoShooterCommand(shooter);
               //  autoTransferCommand = new AutoTransferCommand(transfer);
                 // lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, manualControls);
+                climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
 
                 drivetrain.setDefaultCommand(driveCommand);
                 intake.setDefaultCommand(intakeCommand);
+                stinger.setDefaultCommand(stingerCommand);
                 shooter.setDefaultCommand(shooterCommand);
                 // lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
+                climb.setDefaultCommand(climbCommand);
 
                 NamedCommands.registerCommand("print hello", Commands.print("hello"));
         //        NamedCommands.registerCommand("startShooter", autoShooterCommand);

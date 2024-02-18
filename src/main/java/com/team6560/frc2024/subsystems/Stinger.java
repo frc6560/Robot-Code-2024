@@ -10,7 +10,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 // import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAnalogSensor;
-import com.revrobotics.SparkLimitSwitch;
+// import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAnalogSensor.Mode;
 
