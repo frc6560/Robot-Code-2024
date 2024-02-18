@@ -139,7 +139,7 @@ public static final double CLIMB_MIN_VERTICAL_ROTATION = 0.0;
 
 public static final double MIN_ARC_ANGLE_FOR_INTAKE = 0;
 
-public static final double MAX_ARC_ANGLE_FOR_INTAKE = 70.204; 
+public static final double MAX_ARC_ANGLE_FOR_INTAKE = 49.2724609375;
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
     public static final int SECOND_DRIVER_CONTROL_STATION = 1;
@@ -200,11 +200,12 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 70.204;
     public static final int ARC_MOTOR_ID = 14;
 
 
-    public static final double RPM_PER_FALCON_UNIT = 600.0/2480.0;
+    public static final double RPM_TO_RPS = 1/60.0;
 
     public static final double SHOOTER_GEAR_RATIO = 30.0/36.0;
 
     public static final double ARC_GEAR_RATIO = 189.583;
+    public static final double RPM_PER_FALCON_UNIT = 600.0/2480.0;
   }
 
   public static final class ShooterConfigs {
