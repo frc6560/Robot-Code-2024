@@ -102,40 +102,29 @@ public final class Constants {
 
 
 
-public static final int INTAKE_FEED_MOTOR = 15;
 
 public static final double INTAKE_FEED_RATE = 0.6;
 
 public static final double INTAKE_REVERSE_RATE = -0.3;
 
+public static final double TRANSFER_FEED_RATE = 1;
+
+public static final double TRANSFER_INTAKE_RATE = 0.3;
 
 
+public static final double SHOOTER_GROUND_INTAKE_POSITION = 0;
 
-public static final double LIMELIGHT_ANGLE = 45;
+public static final double SHOOTER_WALL_INTAKE_POSITION = 66.5;
 
-public static final double LIMELIGHT_HEIGHT = 24;
+public static final double SHOOTER_SUBWOOFER_POSITION = 0;
 
-public static final double APRILTAG_7_HEIGHT = 48;
+public static final double SHOOTER_SUBWOOFER_RPM = 6000;
 
+public static final double TRAP_CLEARANCE_ANGLE = 0;
 
+public static final double TRAP_WALL_EXTENTION = 8.1;
 
-
-
-public static final int ARC_MOTOR = 14;
-
-public static final int SHOOTER_RIGHT_MOTOR = 18;
-
-public static final int SHOOTER_LEFT_MOTOR = 17;
-
-public static final int SHOOTER_FEED_MOTOR = 16;
-
-public static final Port SHOOTER_COLOR_SENSOR_PORT = Port.kOnboard;
-
-public static final double TRANSFER_FEED_OUTPUT = 1;
-
-
-
-public static final double SHOOTER_ARC_GEAR_RATIO = 189.583;
+public static final double TRAP_HANDOFF_EXTENTION = 4.1;
 
 
 public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 100;
@@ -147,6 +136,49 @@ public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1;
 public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 150;
 
 
+public static final double TRAP_ELEVATOR_UPPER_LIMIT = 8.6;
+
+public static final double TRAP_ELEVATOR_LOWER_LIMIT = 0;
+
+public static final double SHOOTER_MIN_POS = 0;
+
+public static final double SHOOTER_MAX_POS = 107;
+
+
+public static final double METERS_PER_INCH = 0.0254;
+
+public static final double FALCON_MAX_RPM = 6300;
+
+public static final double LIMELIGHT_ANGLE = 15; // degrees off the y axis
+
+public static final double LIMELIGHT_HEIGHT = (26.45 - 0.1) * METERS_PER_INCH; // 0.1 is squish of carpet
+
+public static final double LIMELIGHT_X = (12.03) * METERS_PER_INCH; // offset from center of robot width
+
+public static final double LIMELIGHT_Y = (12.97) * METERS_PER_INCH;
+
+public static final double APRILTAG_7_HEIGHT = 48;
+
+
+
+public static final double SHOOTER_ARC_GEAR_RATIO = 455;
+
+public static final double TRAP_WRIST_GEAR_RATIO = 01;
+
+public static final double TRAP_ELEVATOR_GEAR_RATIO = 01;
+
+
+public static final int INTAKE_FEED_MOTOR = 15;
+
+public static final int ARC_MOTOR = 14;
+
+public static final int SHOOTER_RIGHT_MOTOR = 18;
+
+public static final int SHOOTER_LEFT_MOTOR = 17;
+
+public static final int SHOOTER_FEED_MOTOR = 16;
+
+public static final Port SHOOTER_COLOR_SENSOR_PORT = Port.kOnboard;
 
 
 public static final int TRAP_WRIST_MOTOR = 20;
@@ -158,43 +190,7 @@ public static final int TRAP_FEED_MOTOR = 21;
 public static final int TRAP_LIMIT_SWITCH_ID = 0;
 
 
-public static final double TRAP_WRIST_GEAR_RATIO = 01;
 
-public static final double TRAP_ELEVATOR_GEAR_RATIO = 01;
-
-public static final double TRAP_CLEARANCE_ANGLE = 0;
-
-public static final double TRAP_ELEVATOR_UPPER_LIMIT = 8.6;
-
-public static final double TRAP_ELEVATOR_LOWER_LIMIT = 0;
-
-public static final double TRAP_WALL_EXTENTION = 8.1;
-
-public static final double TRAP_HANDOFF_EXTENTION = 4.1;
-
-
-
-
-public static final double TRANSFER_INTAKE_OUTPUT = 0.3;
-
-
-public static final double SHOOTER_GROUND_INTAKE_ANGLE = 0;
-
-public static final double SHOOTER_WALL_INTAKE_ANGLE = 66.5;
-
-public static final double SUB_SHOOTER_ANGLE = 100;
-
-public static final double SHOOTER_SUB_RPM = 5000;
-
-public static final double SHOOTER_SUB_ANGLE = 0;
-
-public static final double SHOOTER_MIN_POS = 0;
-
-public static final double SHOOTER_MAX_POS = 107;
-
-
-
-public static final double FALCON_MAX_RPM = 6300;
 
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;

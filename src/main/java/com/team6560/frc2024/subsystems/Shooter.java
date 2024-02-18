@@ -4,6 +4,10 @@
 
 package com.team6560.frc2024.subsystems;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
@@ -27,7 +31,7 @@ public class Shooter extends SubsystemBase {
   final ColorSensorV3 colorSensor;
 
   double targetRPM = 0;
-  double targetAngle = 0;
+  double targetPosition = 0;
 
   public Shooter(Limelight limelight, Trap trap) {
     this.limelight = limelight;
@@ -49,14 +53,35 @@ public class Shooter extends SubsystemBase {
     ntDispTab("Shooter")
     .add("Shooter RPM", this::getShooterRPM)
     .add("Current Draw Shooter", this::getCurrentDraw)
-    .add("Vertical Angle Shooter", this::getShooterVerticalAngle)
+    .add("Vertical Position Shooter", this::getShooterArcPosition)
+    .add("Vertical Angle Shooter", this::getShooterArcAngleDegrees)
     .add("Feeder Proximity Sensor", ()->colorSensor.getProximity());
   }
 
   private void setupMotors(){
     arcMotor.setNeutralMode(NeutralModeValue.Coast);
     arcMotor.setInverted(false);
-    arcMotor.setPosition(0.0);
+    
+    // in init function
+    TalonFXConfiguration arcConfigs = new TalonFXConfiguration();
+
+    // set slot 0 gains
+    Slot0Configs arcPID = arcConfigs.Slot0;
+    arcPID.kS = 0.5; // Add 0.25 V output to overcome static friction // Static Feed Forward
+    arcPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    arcPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    arcPID.kP = 4.8; // A position error of 2.5 rotations results in 12 V output
+    arcPID.kI = 0; // no output for integrated error
+    arcPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+
+    // set Motion Magic settings
+    MotionMagicConfigs arcMM = arcConfigs.MotionMagic;
+    arcMM.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
+    arcMM.MotionMagicAcceleration = arcMM.MotionMagicCruiseVelocity / 0.5; // Target acceleration of 160 rps/s (0.5 seconds)
+    arcMM.MotionMagicJerk = 0;//1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
+
+    arcMotor.getConfigurator().apply(arcConfigs);
+
 
     shooterMotorLeft.setNeutralMode(NeutralModeValue.Coast);
     shooterMotorLeft.setInverted(false);
@@ -71,6 +96,8 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
   }
+
+
   public void setRPM(double speed){
     targetRPM = speed;
     speed /=  Constants.FALCON_MAX_RPM;
@@ -79,12 +106,11 @@ public class Shooter extends SubsystemBase {
     shooterMotorLeft.set(speed);
   }
 
-  public void setVerticalAngle(double angle){
-    angle = Math.min(Math.max(angle, Constants.SHOOTER_MIN_POS), Constants.SHOOTER_MAX_POS);
+  public void setArcPosition(double position){    
+    targetPosition = position;
     
-    targetAngle = angle;
-    
-    arcMotor.setPosition(angle * Constants.SHOOTER_ARC_GEAR_RATIO);
+    final MotionMagicVoltage m_request = new MotionMagicVoltage(position);
+    arcMotor.setControl(m_request);
   }
 
   public void setArcOutput(double output){
@@ -98,9 +124,9 @@ public class Shooter extends SubsystemBase {
 
 
   public boolean readyToShoot(){
-    return ( true
-      // Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
-      // Math.abs(getShooterVerticalAngle() - targetAngle) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF &&
+    return ( 
+      Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
+      Math.abs(getShooterArcPosition() - targetPosition) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF
       // (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ) && 
       // trap.isClearOfShooter()
     );
@@ -113,14 +139,17 @@ public class Shooter extends SubsystemBase {
 
 
   public double getShooterRPM(){
-    return shooterMotorLeft.getVelocity().getValueAsDouble();
+    return shooterMotorLeft.getRotorVelocity().getValueAsDouble() * 60;
   }
 
   public double getCurrentDraw(){
     return shooterMotorLeft.getTorqueCurrent().getValueAsDouble();
   }
 
-  public double getShooterVerticalAngle(){
-    return arcMotor.getRotorVelocity().getValueAsDouble();
+  public double getShooterArcPosition(){
+    return arcMotor.getRotorPosition().getValueAsDouble();
+  }
+  public double getShooterArcAngleDegrees(){
+    return getShooterArcPosition() / Constants.SHOOTER_ARC_GEAR_RATIO * 360;
   }
 }

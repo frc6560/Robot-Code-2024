@@ -72,7 +72,7 @@ public class ShooterCommand extends Command {
 
       if(controls.getSafeAim()){
         shooter.setArcOutput(0.2);
-        shooter.setRPM(6000);
+        shooter.setRPM(Constants.SHOOTER_SUBWOOFER_RPM);
 
       } else {
         shooter.setArcOutput(0);
@@ -80,7 +80,7 @@ public class ShooterCommand extends Command {
       }
 
       if (controls.getShoot() && shooter.readyToShoot()){
-        shooter.setTransfer(Constants.TRANSFER_FEED_OUTPUT);
+        shooter.setTransfer(Constants.TRANSFER_FEED_RATE);
       } else {
         shooter.setTransfer(0);
       }
@@ -90,7 +90,7 @@ public class ShooterCommand extends Command {
       shooter.setRPM(0.0);
       
       if(!shooter.getTransferSensorTriggered()){
-        shooter.setTransfer(Constants.TRANSFER_INTAKE_OUTPUT);
+        shooter.setTransfer(Constants.TRANSFER_INTAKE_RATE);
       } else {
         shooter.setTransfer(0.0);
       }
