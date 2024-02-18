@@ -139,7 +139,7 @@ public static final double CLIMB_MIN_VERTICAL_ROTATION = 0.0;
 
 public static final double MIN_ARC_ANGLE_FOR_INTAKE = 0;
 
-public static final double MAX_ARC_ANGLE_FOR_INTAKE = 0; 
+public static final double MAX_ARC_ANGLE_FOR_INTAKE = 70.204; 
   public static final class ControllerIds {
     public static final int FIRST_DRIVER_CONTROLLER = 0;
     public static final int SECOND_DRIVER_CONTROL_STATION = 1;

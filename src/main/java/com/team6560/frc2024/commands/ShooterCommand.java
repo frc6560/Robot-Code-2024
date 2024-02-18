@@ -50,10 +50,7 @@ public class ShooterCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    Shooter.setTargetRPM(0);
-    // manualMode = true; //change later
-  }
+  public void initialize() {}
 
   public double[] autoShooterAim() {
     
@@ -75,8 +72,8 @@ public class ShooterCommand extends Command {
       if (controls.setStowPos()) {
         Shooter.setStowPos();
       } else {
-        Shooter.setManualAim(controls.getManualAim());
-        Shooter.setTargetRPM(controls.getManualShooterSpeed());
+        // Shooter.setManualAim(controls.getManualAim());
+        // Shooter.setTargetRPM(controls.getManualShooterSpeed());
         if (controls.getManualShootShooter() && Transfer.isInProximity() && Shooter.isReadyManualAim()) {
         Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
         }
@@ -88,8 +85,8 @@ public class ShooterCommand extends Command {
 
         if (shooterAim.equals(null)) ;
         else {
-          Shooter.setTargetRPM(shooterAim[1]);
-          Shooter.setTargetAngle(shooterAim[2]);
+          // Shooter.setTargetRPM(shooterAim[1]);
+          // Shooter.setTargetAngle(shooterAim[2]);
           if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
             Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
           }

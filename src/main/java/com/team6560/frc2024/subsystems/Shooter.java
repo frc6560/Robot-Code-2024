@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 // import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 // import com.ctre.phoenix6.controls.PositionVoltage;
 // import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -79,6 +80,8 @@ public class Shooter extends SubsystemBase {
     m_arc = new TalonFX(ShooterConstants.ARC_MOTOR_ID);
     m_arc.getConfigurator().apply(new TalonFXConfiguration());
 
+    // private final PositionVoltage m_voltagePosition = new PositionVoltage(0, 0, true, 0, 0, false, false, false);
+
     var arcPIDConfig = new Slot0Configs();
     arcPIDConfig.kS = 0;
     arcPIDConfig.kV = 0;
@@ -99,8 +102,9 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_shooterLeft.set(targetRPM.getDouble(0.0) / ShooterConstants.RPM_PER_FALCON_UNIT);
-    m_shooterRight.set(targetRPM.getDouble(0.0) / ShooterConstants.RPM_PER_FALCON_UNIT);
+    m_shooterLeft.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT);
+    m_shooterRight.set(targetRPM.getDouble(0.0) * ShooterConstants.RPM_PER_FALCON_UNIT);
+    m_arc.setPosition(targetAngle.getDouble(0.0));
   }
 
   public boolean isReadyAutoAim() {
@@ -126,11 +130,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getArcAngle() {
-    return m_arc.getPosition().getValue();
+    return m_arc.getRotorPosition().getValueAsDouble();
   }
 
   public double getShooterRPM() {
-    return m_shooterLeft.getVelocity().getValue();
+    return m_shooterLeft.getRotorVelocity().getValueAsDouble() / ShooterConstants.RPM_PER_FALCON_UNIT;
   }
 
   public double getTargetRPM() {
@@ -146,7 +150,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setTargetRPM (double input) {
-    targetRPM.setDouble(input);
+      targetRPM.setDouble(input);
   }
 
   public void setTargetAngle (double angle) {
