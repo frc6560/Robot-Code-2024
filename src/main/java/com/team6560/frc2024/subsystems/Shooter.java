@@ -139,7 +139,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterRPM() {
-    return m_shooterLeft.getRotorVelocity().getValueAsDouble() / ShooterConstants.RPM_PER_FALCON_UNIT;
+    return m_shooterLeft.getRotorVelocity().getValueAsDouble() / ShooterConstants.RPM_PER_FALCON_UNIT * 95.0;
   }
 
   public double getTargetRPM() {
