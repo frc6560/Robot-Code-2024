@@ -92,9 +92,9 @@ public class Shooter extends SubsystemBase {
     var arcPIDConfig = new Slot0Configs();
     arcPIDConfig.kS = 0;
     arcPIDConfig.kV = 0;
-    arcPIDConfig.kP = 0.7;
-    arcPIDConfig.kD = 0;
-    arcPIDConfig.kI = 0.051;
+    arcPIDConfig.kP = 0.73;
+    arcPIDConfig.kD = 0.0;
+    arcPIDConfig.kI = 0.07;
 
     m_arc.getConfigurator().apply(arcPIDConfig);
 
@@ -111,8 +111,8 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_shooterLeft.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS));
-    m_shooterRight.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS));
+    m_shooterLeft.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS).withFeedForward(0));
+    m_shooterRight.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS).withFeedForward(0));
     m_arc.setControl(m_arcRequest.withPosition(targetAngle.getDouble(0.0)));
   }
 

@@ -20,6 +20,8 @@ import com.pathplanner.lib.util.GeometryUtil;
 // UTIL:
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+
 // import edu.wpi.first.math.Pair;
 // import java.util.function.Supplier;
 import static com.team6560.frc2024.Constants.*;
@@ -285,7 +287,7 @@ public class Drivetrain extends SubsystemBase {
 
         // Gets the current pose of the robot according to the odometer/estimator
         public Pose2d getPose() {
-                return odometry.getPoseMeters();
+                return odometry.getPoseMeters(); // TODO: with SwerveDrivePoseEstimator... i think this is already done.
         }
 
         public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
@@ -320,5 +322,12 @@ public class Drivetrain extends SubsystemBase {
         public SwerveModuleState[] getStates() {
                 return new SwerveModuleState[] { m_frontLeftModule.getState(), m_frontRightModule.getState(),
                                 m_backLeftModule.getState(), m_backRightModule.getState() };
+        }
+
+        public double getDistanceMeters() {
+                Pose2d desiredTargetBlue = new Pose2d(new Translation2d(1.0, 2.0), Rotation2d.fromRotations(0.5));
+                Pose2d predictedBotPose = getPose();
+
+                return desiredTargetBlue.minus(predictedBotPose).getTranslation().getNorm();
         }
 }

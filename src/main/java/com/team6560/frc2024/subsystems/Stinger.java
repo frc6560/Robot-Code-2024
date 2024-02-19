@@ -6,6 +6,8 @@ package com.team6560.frc2024.subsystems;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 // import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
@@ -16,7 +18,12 @@ import com.revrobotics.SparkAnalogSensor.Mode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team6560.frc2024.Constants;
-import com.team6560.frc2024.Constants.StingerConstants;;
+import com.team6560.frc2024.Constants.StingerConstants;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Stinger extends SubsystemBase {
 
@@ -26,8 +33,9 @@ public class Stinger extends SubsystemBase {
 
   final SparkAnalogSensor rollerLimitSwitch;
 
-  final int MAX_ROTATION = 100;
-  final int MIN_ROTATION = 0;
+  final double MAX_ROTATION = 8.0390625; //elevator
+  final double MIN_ROTATION = 0.4;
+  private MotionMagicVoltage m_elevatorRequest;
 
   public Stinger() {
     this.wristMotor = new CANSparkMax(StingerConstants.STINGER_WRIST_ID, MotorType.kBrushless);
@@ -36,16 +44,29 @@ public class Stinger extends SubsystemBase {
 
     elevatorMotor.getConfigurator().apply(new TalonFXConfiguration());
 
-    var elevatorPIDConfig = new Slot0Configs();
-    elevatorPIDConfig.kS = 0.04;
-    elevatorPIDConfig.kV = 0.1;
-    elevatorPIDConfig.kP = 0.1;
-    elevatorPIDConfig.kI = 0;
-    elevatorPIDConfig.kD = 0;
+    var elevatorPIDConfig = new TalonFXConfiguration();
+
+    var elevatorSlot0Configs = elevatorPIDConfig.Slot0;
+    elevatorSlot0Configs.kS = 0.03;
+    elevatorSlot0Configs.kV = 0.2;
+    elevatorSlot0Configs.kP = 2;
+    elevatorSlot0Configs.kI = 0;
+    elevatorSlot0Configs.kD = 0;
+    
+    var elevatorMotionMagicConfig = elevatorPIDConfig.MotionMagic;
+    elevatorMotionMagicConfig.MotionMagicCruiseVelocity = 20;
+    elevatorMotionMagicConfig.MotionMagicAcceleration = 35;
+    elevatorMotionMagicConfig.MotionMagicJerk = 70;
 
     elevatorMotor.getConfigurator().apply(elevatorPIDConfig);
 
+    m_elevatorRequest = new MotionMagicVoltage(0);
+
     rollerLimitSwitch = rollerMotor.getAnalog(Mode.kAbsolute);
+
+    ntDispTab("Stinger")
+      .add("Current Elevator Pos", this::getExtension)
+      .add("Current Wrist Angle", this::getAngle);
   }
 
   @Override
@@ -57,15 +78,8 @@ public class Stinger extends SubsystemBase {
   }
 
   public void setElevatorPos(double targetPosRotation) {
-
-    if (targetPosRotation > MAX_ROTATION) {
-      targetPosRotation = MAX_ROTATION;
-    } else if (targetPosRotation < MIN_ROTATION) {
-      targetPosRotation = MIN_ROTATION;
-    }
-
-    elevatorMotor.setPosition(targetPosRotation * Constants.TALONFX_POS_TO_ROTATION);
-    // VerticalMotorRight.set(TalonFXControlMode.Position, targetPosRotation);
+    if (targetPosRotation < 0.4) return;
+    elevatorMotor.setControl(m_elevatorRequest.withPosition(targetPosRotation));
   }
 
   public void setElevatorVelocity(double targetVelocity) {
@@ -96,7 +110,7 @@ public class Stinger extends SubsystemBase {
   }
 
   public double getExtension() {
-    return elevatorMotor.getPosition().getValue();
+    return elevatorMotor.getRotorPosition().getValueAsDouble();
   }
 
   public double getFeedRate() {

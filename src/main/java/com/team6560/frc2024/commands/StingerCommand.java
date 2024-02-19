@@ -10,6 +10,9 @@ import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.Constants.StingerConfigs;
 import com.team6560.frc2024.Constants.StingerConstants;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class StingerCommand extends Command {
@@ -37,7 +40,10 @@ public class StingerCommand extends Command {
 
   private boolean autoMode;
 
-  
+  NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Stinger");
+  NetworkTableEntry targetElevatorPos = ntTable.getEntry("targetElevatorPos");
+  NetworkTableEntry targetWristAngle = ntTable.getEntry("targetWristAngle");
+
   private boolean isDoneTransfer = true, shooterStingerAligned = false, correctShooterRpm = false, maxTransferSensorReached = false, transferHasNote = false;
   private boolean stingerToIntakePos = false;
 
@@ -51,6 +57,9 @@ public class StingerCommand extends Command {
     this.controls = controls;
 
     addRequirements(stinger, shooter, transfer);
+
+    targetElevatorPos.setDouble(0.0);
+    targetWristAngle.setDouble(0.0);  
   }
 
   public void setElevatorPosPresets(StingerConfigs pos) {
@@ -193,35 +202,39 @@ public class StingerCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    setBothPosPresets(StingerConfigs.STOW);
-    stinger.setRoller(0);
+    // setBothPosPresets(StingerConfigs.STOW);
+    // stinger.setRoller(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { 
-    if (controls.isStingerAutoMode()) autoMode = !autoMode;
 
-    if (autoMode) {
+    // if (controls.isStingerAutoMode()) autoMode = !autoMode;
+
+    // if (autoMode) {
       
-      if (controls.manualStingerIntakePos()) 
-        autoIntakeHumanStation();
-      else if (controls.manualStingerShooterTransfer()) 
-        autoTransferToShooter();
-    } 
+    //   if (controls.manualStingerIntakePos()) 
+    //     autoIntakeHumanStation();
+    //   else if (controls.manualStingerShooterTransfer()) 
+    //     autoTransferToShooter();
+    // } 
     
-    else {
-      if (controls.manualStingerIntakePos()) 
-        setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
-      else if (controls.manualStingerShooterTransfer()) 
-        setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-      else if (controls.manualStow()) 
-        setBothPosPresets(StingerConfigs.STOW);
+    // else {
+    //   if (controls.manualStingerIntakePos()) 
+    //     setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
+    //   else if (controls.manualStingerShooterTransfer()) 
+    //     setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
+    //   else if (controls.manualStow()) 
+    //     setBothPosPresets(StingerConfigs.STOW);
+        //else
+          stinger.setElevatorPos(targetElevatorPos.getDouble(0));
 
-      if (!controls.manualStow() && (controls.manualStingerIntakePos() || controls.manualStingerShooterTransfer()))
-        stinger.setRoller((controls.manualStingerIntakePos() ? 1.0 : -1.0));
-      else stinger.setRoller(0);  
-    }
+    //   if (!controls.manualStow() && (controls.manualStingerIntakePos() || controls.manualStingerShooterTransfer()))
+    //     stinger.setRoller((controls.manualStingerIntakePos() ? 1.0 : -1.0));
+    //   else stinger.setRoller(0); 
+     
+    // }
   }
 
   // Called once the command ends or is interrupted.

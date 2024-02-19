@@ -39,15 +39,15 @@ public class IntakeCommand extends Command {
   @Override
   public void execute() {
     if (controls.getIntakeIn()) {
-      Intake.setSpeed(0.5);
+      Intake.setSpeed(0.9);
       if (!Transfer.isInProximity()) {
-        Transfer.setSpeed(0.5);
+        Transfer.setSpeed(0.9);
       } else {
         Transfer.setSpeed(0);
       }
     } else if (controls.getIntakeOut()) {
-      Intake.setSpeed(-0.5);
-      Transfer.setSpeed(-0.5);
+      Intake.setSpeed(-0.9);
+      Transfer.setSpeed(-0.9);
     } else {
       Intake.setSpeed(0);
       Transfer.setSpeed(0);
