@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
 
   public void setSpeed(double speed) {
     if (speed != 0) {
-      shooter.setTargetAngle((Constants.MAX_ARC_ANGLE_FOR_INTAKE + Constants.MIN_ARC_ANGLE_FOR_INTAKE) / 2);
+      shooter.setTargetAngle(0.0);
     }
     if (shooter.canIntake()) {//Maybe remove
       intakeMotor.set(speed);

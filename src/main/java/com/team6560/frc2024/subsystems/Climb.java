@@ -67,7 +67,7 @@ public class Climb extends SubsystemBase {
   }
 
   public void setHeightVelocity(double targetVelocity) {
-    final double slowZone = 10;
+    final double slowZone = 0;
     if (getVerticalPose() < Constants.CLIMB_MIN_VERTICAL_ROTATION && targetVelocity < 0) {
       targetVelocity = 0;
     } else if (getVerticalPose() < (Constants.CLIMB_MIN_VERTICAL_ROTATION + slowZone) && targetVelocity < 0) {
@@ -94,6 +94,10 @@ public class Climb extends SubsystemBase {
 
   public double getVerticalPose() {
     return rightClimbMotor.getEncoder().getPosition();
+  }
+
+  public double getVerticalPoseLeft() {
+    return leftClimbMotor.getEncoder().getPosition();
   }
 
 }

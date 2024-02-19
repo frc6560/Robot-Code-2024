@@ -26,6 +26,7 @@ public class Transfer extends SubsystemBase {
     transferMotor = new CANSparkMax(Constants.TRANSFER_MOTOR, MotorType.kBrushless);
     transferMotor.restoreFactoryDefaults();
     transferMotor.setIdleMode(IdleMode.kBrake);
+    transferMotor.setInverted(true);
     transferMotor.setSmartCurrentLimit(25);
     isAutoShooting = false;
   }

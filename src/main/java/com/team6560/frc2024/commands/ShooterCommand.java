@@ -68,7 +68,7 @@ public class ShooterCommand extends Command {
   public void execute() {
     if (controls.getSetShootMode()) {
       Light.setColorMode(CandleColorModes.SHOOT_MODE);
-      if (controls.getManualShootShooter() && Shooter.isReadyRPMAndAngle()) {
+      if (controls.getManualShootShooter()) {
         Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
       }
       // if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {

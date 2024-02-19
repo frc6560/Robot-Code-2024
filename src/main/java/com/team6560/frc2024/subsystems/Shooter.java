@@ -112,6 +112,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     m_shooterLeft.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS));
+    m_shooterRight.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS));
     m_arc.setControl(m_arcRequest.withPosition(targetAngle.getDouble(0.0)));
   }
 

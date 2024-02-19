@@ -129,8 +129,6 @@ public static final int LEFT_CLIMB_MOTOR = 22;
 
 public static final int RIGHT_CLIMB_MOTOR = 23; 
 
-public static final double CLIMB_TOP_SOFT_LIMITS = 0.0; 
-
 public static final double CLIMB_MAX_VERTICAL_ROTATION = 100000.0;
 
 public static final int CANdleID = 0;

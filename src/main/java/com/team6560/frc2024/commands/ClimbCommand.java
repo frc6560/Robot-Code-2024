@@ -103,14 +103,13 @@ public class ClimbCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    setClimbPreset(ClimbConfigs.CLIMB_STOW);
+    // setClimbPreset(ClimbConfigs.CLIMB_STOW);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     Climb.setHeightVelocity(controls.getClimbControls());
-
   }
 
   // Called once the command ends or is interrupted.
