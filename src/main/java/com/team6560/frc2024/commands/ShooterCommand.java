@@ -10,6 +10,7 @@ import com.team6560.frc2024.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.team6560.frc2024.Constants.ShooterConfigs;
 import com.team6560.frc2024.subsystems.Transfer;
+import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.Constants.CandleColorModes;
 import com.team6560.frc2024.subsystems.LightWorkNoReaction;
 
@@ -21,7 +22,7 @@ public class ShooterCommand extends Command {
 
     boolean getSetShootMode();
 
-    boolean getSetShootModeReleased();
+    // boolean getSetShootModeReleased();
 
     boolean setStowPos();
 
@@ -37,7 +38,9 @@ public class ShooterCommand extends Command {
   private final Transfer Transfer;
   private final LightWorkNoReaction Light;
 
-  private final double IDLE_RPM = 60.0;
+  private boolean isShooting;
+
+  // private final double IDLE_RPM = 60.0;
   // private boolean shooterAutoMoving;
 
   public ShooterCommand(Shooter Shooter, Limelight limelight, Transfer Transfer, LightWorkNoReaction Light,
@@ -49,6 +52,8 @@ public class ShooterCommand extends Command {
     this.controls = controls;
     this.Light = Light;
 
+    this.isShooting = false;
+  
     addRequirements(Shooter, Transfer, Light);
   }
 
@@ -66,11 +71,14 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("hi2" + controls.getSetShootMode());
     if (controls.getManualShootShooter()) {
       Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
     }
     if (controls.getSetShootMode()) {
+      System.out.println("hi" + controls.getSetShootMode());
       Light.setColorMode(CandleColorModes.SHOOT_MODE);
+      isShooting = true;
       if (controls.getManualShootShooter()) {
         Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
       }
@@ -88,10 +96,11 @@ public class ShooterCommand extends Command {
           }
         }
       } else {
-        Shooter.setTargetRPM(0.0);
-        Shooter.setTargetAngle(0.0);
+        Shooter.setTargetRPM(6000.0);
+        Shooter.setTargetAngle(Constants.MAX_ARC_ANGLE_FOR_INTAKE);
       }
-    } else if (controls.getSetShootModeReleased()) {
+    } else if (!controls.getSetShootMode() && isShooting) {
+      isShooting = false;
       Light.setColorMode(CandleColorModes.NO_MODE);
       Shooter.setStowPos();
       Shooter.setTargetRPM(0.0);

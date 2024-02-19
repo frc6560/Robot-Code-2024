@@ -157,12 +157,8 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public boolean getSetShootMode() {
-    return controlStation.getAButton();
-  }
-
-  @Override
-  public boolean getSetShootModeReleased() {
-    return controlStation.getAButtonReleased();
+    System.out.println(controlStation.getLeftTriggerAxis());
+    return controlStation.getLeftTriggerAxis() > 0.2;
   }
 
   @Override

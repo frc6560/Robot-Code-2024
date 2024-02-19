@@ -20,7 +20,11 @@ public class IntakeCommand extends Command {
   public static interface Controls {
     boolean getIntakeIn();
 
+    boolean getIntakeInReleased();
+
     boolean getIntakeOut();
+
+    boolean getIntakeOutReleased();
   }
   /** Creates a new IntakeCommand. */
   public IntakeCommand(Intake Intake, Transfer Transfer, Controls controls) {
@@ -41,14 +45,14 @@ public class IntakeCommand extends Command {
     if (controls.getIntakeIn()) {
       Intake.setSpeed(0.9);
       if (!Transfer.isInProximity()) {
-        Transfer.setSpeed(0.9);
+        Transfer.setSpeed(0.5);
       } else {
         Transfer.setSpeed(0);
       }
     } else if (controls.getIntakeOut()) {
       Intake.setSpeed(-0.9);
       Transfer.setSpeed(-0.9);
-    } else {
+    } else if (controls.getIntakeInReleased() || controls.getIntakeOutReleased()) {
       Intake.setSpeed(0);
       Transfer.setSpeed(0);
     }
