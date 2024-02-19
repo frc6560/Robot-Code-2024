@@ -66,14 +66,17 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (controls.getManualShootShooter()) {
+      Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
+    }
     if (controls.getSetShootMode()) {
       Light.setColorMode(CandleColorModes.SHOOT_MODE);
       if (controls.getManualShootShooter()) {
-        Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
+        Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
       }
-      if (Transfer.isInProximity() && Shooter.isReadyRPM()) {
-        Transfer.setSpeed(1.0); // maybe add a downframes to fix not properly shooting the ring.
-      }
+      // if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
+      //   Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
+      // }
       if (limelight.hasTarget()) {
         double[] shooterAim = autoShooterAim();
         if (!shooterAim.equals(null)) {
@@ -85,13 +88,13 @@ public class ShooterCommand extends Command {
           }
         }
       } else {
-        Shooter.setTargetRPM(IDLE_RPM);
+        Shooter.setTargetRPM(0.0);
+        Shooter.setTargetAngle(0.0);
       }
     } else if (controls.getSetShootModeReleased()) {
       Light.setColorMode(CandleColorModes.NO_MODE);
       Shooter.setStowPos();
       Shooter.setTargetRPM(0.0);
-      Shooter.setTargetAngle(0.0);
     }
   }
 

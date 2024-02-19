@@ -157,12 +157,12 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public boolean getSetShootMode() {
-    return controlStation.getBButton();
+    return controlStation.getAButton();
   }
 
   @Override
   public boolean getSetShootModeReleased() {
-    return controlStation.getBButtonReleased();
+    return controlStation.getAButtonReleased();
   }
 
   @Override
@@ -195,7 +195,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public boolean manualStingerShooterTransfer() {
-    return controlStation.getAButtonPressed();
+    return controlStation.getBButtonPressed();
   }
 
   @Override

@@ -105,8 +105,6 @@ public class RobotContainer {
                 configureBindings();
                 autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
-
-                System.out.println("\n\n\n\n\n\nAGHHHHHHHHHHH\n\n\n\n\n\n");
         }
 
         private void configureBindings() {
