@@ -54,7 +54,7 @@ public class RobotContainer {
         private final LightWorkNoReaction lightWorkNoReaction;
         private final DriveCommand driveCommand;
         private final IntakeCommand intakeCommand;
-        private final StingerCommand stingerCommand;
+        // private final StingerCommand stingerCommand;
         private final ShooterCommand shooterCommand;
         // private final AutoIntakeCommand autoIntakeCommand;
         // private final AutoShooterCommand autoShooterCommand;
@@ -81,9 +81,9 @@ public class RobotContainer {
                 climb = new Climb();
                 lightWorkNoReaction = new LightWorkNoReaction();
                 driveCommand = new DriveCommand(drivetrain, manualControls, limelight);
-                intakeCommand = new IntakeCommand(intake, transfer, manualControls);
-                stingerCommand = new StingerCommand(stinger, shooter, transfer, manualControls);
+                intakeCommand = new IntakeCommand(intake, manualControls);
                 shooterCommand = new ShooterCommand(shooter, limelight, transfer, lightWorkNoReaction, manualControls);
+                // stingerCommand = new StingerCommand(stinger, shooter, transfer, manualControls);
                 // autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
                 // autoShooterCommand = new AutoShooterCommand(shooter);
                 // autoTransferCommand = new AutoTransferCommand(transfer);
@@ -92,7 +92,7 @@ public class RobotContainer {
 
                 drivetrain.setDefaultCommand(driveCommand);
                 intake.setDefaultCommand(intakeCommand);
-                stinger.setDefaultCommand(stingerCommand);
+                // stinger.setDefaultCommand(stingerCommand);
                 shooter.setDefaultCommand(shooterCommand);
                 // lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
                 climb.setDefaultCommand(climbCommand);

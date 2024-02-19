@@ -4,22 +4,17 @@
 
 package com.team6560.frc2024.subsystems;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-// import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAnalogSensor;
 import com.revrobotics.SparkPIDController;
-// import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAnalogSensor.Mode;
 import com.revrobotics.SparkPIDController.AccelStrategy;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.Constants.StingerConstants;
 
 import edu.wpi.first.networktables.NetworkTable;

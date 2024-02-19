@@ -30,6 +30,14 @@ public class ShooterCommand extends Command {
     // double getManualAim();
 
     // double getManualShooterSpeed();
+
+    boolean getIntakeIn();
+
+    boolean getIntakeInReleased();
+
+    boolean getIntakeOut();
+
+    boolean getIntakeOutReleased();
   }
 
   private final Shooter Shooter;
@@ -71,12 +79,14 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("hi2" + controls.getSetShootMode());
+    shooterStuff();
+  }
+
+  public void shooterStuff() {
     if (controls.getManualShootShooter()) {
       Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
     }
     if (controls.getSetShootMode()) {
-      System.out.println("hi" + controls.getSetShootMode());
       Light.setColorMode(CandleColorModes.SHOOT_MODE);
       isShooting = true;
       if (controls.getManualShootShooter()) {
@@ -104,6 +114,20 @@ public class ShooterCommand extends Command {
       Light.setColorMode(CandleColorModes.NO_MODE);
       Shooter.setStowPos();
       Shooter.setTargetRPM(0.0);
+    }
+  }
+
+  public void transferStuff() {
+    if (controls.getIntakeIn()) {
+      if (!Transfer.isInProximity()) {
+        Transfer.setSpeed(0.5);
+      } else {
+        Transfer.setSpeed(0);
+      }
+    } else if (controls.getIntakeOut()) {
+      Transfer.setSpeed(-0.9);
+    } else if (controls.getIntakeInReleased() || controls.getIntakeOutReleased()) {
+      Transfer.setSpeed(0);
     }
   }
 

@@ -157,7 +157,6 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public boolean getSetShootMode() {
-    System.out.println(controlStation.getLeftTriggerAxis());
     return controlStation.getLeftTriggerAxis() > 0.2;
   }
 

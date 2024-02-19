@@ -10,9 +10,6 @@ import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.Constants.StingerConfigs;
 import com.team6560.frc2024.Constants.StingerConstants;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class StingerCommand extends Command {
