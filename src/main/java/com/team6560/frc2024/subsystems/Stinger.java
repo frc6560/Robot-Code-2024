@@ -12,9 +12,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 // import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAnalogSensor;
+import com.revrobotics.SparkPIDController;
 // import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAnalogSensor.Mode;
+import com.revrobotics.SparkPIDController.AccelStrategy;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team6560.frc2024.Constants;
@@ -31,6 +33,8 @@ public class Stinger extends SubsystemBase {
   final TalonFX elevatorMotor;
   final CANSparkMax rollerMotor;
 
+  private SparkPIDController wristPID;
+
   final SparkAnalogSensor rollerLimitSwitch;
 
   final double MAX_ROTATION = 8.0390625; //elevator
@@ -40,6 +44,9 @@ public class Stinger extends SubsystemBase {
   NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Stinger");
   NetworkTableEntry targetElevatorPos = ntTable.getEntry("targetElevatorPos");
   NetworkTableEntry targetWristAngle = ntTable.getEntry("targetWristAngle");
+  NetworkTableEntry isStingerRollerOn = ntTable.getEntry("isStingerRollerOn");
+  NetworkTableEntry reverseStingerRoller = ntTable.getEntry("reverseStingerRoller");
+
 
   public Stinger() {
     this.wristMotor = new CANSparkMax(StingerConstants.STINGER_WRIST_ID, MotorType.kBrushless);
@@ -66,6 +73,15 @@ public class Stinger extends SubsystemBase {
 
     m_elevatorRequest = new MotionMagicVoltage(0);
 
+    wristPID = wristMotor.getPIDController();
+    wristPID.setP(5e-5);
+    wristPID.setI(1e-6);
+    wristPID.setD(0);
+    wristPID.setIZone(0);
+    wristPID.setFF(0.0);
+    wristPID.setOutputRange(-1, 1);
+    wristPID.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, StingerConstants.STINGER_WRIST_ID);
+
     rollerLimitSwitch = rollerMotor.getAnalog(Mode.kAbsolute);
 
     ntDispTab("Stinger")
@@ -79,7 +95,9 @@ public class Stinger extends SubsystemBase {
   @Override
   public void periodic() {
      setElevatorPos(targetElevatorPos.getDouble(0.4));
-     
+     if (isStingerRollerOn.getBoolean(false)) {
+        // setRoller(reverseStingerRoller.getBoolean(false) ? -1 : 1);
+     } else setRoller(0);
   }
 
   public void setAngle(double angle) {

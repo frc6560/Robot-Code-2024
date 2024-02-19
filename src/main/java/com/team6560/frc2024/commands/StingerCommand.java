@@ -40,10 +40,6 @@ public class StingerCommand extends Command {
 
   private boolean autoMode;
 
-  NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Stinger");
-  NetworkTableEntry targetElevatorPos = ntTable.getEntry("targetElevatorPos");
-  NetworkTableEntry targetWristAngle = ntTable.getEntry("targetWristAngle");
-
   private boolean isDoneTransfer = true, shooterStingerAligned = false, correctShooterRpm = false, maxTransferSensorReached = false, transferHasNote = false;
   private boolean stingerToIntakePos = false;
 
