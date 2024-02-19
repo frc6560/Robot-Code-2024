@@ -37,6 +37,10 @@ public class Stinger extends SubsystemBase {
   final double MIN_ROTATION = 0.4;
   private MotionMagicVoltage m_elevatorRequest;
 
+  NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Stinger");
+  NetworkTableEntry targetElevatorPos = ntTable.getEntry("targetElevatorPos");
+  NetworkTableEntry targetWristAngle = ntTable.getEntry("targetWristAngle");
+
   public Stinger() {
     this.wristMotor = new CANSparkMax(StingerConstants.STINGER_WRIST_ID, MotorType.kBrushless);
     this.elevatorMotor = new TalonFX(StingerConstants.STINGER_ELEVATOR_ID);
@@ -67,10 +71,15 @@ public class Stinger extends SubsystemBase {
     ntDispTab("Stinger")
       .add("Current Elevator Pos", this::getExtension)
       .add("Current Wrist Angle", this::getAngle);
+
+    targetElevatorPos.setDouble(0.0);
+    targetWristAngle.setDouble(0.0);
   }
 
   @Override
   public void periodic() {
+     setElevatorPos(targetElevatorPos.getDouble(0.4));
+     
   }
 
   public void setAngle(double angle) {

@@ -56,10 +56,9 @@ public class StingerCommand extends Command {
     this.transfer = transfer;
     this.controls = controls;
 
-    addRequirements(stinger, shooter, transfer);
-
-    targetElevatorPos.setDouble(0.0);
-    targetWristAngle.setDouble(0.0);  
+    addRequirements(stinger, shooter, transfer); 
+    
+    autoMode = false;
   }
 
   public void setElevatorPosPresets(StingerConfigs pos) {
@@ -227,8 +226,6 @@ public class StingerCommand extends Command {
     //     setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
     //   else if (controls.manualStow()) 
     //     setBothPosPresets(StingerConfigs.STOW);
-        //else
-          stinger.setElevatorPos(targetElevatorPos.getDouble(0));
 
     //   if (!controls.manualStow() && (controls.manualStingerIntakePos() || controls.manualStingerShooterTransfer()))
     //     stinger.setRoller((controls.manualStingerIntakePos() ? 1.0 : -1.0));
