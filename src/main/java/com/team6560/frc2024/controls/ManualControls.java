@@ -158,29 +158,21 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   public boolean getAim(){
-    return controlStation.getRightTriggerAxis() > 0.2;
+    return controlStation.getRightBumper();
     // return false;
   }
   
   public boolean getSafeAim(){
-    return controlStation.getLeftTriggerAxis() > 0.2;
+    return controlStation.getRightTriggerAxis() > 0.2;
   }
 
   public boolean getShoot(){
-    return controlStation.getRightBumper() || xbox.getRightBumper();
+    return xbox.getRightBumper();
   }
 
   public boolean getReverseTransfer(){
     return controlStation.getRightStickButton();
   }
-
-  // public double getManualArc(){
-  //   return controlStation.getRightTriggerAxis() - controlStation.getLeftTriggerAxis();
-  // }
-
-  // public boolean getRunShooter(){
-  //   return controlStation.getBButton();
-  // }
   
 
   // ------------------------------ INTAKE ------------------------------ \\
@@ -190,27 +182,22 @@ public class ManualControls implements DriveCommand.Controls {
     // return controlStation.getLeftBumper();
   }
 
-  // public boolean getRunInverseIntake(){
-  //   return controlStation.getLeftBumper();
-  // }
-
-
   // ------------------------------ TRAP ------------------------------ \\
 
   public boolean getTrapTransferIn(){
-    return xbox.getBButton();
+    return controlStation.getBButton();
   }
 
   public boolean getTrapTransferOut(){
-    return xbox.getXButton();
+    return false; //controlStation.getXButton();
   }
   
   public boolean getTrapPlace(){
-    return xbox.getAButton();
+    return controlStation.getAButton();
   }
   
   public boolean getTrapIntake(){
-    return xbox.getYButton();
+    return controlStation.getLeftBumper();
   }
 
 
@@ -219,9 +206,9 @@ public class ManualControls implements DriveCommand.Controls {
   // ------------------------------ CLIMB ------------------------------ \\
 
   public double getClimb(){
-    double r = xbox.getRightTriggerAxis();
-    double l = xbox.getLeftTriggerAxis();
-    return r > 0.1 ? r : l > 0.1 ? -l : 0;
-
+    // double r = xbox.getRightTriggerAxis();
+    // double l = xbox.getLeftTriggerAxis();
+    // return r > 0.1 ? r : l > 0.1 ? -l : 0;
+    return 0.0;
   }
 }

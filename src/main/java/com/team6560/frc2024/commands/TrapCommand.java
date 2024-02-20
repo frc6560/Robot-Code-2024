@@ -86,7 +86,7 @@ public class TrapCommand extends Command {
       trap.setFeed(0.0);
     }
 
-    return (trap.isAtTargetAngle() && trap.isAtTargetExtention()) && trap.getSensorTriggered();
+    return trap.getSensorTriggered();
   }
 
   public boolean transferToShooter(boolean runFeed){
