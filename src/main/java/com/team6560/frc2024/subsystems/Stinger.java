@@ -10,6 +10,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAnalogSensor;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+// import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAnalogSensor.Mode;
 import com.revrobotics.SparkPIDController.AccelStrategy;
@@ -68,16 +70,21 @@ public class Stinger extends SubsystemBase {
 
     m_elevatorRequest = new MotionMagicVoltage(0);
 
+    wristMotor.restoreFactoryDefaults();
+
     wristPID = wristMotor.getPIDController();
-    wristPID.setP(5e-5);
-    wristPID.setI(1e-6);
+    wristPID.setP(0.07);
+    wristPID.setI(0.0);
     wristPID.setD(0);
     wristPID.setIZone(0);
     wristPID.setFF(0.0);
-    wristPID.setOutputRange(-1, 1);
-    wristPID.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, StingerConstants.STINGER_WRIST_ID);
+    wristPID.setOutputRange(-0.2, 0.2);
 
-    rollerLimitSwitch = rollerMotor.getAnalog(Mode.kAbsolute);
+    // wristPID.setSmartMotionMaxVelocity(1.5, 0);
+    // wristPID.setSmartMotionMinOutputVelocity(0, 0);
+    // wristPID.setSmartMotionMaxAccel(2, 0);
+    // wristPID.setSmartMotionAllowedClosedLoopError(0.01, 0);
+      rollerLimitSwitch = rollerMotor.getAnalog(Mode.kAbsolute);
 
     ntDispTab("Stinger")
       .add("Current Elevator Pos", this::getExtension)
@@ -90,13 +97,14 @@ public class Stinger extends SubsystemBase {
   @Override
   public void periodic() {
      setElevatorPos(targetElevatorPos.getDouble(0.4));
-     if (isStingerRollerOn.getBoolean(false)) {
-        // setRoller(reverseStingerRoller.getBoolean(false) ? -1 : 1);
-     } else setRoller(0);
+     setAngle(targetWristAngle.getDouble(0.1));
+    //  if (isStingerRollerOn.getBoolean(false)) {
+    //     // setRoller(reverseStingerRoller.getBoolean(false) ? -1 : 1);
+    //  } else setRoller(0);
   }
 
   public void setAngle(double angle) {
-    wristMotor.getEncoder().setPosition(angle * StingerConstants.WRIST_GEAR_RATIO);
+    wristPID.setReference(angle, ControlType.kPosition);
   }
 
   public void setElevatorPos(double targetPosRotation) {
@@ -128,7 +136,7 @@ public class Stinger extends SubsystemBase {
   }
 
   public double getAngle() {
-    return wristMotor.getEncoder().getPosition() / StingerConstants.WRIST_GEAR_RATIO;
+    return wristMotor.getEncoder().getPosition();
   }
 
   public double getExtension() {

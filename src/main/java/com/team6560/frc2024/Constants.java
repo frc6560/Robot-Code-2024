@@ -244,6 +244,8 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 49.2724609375;
     public static final double TRAP_CLEARANCE_ANGLE = 0;
     public static final double STINGER_ANGLE_ACCEPTABLE_DIFF = 0.1;
     public static final double STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF = 0.1;
+
+    public static final double MAX_WRIST_POS = -61;
     
   }
 
