@@ -174,32 +174,13 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   /* STINGER */
   @Override
-  public boolean isStingerAutoMode() {
-    return controlStation.getXButton();
+  public boolean getShooterStingerTransfer() {
+    return controlStation.getBButton();
   }
 
   @Override
-  public boolean manualStow() {
-    return xbox.getBButtonPressed();
-  }
-
-  @Override
-  public boolean manualStingerIntakePos() {
-    return controlStation.getYButtonPressed();
-  }
-
-  @Override
-  public boolean manualStingerShooterTransfer() {
-    return controlStation.getBButtonPressed();
-  }
-
-  @Override
-  public double manualElevatorVelControl() {
-    return controlStation.getLeftY();
-  }
-
-  public double manualStingerAngleControl() {
-    return controlStation.getRightX();
+  public boolean getHumanStationIntake() {
+    return controlStation.getYButton();
   }
 
   /**

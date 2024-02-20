@@ -29,13 +29,7 @@ public class ClimbCommand extends Command {
   private final Controls controls; 
 
   public static interface Controls {
-    double getClimbControls(); 
-    double manualElevatorVelControl();
-    double manualStingerAngleControl();
-  
-    boolean manualStow();
-    boolean manualStingerIntakePos();
-    boolean manualStingerShooterTransfer();
+    double getClimbControls();
   }
   /** Creates a new ClimbCommand. */
   public ClimbCommand(Climb Climb, Controls controls, Shooter Shooter, Stinger Stinger) {

@@ -48,7 +48,7 @@ public class RobotContainer {
         private final Intake intake;
         private final Shooter shooter;
         private final Transfer transfer;
-        // private final Stinger stinger;
+        private final Stinger stinger;
         private final Climb climb;
         private final Limelight limelight;
         private final LightWorkNoReaction lightWorkNoReaction;
@@ -76,7 +76,7 @@ public class RobotContainer {
                 drivetrain = new Drivetrain();
                 shooter = new Shooter();
                 intake = new Intake(shooter);
-                // stinger = new Stinger();
+                stinger = new Stinger();
                 transfer = new Transfer();
                 climb = new Climb();
                 lightWorkNoReaction = new LightWorkNoReaction();

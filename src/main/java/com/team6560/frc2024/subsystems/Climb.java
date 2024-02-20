@@ -52,7 +52,7 @@ public class Climb extends SubsystemBase {
     leftClimbMotor.follow(rightClimbMotor);
 
     NtValueDisplay.ntDispTab("Climb")
-        .add("Left Climb Vel", this::getleftVelocity)
+        .add("Left Climb Vel", this::getLeftVelocity)
         .add("Right Climb Vel", this::getRightVelocity);
 
   }
@@ -84,7 +84,7 @@ public class Climb extends SubsystemBase {
 
   }
 
-  public double getleftVelocity() {
+  public double getLeftVelocity() {
     return leftClimbMotor.getEncoder().getVelocity();
   }
 

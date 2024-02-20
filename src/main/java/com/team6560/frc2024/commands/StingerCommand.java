@@ -16,18 +16,9 @@ public class StingerCommand extends Command {
   /** Creates a new StingerCommand. */
 
   public static interface Controls {
-    // boolean doAutoIntakeHumanStation();
-    // boolean doAutoTransferToShooter();
-    // boolean doAutoTransferFromShooter();
+    boolean getHumanStationIntake();
 
-    boolean isStingerAutoMode();
-
-    double manualElevatorVelControl();
-    double manualStingerAngleControl();
-
-    boolean manualStow();
-    boolean manualStingerIntakePos();
-    boolean manualStingerShooterTransfer();
+    boolean getShooterStingerTransfer();
   }
 
   private final Stinger stinger;
@@ -35,7 +26,6 @@ public class StingerCommand extends Command {
   private final Transfer transfer;
   private final Controls controls;
 
-  private boolean autoMode;
 
   private boolean isDoneTransfer = true, shooterStingerAligned = false, correctShooterRpm = false, maxTransferSensorReached = false, transferHasNote = false;
   private boolean stingerToIntakePos = false;
@@ -51,7 +41,6 @@ public class StingerCommand extends Command {
 
     addRequirements(stinger, shooter, transfer); 
     
-    autoMode = false;
   }
 
   public void setElevatorPosPresets(StingerConfigs pos) {
@@ -201,30 +190,11 @@ public class StingerCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { 
-
-    // if (controls.isStingerAutoMode()) autoMode = !autoMode;
-
-    // if (autoMode) {
-      
-    //   if (controls.manualStingerIntakePos()) 
-    //     autoIntakeHumanStation();
-    //   else if (controls.manualStingerShooterTransfer()) 
-    //     autoTransferToShooter();
-    // } 
-    
-    // else {
-    //   if (controls.manualStingerIntakePos()) 
-    //     setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
-    //   else if (controls.manualStingerShooterTransfer()) 
-    //     setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-    //   else if (controls.manualStow()) 
-    //     setBothPosPresets(StingerConfigs.STOW);
-
-    //   if (!controls.manualStow() && (controls.manualStingerIntakePos() || controls.manualStingerShooterTransfer()))
-    //     stinger.setRoller((controls.manualStingerIntakePos() ? 1.0 : -1.0));
-    //   else stinger.setRoller(0); 
-     
-    // }
+      if (controls.getHumanStationIntake()) {
+        setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
+      } else if (controls.getShooterStingerTransfer()) {
+        setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
+      }
   }
 
   // Called once the command ends or is interrupted.

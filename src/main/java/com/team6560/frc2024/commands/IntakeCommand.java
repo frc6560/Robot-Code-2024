@@ -19,11 +19,8 @@ public class IntakeCommand extends Command {
   public static interface Controls {
     boolean getIntakeIn();
 
-    boolean getIntakeInReleased();
-
     boolean getIntakeOut();
 
-    boolean getIntakeOutReleased();
   }
   /** Creates a new IntakeCommand. */
   public IntakeCommand(Intake Intake, Controls controls) {

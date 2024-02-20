@@ -14,7 +14,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 // import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAnalogSensor.Mode;
-import com.revrobotics.SparkPIDController.AccelStrategy;
+// import com.revrobotics.SparkPIDController.AccelStrategy;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team6560.frc2024.Constants.StingerConstants;
@@ -35,7 +35,7 @@ public class Stinger extends SubsystemBase {
   final SparkAnalogSensor rollerLimitSwitch;
 
   final double MAX_ROTATION = 8.0390625; //elevator
-  final double MIN_ROTATION = 0.4;
+  final double MIN_ROTATION = 0.0;
   private MotionMagicVoltage m_elevatorRequest;
 
   NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Stinger");
@@ -96,8 +96,8 @@ public class Stinger extends SubsystemBase {
 
   @Override
   public void periodic() {
-     setElevatorPos(targetElevatorPos.getDouble(0.4));
-     setAngle(targetWristAngle.getDouble(0.1));
+     setElevatorPos(targetElevatorPos.getDouble(0.0));
+     setAngle(targetWristAngle.getDouble(0.0));
     //  if (isStingerRollerOn.getBoolean(false)) {
     //     // setRoller(reverseStingerRoller.getBoolean(false) ? -1 : 1);
     //  } else setRoller(0);
@@ -108,7 +108,12 @@ public class Stinger extends SubsystemBase {
   }
 
   public void setElevatorPos(double targetPosRotation) {
-    if (targetPosRotation < 0.4) return;
+    if (targetPosRotation < MIN_ROTATION) {
+      targetPosRotation = MIN_ROTATION;
+    }
+    if (targetPosRotation < MAX_ROTATION) {
+      targetPosRotation = MAX_ROTATION;
+    }
     elevatorMotor.setControl(m_elevatorRequest.withPosition(targetPosRotation));
   }
 

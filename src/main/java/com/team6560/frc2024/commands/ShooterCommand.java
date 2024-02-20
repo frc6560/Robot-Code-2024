@@ -9,6 +9,7 @@ import com.team6560.frc2024.subsystems.Limelight;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import com.team6560.frc2024.Constants.ShooterConfigs;
+import com.team6560.frc2024.Constants.StingerConfigs;
 import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.Constants.CandleColorModes;
@@ -38,6 +39,10 @@ public class ShooterCommand extends Command {
     boolean getIntakeOut();
 
     boolean getIntakeOutReleased();
+
+    boolean getHumanStationIntake();
+
+    boolean getShooterStingerTransfer();
   }
 
   private final Shooter Shooter;
@@ -115,6 +120,10 @@ public class ShooterCommand extends Command {
       Shooter.setStowPos();
       Shooter.setTargetRPM(0.0);
       Transfer.setSpeed(0.0);
+    } else if (controls.getHumanStationIntake()) {
+      Shooter.setTargetAngle(StingerConfigs.HUMAN_STATION_INTAKE.getShooterAngle());
+    } else if (controls.getShooterStingerTransfer()) {
+      Shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
     }
   }
 

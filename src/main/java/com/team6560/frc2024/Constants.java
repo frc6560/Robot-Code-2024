@@ -251,18 +251,20 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 49.2724609375;
 
   public enum StingerConfigs {
     //add position here
-    STOW(0, 90),
-    HUMAN_STATION_INTAKE(10, 90),
-    SHOOT_IN_TRAP(20,90), //placeholder values
-    SHOOTER_TRANSFER(0, 7);
+    STOW(0.0, 0.0, 0.0),
+    HUMAN_STATION_INTAKE(8.0, -50.0, 10.0),
+    SHOOT_IN_TRAP(8.0,-50.0,10.0), //placeholder values
+    SHOOTER_TRANSFER(8.0, -50.0, 10.0);
 
 
     private double elevatorPos;
     private double stingerAngle;
+    private double shooterAngle;
 
-    private StingerConfigs(double elevatorPos, double stingerAngle) {
+    private StingerConfigs(double elevatorPos, double stingerAngle, double shooterAngle) {
       this.elevatorPos = elevatorPos;
       this.stingerAngle = stingerAngle;
+      this.shooterAngle = shooterAngle;
     }
 
     public double getElevatorPos() {
@@ -271,6 +273,10 @@ public static final double MAX_ARC_ANGLE_FOR_INTAKE = 49.2724609375;
 
     public double getStingerAngle() {
       return stingerAngle;
+    }
+
+    public double getShooterAngle() {
+      return shooterAngle;
     }
   }
 
