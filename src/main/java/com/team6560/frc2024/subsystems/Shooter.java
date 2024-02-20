@@ -54,6 +54,8 @@ public class Shooter extends SubsystemBase {
 
     ntDispTab("Shooter")
     .add("Shooter RPM", this::getShooterRPM)
+    .add("Target RPM", ()->targetRPM)
+    .add("Target Position", ()->targetPosition)
     .add("Current Draw Shooter", this::getCurrentDraw)
     .add("Vertical Position Shooter", this::getShooterArcPosition)
     .add("Vertical Angle Shooter", this::getShooterArcAngleDegrees)
@@ -93,8 +95,8 @@ public class Shooter extends SubsystemBase {
       // in init function, set slot 0 gains
       var slot0Configs = new Slot0Configs();
       slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
-      slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-      slot0Configs.kP = 0.11; // An error of 1 rps results in 0.11 V output
+      slot0Configs.kV = 0.11; // A velocity target of 1 rps results in 0.12 V output
+      slot0Configs.kP = 0.1; // An error of 1 rps results in 0.11 V output
       slot0Configs.kI = 0; // no output for integrated error
       slot0Configs.kD = 0; // no output for error derivative
 
@@ -115,7 +117,7 @@ public class Shooter extends SubsystemBase {
 
   public void setRPM(double speed){
     targetRPM = speed;
-    speed = speed / 60;
+    speed = Math.max(0,speed) / 60;
 
 
     final VelocityVoltage m_request = new VelocityVoltage(speed).withSlot(0);
@@ -131,9 +133,9 @@ public class Shooter extends SubsystemBase {
     arcMotor.setControl(m_request);
   }
 
-  public void setArcOutput(double output){
-    arcMotor.set(output);
-  }
+  // public void setArcOutput(double output){
+  //   arcMotor.set(output);
+  // }
 
   public void setTransfer(double output){
     feedMotor.set(output);

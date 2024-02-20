@@ -1,6 +1,7 @@
 package com.team6560.frc2024.commands;
 
 import com.pathplanner.lib.util.GeometryUtil;
+import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Drivetrain;
 import com.team6560.frc2024.subsystems.Limelight;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -29,9 +30,9 @@ public class DriveCommand extends Command {
         boolean getAutoTarget();
     }
 
-    private Controls controls;
+    private ManualControls controls;
 
-    public DriveCommand(Drivetrain drivetrainSubsystem, Limelight limelight, Controls controls) {
+    public DriveCommand(Drivetrain drivetrainSubsystem, Limelight limelight, ManualControls controls) {
         this.drivetrain = drivetrainSubsystem;
         this.limelight = limelight;
         this.controls = controls;
@@ -77,13 +78,13 @@ public class DriveCommand extends Command {
     private double getRotation(){
         double controllerInput = controls.driveRotationX();
 
-        double limelightInput = limelight.getHorizontalAngle();
-        double llDeadband = 1; // in degrees
+        double limelightInput = -limelight.getHorizontalAngle();
+        double llDeadband = 2; // in degrees
         double rotateSpeed = 0.3; // multiplyer for max speed
 
         if (controllerInput == 0 && controls.getAutoTarget()){ 
             double speed = 0;
-            double p = 0.3;
+            double p = 0.25;
 
             if(Math.abs(limelightInput) < llDeadband){
                 limelightInput = 0;

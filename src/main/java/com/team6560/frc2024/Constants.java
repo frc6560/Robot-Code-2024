@@ -109,24 +109,58 @@ public static final double INTAKE_REVERSE_RATE = -0.3;
 
 public static final double TRANSFER_FEED_RATE = 1;
 
-public static final double TRANSFER_INTAKE_RATE = 0.4;
+public static final double TRANSFER_INTAKE_RATE = 0.2;
 
 
 public static final double SHOOTER_GROUND_INTAKE_POSITION = 5;
 
-public static final double SHOOTER_WALL_INTAKE_POSITION = 200;
+public static final double SHOOTER_WALL_INTAKE_POSITION = 36.8;
+
+public static final double SHOOTER_AMP_ARC_POS = 38.5;
 
 public static final double SHOOTER_SUBWOOFER_POSITION = 45;
 
-public static final double SHOOTER_SUBWOOFER_RPM = 5000;
+public static final double SHOOTER_SUBWOOFER_RPM = 5500;
+
+public static final double SHOOTER_TRANSFER_IN_RPM = -3000;
+
+public static final double SHOOTER_TRANSFER_OUT_RPM = 3000;
+
+
 
 public static final double TRAP_CLEARANCE_ANGLE = 0;
 
-public static final double TRAP_WALL_EXTENTION = 8.1;
 
-public static final double TRAP_HANDOFF_EXTENTION = 4.1;
+public static final double TRAP_WALL_EXTENTION = 7.4;
 
-public static final double SHOOTER_ARC_ACCEPTABLE_INTACE_POS = 20;
+public static final double TRAP_WALL_ANGLE = 0.8;
+
+public static final double TRAP_WALL_FEED_RATE = -0.8;
+
+
+public static final double TRAP_AMP_ANGLE = 41;
+
+public static final double TRAP_AMP_EXTENTION = 6.05;
+
+public static final double TRAP_AMP_FEED_RATE = 1;
+
+
+public static final double TRAP_HANDOFF_EXTENTION = 3.1;
+
+public static final double TRAP_HANDOFF_ANGLE = 67;
+
+public static final double TRAP_TRANSFER_IN_FEED_RATE = -0.5;
+
+public static final double TRAP_TRANSFER_OUT_FEED_RATE = 0.4;
+
+
+public static final double TRAP_STOW_ANGLE = 0;
+
+public static final double TRAP_STOW_EXTENTION = 0;
+
+
+
+public static final double SHOOTER_ARC_ACCEPTABLE_INTAKE_POS = 15;
 
 
 public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 100;
@@ -135,12 +169,20 @@ public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 1;
 
 public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1;
 
+public static final double TRAP_ACCEPTABLE_ANGLE_DIFF = 1;
+
+public static final double TRAP_ACCEPTABLE_EXTENTION_DIFF = 2;
+
 public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 150;
 
 
-public static final double TRAP_ELEVATOR_UPPER_LIMIT = 8.6;
+public static final double TRAP_ELEVATOR_UPPER_LIMIT = 8.65;
 
-public static final double TRAP_ELEVATOR_LOWER_LIMIT = 0;
+public static final double TRAP_ELEVATOR_LOWER_LIMIT = 0.1;
+
+public static final double TRAP_ANGLE_UPPER_LIMIT = 67.2;
+
+public static final double TRAP_ANGLE_LOWER_LIMIT = 0.1;
 
 public static final double SHOOTER_MIN_POS = 0;
 
@@ -151,7 +193,7 @@ public static final double METERS_PER_INCH = 0.0254;
 
 public static final double FALCON_MAX_RPM = 6300;
 
-public static final double LIMELIGHT_ANGLE = 15; // degrees off the y axis
+public static final double LIMELIGHT_ANGLE = 3; // degrees off the y axis
 
 public static final double LIMELIGHT_HEIGHT = (26.45 - 0.1) * METERS_PER_INCH; // 0.1 is squish of carpet
 

@@ -154,11 +154,11 @@ public class ManualControls implements DriveCommand.Controls {
 
   @Override
   public boolean getAutoTarget(){
-    return xbox.getAButton();
+    return getAim();
   }
 
   public boolean getAim(){
-    return controlStation.getRightBumper();
+    return controlStation.getRightTriggerAxis() > 0.2;
     // return false;
   }
   
@@ -167,7 +167,11 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   public boolean getShoot(){
-    return controlStation.getRightTriggerAxis() > 0.2;
+    return controlStation.getRightBumper() || xbox.getRightBumper();
+  }
+
+  public boolean getReverseTransfer(){
+    return controlStation.getRightStickButton();
   }
 
   // public double getManualArc(){
@@ -182,7 +186,8 @@ public class ManualControls implements DriveCommand.Controls {
   // ------------------------------ INTAKE ------------------------------ \\
 
   public boolean getRunIntake(){
-    return controlStation.getRightBumper();
+    return getSafeAim() || getAim();
+    // return controlStation.getLeftBumper();
   }
 
   // public boolean getRunInverseIntake(){
@@ -192,18 +197,21 @@ public class ManualControls implements DriveCommand.Controls {
 
   // ------------------------------ TRAP ------------------------------ \\
 
-  // public double getTrapExtention(){
-  //   return controlStation.getLeftY() / 5;
-  // }
+  public boolean getTrapTransferIn(){
+    return xbox.getBButton();
+  }
 
-  // public double getTrapRotation(){
-  //   return controlStation.getRightX() / 5;
-  // }
-
-  // public double getRunTrap(){
-  //   double speed = 0.2;
-  //   return controlStation.getXButton() ? speed : controlStation.getAButton() ? -speed : 0;
-  // }
+  public boolean getTrapTransferOut(){
+    return xbox.getXButton();
+  }
+  
+  public boolean getTrapPlace(){
+    return xbox.getAButton();
+  }
+  
+  public boolean getTrapIntake(){
+    return xbox.getYButton();
+  }
 
 
   

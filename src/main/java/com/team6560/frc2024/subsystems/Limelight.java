@@ -59,9 +59,20 @@ public class Limelight extends SubsystemBase {
     SmartDashboard.putData("aprilTagField", aprilTagField);
   }
 
+  public double getDistance(){
+    if (!hasTarget()) return 20.0;
+    
+    double dy = Math.toRadians(Constants.LIMELIGHT_ANGLE + getVerticalAngle());
+    double h = Constants.APRILTAG_7_HEIGHT - Constants.LIMELIGHT_HEIGHT;
+    h *= Constants.METERS_PER_INCH;
+
+    return h / Math.tan(dy);
+  }
 
   public double getHorizontalAngle() {
+    if(hasTarget())
     return ntX.getDouble(0.0);
+    else return 0.0;
   }
 
   public double getVerticalAngle() {
@@ -78,12 +89,6 @@ public class Limelight extends SubsystemBase {
  
   public int getCurrentApriltagId() {
     return (int) networkTable.getEntry("tid").getInteger(0l);
-  }
-
-  public double getDistance(){
-    if (!hasTarget()) return 0.0;
-
-    return getVerticalAngle() * Constants.LIMELIGHT_EQ_SLOPE + Constants.LIMELIGHT_EQ_Y_INT;
   }
 
 
