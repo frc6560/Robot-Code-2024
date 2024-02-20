@@ -44,8 +44,8 @@ public class IntakeCommand extends Command {
       Intake.setSpeed(0.9);
     } else if (controls.getIntakeOut()) {
       Intake.setSpeed(-0.9);
-    } else if (controls.getIntakeInReleased() || controls.getIntakeOutReleased()) {
-      Intake.setSpeed(0);
+    } else {
+      Intake.setSpeed(0.0);
     }
   }
 

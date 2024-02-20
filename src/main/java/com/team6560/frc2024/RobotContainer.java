@@ -48,7 +48,7 @@ public class RobotContainer {
         private final Intake intake;
         private final Shooter shooter;
         private final Transfer transfer;
-        private final Stinger stinger;
+        // private final Stinger stinger;
         private final Climb climb;
         private final Limelight limelight;
         private final LightWorkNoReaction lightWorkNoReaction;
@@ -60,7 +60,7 @@ public class RobotContainer {
         // private final AutoShooterCommand autoShooterCommand;
         // private final AutoTransferCommand autoTransferCommand;
         // private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
-        private final ClimbCommand climbCommand;
+        // private final ClimbCommand climbCommand;
       
 
 
@@ -76,7 +76,7 @@ public class RobotContainer {
                 drivetrain = new Drivetrain();
                 shooter = new Shooter();
                 intake = new Intake(shooter);
-                stinger = new Stinger();
+                // stinger = new Stinger();
                 transfer = new Transfer();
                 climb = new Climb();
                 lightWorkNoReaction = new LightWorkNoReaction();
@@ -88,14 +88,14 @@ public class RobotContainer {
                 // autoShooterCommand = new AutoShooterCommand(shooter);
                 // autoTransferCommand = new AutoTransferCommand(transfer);
                 // lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, manualControls);
-                climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
+                // climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
 
                 drivetrain.setDefaultCommand(driveCommand);
                 intake.setDefaultCommand(intakeCommand);
                 // stinger.setDefaultCommand(stingerCommand);
                 shooter.setDefaultCommand(shooterCommand);
                 // lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
-                climb.setDefaultCommand(climbCommand);
+                // climb.setDefaultCommand(climbCommand);
 
                 NamedCommands.registerCommand("print hello", Commands.print("hello"));
                 // NamedCommands.registerCommand("startShooter", autoShooterCommand);

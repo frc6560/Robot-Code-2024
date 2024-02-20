@@ -80,17 +80,17 @@ public class ShooterCommand extends Command {
   @Override
   public void execute() {
     shooterStuff();
+    transferStuff();
   }
 
   public void shooterStuff() {
-    if (controls.getManualShootShooter()) {
-      Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
-    }
     if (controls.getSetShootMode()) {
       Light.setColorMode(CandleColorModes.SHOOT_MODE);
       isShooting = true;
       if (controls.getManualShootShooter()) {
         Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
+      } else {
+        Transfer.setSpeed(0.0);
       }
       // if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
       //   Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
@@ -114,6 +114,7 @@ public class ShooterCommand extends Command {
       Light.setColorMode(CandleColorModes.NO_MODE);
       Shooter.setStowPos();
       Shooter.setTargetRPM(0.0);
+      Transfer.setSpeed(0.0);
     }
   }
 
