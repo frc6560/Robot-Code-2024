@@ -8,12 +8,27 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
+import com.team6560.frc2024.commands.AutoIntakeCommand;
+import com.team6560.frc2024.commands.AutoShooterCommand;
+import com.team6560.frc2024.commands.AutoTransferCommand;
+import com.team6560.frc2024.commands.ClimbCommand;
 
 // import java.io.File;
 
 import com.team6560.frc2024.commands.DriveCommand;
+import com.team6560.frc2024.commands.IntakeCommand;
 import com.team6560.frc2024.controls.ManualControls;
+import com.team6560.frc2024.subsystems.Climb;
 import com.team6560.frc2024.subsystems.Drivetrain;
+import com.team6560.frc2024.subsystems.Intake;
+import com.team6560.frc2024.subsystems.Limelight;
+import com.team6560.frc2024.subsystems.Shooter;
+import com.team6560.frc2024.subsystems.Stinger;
+import com.team6560.frc2024.subsystems.Transfer;
+import com.team6560.frc2024.subsystems.LightWorkNoReaction;
+import com.team6560.frc2024.commands.LightWorkNoReactionCommand;
+import com.team6560.frc2024.commands.ShooterCommand;
+import com.team6560.frc2024.commands.StingerCommand;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,7 +45,24 @@ public class RobotContainer {
 
         // not public or private so Robot.java has access to it.
         final Drivetrain drivetrain;
+        private final Intake intake;
+        private final Shooter shooter;
+        private final Transfer transfer;
+        // private final Stinger stinger;
+        private final Climb climb;
+        private final Limelight limelight;
+        private final LightWorkNoReaction lightWorkNoReaction;
         private final DriveCommand driveCommand;
+        private final IntakeCommand intakeCommand;
+        // private final StingerCommand stingerCommand;
+        private final ShooterCommand shooterCommand;
+        // private final AutoIntakeCommand autoIntakeCommand;
+        // private final AutoShooterCommand autoShooterCommand;
+        // private final AutoTransferCommand autoTransferCommand;
+        // private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
+        // private final ClimbCommand climbCommand;
+      
+
 
         private final ManualControls manualControls = new ManualControls(new XboxController(0), new XboxController(1));
 
@@ -40,12 +72,35 @@ public class RobotContainer {
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
+                limelight = new Limelight();
                 drivetrain = new Drivetrain();
-                driveCommand = new DriveCommand(drivetrain, manualControls);
+                shooter = new Shooter();
+                intake = new Intake(shooter);
+                // stinger = new Stinger();
+                transfer = new Transfer();
+                climb = new Climb();
+                lightWorkNoReaction = new LightWorkNoReaction();
+                driveCommand = new DriveCommand(drivetrain, manualControls, limelight);
+                intakeCommand = new IntakeCommand(intake, manualControls);
+                shooterCommand = new ShooterCommand(shooter, limelight, transfer, lightWorkNoReaction, manualControls);
+                // stingerCommand = new StingerCommand(stinger, shooter, transfer, manualControls);
+                // autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
+                // autoShooterCommand = new AutoShooterCommand(shooter);
+                // autoTransferCommand = new AutoTransferCommand(transfer);
+                // lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, manualControls);
+                // climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
 
                 drivetrain.setDefaultCommand(driveCommand);
+                intake.setDefaultCommand(intakeCommand);
+                // stinger.setDefaultCommand(stingerCommand);
+                shooter.setDefaultCommand(shooterCommand);
+                // lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
+                // climb.setDefaultCommand(climbCommand);
 
                 NamedCommands.registerCommand("print hello", Commands.print("hello"));
+                // NamedCommands.registerCommand("startShooter", autoShooterCommand);
+                // NamedCommands.registerCommand("startIntake", autoIntakeCommand);
+                // NamedCommands.registerCommand("shoot", autoTransferCommand.withTimeout(0.5));
 
                 configureBindings();
                 autoChooser = AutoBuilder.buildAutoChooser();

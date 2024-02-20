@@ -7,6 +7,13 @@ package com.team6560.frc2024.controls;
 import com.team6560.frc2024.Constants;
 // import com.team6560.frc2024.Constants.*;
 import com.team6560.frc2024.commands.DriveCommand;
+import com.team6560.frc2024.commands.IntakeCommand;
+import com.team6560.frc2024.commands.ShooterCommand;
+import com.team6560.frc2024.commands.ClimbCommand;
+import com.team6560.frc2024.commands.StingerCommand;
+import com.team6560.frc2024.commands.LightWorkNoReactionCommand;
+
+
 import com.team6560.frc2024.utility.NumberStepper;
 import com.team6560.frc2024.utility.PovNumberStepper;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -18,13 +25,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class ManualControls implements DriveCommand.Controls {
+public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls, ShooterCommand.Controls, StingerCommand.Controls, ClimbCommand.Controls, LightWorkNoReactionCommand.Controls {
   private XboxController xbox;
 
   private final PovNumberStepper speed;
   private final PovNumberStepper turnSpeed;
 
-  private NetworkTable limelightTable;
+  // private NetworkTable limelightTable;
 
   private NetworkTable climbTable;
 
@@ -76,7 +83,7 @@ public class ManualControls implements DriveCommand.Controls {
       .add("Rotation Joystick", this::driveRotationX);
 
     
-    limelightTable = NetworkTableInstance.getDefault().getTable("Limelight");
+    // limelightTable = NetworkTableInstance.getDefault().getTable("Limelight");
     intakeTable = NetworkTableInstance.getDefault().getTable("Intake");
     armTable = NetworkTableInstance.getDefault().getTable("Arm");
     intakeTable.getEntry("speed").setDouble(0.0);
@@ -119,15 +126,81 @@ public class ManualControls implements DriveCommand.Controls {
     return value;
   }
 
-  // private static double modifyAxis2(double value) {
-  //   // Deadband
-  //   value = deadband(value, 0.1);
 
-  //   // Square the axis
-  //   value = Math.copySign(value * value, value);
 
-  //   return value;
-  // }
+  /* INTAKE */
+  @Override
+  public boolean getIntakeIn() {
+    return controlStation.getRightBumper();
+  }
+
+  @Override
+  public boolean getIntakeInReleased() {
+    return controlStation.getRightBumperReleased();
+  }
+
+  @Override
+  public boolean getIntakeOut() {
+    return controlStation.getLeftBumper();
+  }
+  
+  @Override
+  public boolean getIntakeOutReleased() {
+    return controlStation.getLeftBumperReleased();
+  }
+  
+  /* SHOOTER */
+  @Override
+  public boolean getManualShootShooter() {
+    return xbox.getRightTriggerAxis() > 0.5;
+  }
+
+  @Override
+  public boolean getSetShootMode() {
+    return controlStation.getLeftTriggerAxis() > 0.2;
+  }
+
+  @Override
+  public boolean setStowPos() {
+    return xbox.getBButtonPressed();
+  }
+
+
+  /*CLIMB */
+  @Override
+  public double getClimbControls() {
+    return controlStation.getRightY(); 
+  }
+
+  /* STINGER */
+  @Override
+  public boolean isStingerAutoMode() {
+    return controlStation.getXButton();
+  }
+
+  @Override
+  public boolean manualStow() {
+    return xbox.getBButtonPressed();
+  }
+
+  @Override
+  public boolean manualStingerIntakePos() {
+    return controlStation.getYButtonPressed();
+  }
+
+  @Override
+  public boolean manualStingerShooterTransfer() {
+    return controlStation.getBButtonPressed();
+  }
+
+  @Override
+  public double manualElevatorVelControl() {
+    return controlStation.getLeftY();
+  }
+
+  public double manualStingerAngleControl() {
+    return controlStation.getRightX();
+  }
 
   /**
    * Returns the x component of the robot's velocity, as controlled by the Xbox
@@ -159,12 +232,12 @@ public class ManualControls implements DriveCommand.Controls {
    */
   @Override
   public double driveRotationX() {
-    return -modifyAxis(xbox.getRightX() * turnSpeed.get());
+    return modifyAxis(xbox.getRightX() * turnSpeed.get());
   }
 
   @Override
   public double driveRotationY() {
-    return -modifyAxis(xbox.getRightY() * turnSpeed.get());
+    return modifyAxis(xbox.getRightY() * turnSpeed.get());
   }
 
   /**
@@ -182,6 +255,11 @@ public class ManualControls implements DriveCommand.Controls {
   @Override
   public boolean driveResetGlobalPose() {
     return xbox.getBackButton();
+  }
+
+  @Override
+  public boolean isAutoAimOn() {
+    return xbox.getAButton();
   }
 
 }

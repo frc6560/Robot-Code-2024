@@ -20,6 +20,8 @@ import com.pathplanner.lib.util.GeometryUtil;
 // UTIL:
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+
 // import edu.wpi.first.math.Pair;
 // import java.util.function.Supplier;
 import static com.team6560.frc2024.Constants.*;
@@ -29,6 +31,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -75,10 +80,12 @@ public class Drivetrain extends SubsystemBase {
         private final SwerveDriveOdometry odometry;
 
         public Drivetrain() {
+                ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
                 m_frontLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
-                                // .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-                                // .withSize(2, 4)
-                                // .withPosition(6, 0))
+                                .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
+                                .withSize(2, 4)
+                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_LEFT_MODULE_STEER_MOTOR)
@@ -87,6 +94,9 @@ public class Drivetrain extends SubsystemBase {
                                 .build();
 
                 m_frontRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
+                .withSize(2, 4)
+                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_RIGHT_MODULE_STEER_MOTOR)
@@ -95,6 +105,9 @@ public class Drivetrain extends SubsystemBase {
                                 .build();
 
                 m_backLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
+                                .withSize(2, 4)
+                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.BACK_LEFT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_LEFT_MODULE_STEER_MOTOR)
@@ -103,6 +116,9 @@ public class Drivetrain extends SubsystemBase {
                                 .build();
 
                 m_backRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
+                                .withSize(2, 4)
+                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_RIGHT_MODULE_STEER_MOTOR)
@@ -271,7 +287,7 @@ public class Drivetrain extends SubsystemBase {
 
         // Gets the current pose of the robot according to the odometer/estimator
         public Pose2d getPose() {
-                return odometry.getPoseMeters();
+                return odometry.getPoseMeters(); // TODO: with SwerveDrivePoseEstimator... i think this is already done.
         }
 
         public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
@@ -306,5 +322,12 @@ public class Drivetrain extends SubsystemBase {
         public SwerveModuleState[] getStates() {
                 return new SwerveModuleState[] { m_frontLeftModule.getState(), m_frontRightModule.getState(),
                                 m_backLeftModule.getState(), m_backRightModule.getState() };
+        }
+
+        public double getDistanceMeters() {
+                Pose2d desiredTargetBlue = new Pose2d(new Translation2d(1.0, 2.0), Rotation2d.fromRotations(0.5));
+                Pose2d predictedBotPose = getPose();
+
+                return desiredTargetBlue.minus(predictedBotPose).getTranslation().getNorm();
         }
 }
