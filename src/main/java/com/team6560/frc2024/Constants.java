@@ -116,7 +116,7 @@ public static final double SHOOTER_GROUND_INTAKE_POSITION = 5;
 
 public static final double SHOOTER_WALL_INTAKE_POSITION = 36.8;
 
-public static final double SHOOTER_AMP_ARC_POS = 38.5;
+public static final double SHOOTER_AMP_ARC_POS = 45.03;
 
 public static final double SHOOTER_SUBWOOFER_POSITION = 45;
 
@@ -138,9 +138,9 @@ public static final double TRAP_WALL_ANGLE = 0.8;
 public static final double TRAP_WALL_FEED_RATE = -0.8;
 
 
-public static final double TRAP_AMP_ANGLE = 41;
+public static final double TRAP_AMP_ANGLE = 35;
 
-public static final double TRAP_AMP_EXTENTION = 6.05;
+public static final double TRAP_AMP_EXTENTION = 5.06;
 
 public static final double TRAP_AMP_FEED_RATE = 1;
 

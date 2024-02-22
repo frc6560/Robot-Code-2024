@@ -93,7 +93,8 @@ public class Trap extends SubsystemBase {
     HardwareLimitSwitchConfigs elevatorSwitches = new HardwareLimitSwitchConfigs();
     elevatorSwitches.ReverseLimitAutosetPositionEnable = true;
     elevatorSwitches.ReverseLimitAutosetPositionValue = 0.0;
-
+elevatorSwitches.ForwardLimitAutosetPositionEnable = true;
+    elevatorSwitches.ForwardLimitAutosetPositionValue = 8.65;
 
     // set Motion Magic settings
     MotionMagicConfigs elevatorMM = elevatorConfigs.MotionMagic;
