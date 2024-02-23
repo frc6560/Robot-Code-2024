@@ -5,6 +5,7 @@
 package com.team6560.frc2024;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.team6560.frc2024.commands.ClimbCommand;
 
@@ -22,6 +23,7 @@ import com.team6560.frc2024.subsystems.Limelight;
 import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Trap;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -60,6 +62,11 @@ public class RobotContainer {
                 drivetrain = new Drivetrain();
                 climb = new Climb();
 
+                NamedCommands.registerCommand("Intake", null);
+                NamedCommands.registerCommand("Aim", null);
+                NamedCommands.registerCommand("Shoot", null);
+                NamedCommands.registerCommand("AAS", null); // aim and shoot
+
 
                 driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
                 ShooterCommand = new ShooterCommand(shooter, trap, limelight, manualControls);
@@ -69,22 +76,16 @@ public class RobotContainer {
 
 
                 drivetrain.setDefaultCommand(driveCommand);
-                shooter.setDefaultCommand(ShooterCommand);
-                intake.setDefaultCommand(intakeCommand);
-                trap.setDefaultCommand(trapCommand);
-                climb.setDefaultCommand(climbCommand);
+                // shooter.setDefaultCommand(ShooterCommand);
+                // intake.setDefaultCommand(intakeCommand);
+                // trap.setDefaultCommand(trapCommand);
+                // climb.setDefaultCommand(climbCommand);
 
-                configureBindings();
                 autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
-        }
-
-        private void configureBindings() {
-                SmartDashboard.putData("5 Balls", new PathPlannerAuto("5 Ball"));
-                SmartDashboard.putData("Basic 2 Ball", new PathPlannerAuto("Basic 2 Ball"));
-                SmartDashboard.putData("Short Line", new PathPlannerAuto("Short Lines"));
-                SmartDashboard.putData("Copy of Short Line", new PathPlannerAuto("Copy of Short Lines"));
-                SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
+                autoChooser.addOption("2b far", new PathPlannerAuto("2b far"));
+                autoChooser.addOption("straight", new PathPlannerAuto("straight"));
+                autoChooser.setDefaultOption("2b far", new PathPlannerAuto("2b far"));
         }
 
         /**

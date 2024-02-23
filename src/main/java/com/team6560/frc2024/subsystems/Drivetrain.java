@@ -86,8 +86,8 @@ public class Drivetrain extends SubsystemBase {
                 
                 m_frontLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
                                 .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
-                                .withSize(2, 4)
-                                .withPosition(6, 0))
+                                        .withSize(2, 4)
+                                        .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_LEFT_MODULE_STEER_MOTOR)
@@ -97,8 +97,8 @@ public class Drivetrain extends SubsystemBase {
 
                 m_frontRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
                                 .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
-                                .withSize(2, 4)
-                                .withPosition(6, 0))
+                                        .withSize(2, 4)
+                                        .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_RIGHT_MODULE_STEER_MOTOR)
@@ -108,8 +108,8 @@ public class Drivetrain extends SubsystemBase {
 
                 m_backLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
                                 .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
-                                .withSize(2, 4)
-                                .withPosition(6, 0))
+                                        .withSize(2, 4)
+                                        .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.BACK_LEFT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_LEFT_MODULE_STEER_MOTOR)
@@ -119,8 +119,8 @@ public class Drivetrain extends SubsystemBase {
 
                 m_backRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
                                 .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-                                .withSize(2, 4)
-                                .withPosition(6, 0))
+                                        .withSize(2, 4)
+                                        .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR)
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_RIGHT_MODULE_STEER_MOTOR)
@@ -146,42 +146,19 @@ public class Drivetrain extends SubsystemBase {
                 } else {
                         resetOdometry(new Pose2d());
                 }
-                ;
+
 
                 AutoBuilder.configureHolonomic(
-                                () -> getOdometryPose2dNoApriltags(), // Pose2d supplier
-                                (pose) -> resetOdometry(pose), // Pose2d consumer, used to reset odometry at
-                                                               // the beginning of
-                                                               // auto
-                                () -> getChassisSpeeds(),
-                                (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds),
-                                // Constants.m_kinematics, // SwerveDriveKinematics
-                                // new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for translation
-                                // error (used to create the X
-                                // // and Y PID controllers)
-                                // new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation
-                                // error (used to create the
-                                // // rotation controller)
-                                // (state) -> drivetrain.setChassisState(state), // Module states consumer used
-                                // to output to the drive
-                                // subsystem
-                                Constants.pathFollowerConfig,
-                                // eventMap,
-                                () -> {
-                                        // Boolean supplier that controls when the path will be mirrored for the red
-                                        // alliance
-                                        // This will flip the path being followed to the red side of the field.
-                                        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                                        // var alliance = DriverStation.getAlliance();
-                                        if (alliance.isPresent()) {
-                                                return alliance.get() == DriverStation.Alliance.Red;
-                                        }
-                                        return false;
-                                },
-                                this // The drive subsystem. Used to properly set the requirements of path
-                                     // following
-                                     // commands
+                        this::getOdometryPose2dNoApriltags, 
+                        (pose) -> resetOdometry(pose), 
+                        this::getChassisSpeeds, 
+                        (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds), 
+                        Constants.pathFollowerConfig, 
+                        ()-> {
+                                if (alliance.isPresent()) return alliance.get() == DriverStation.Alliance.Red;
+                                else return false;
+                        }, 
+                        this
                 );
 
                 this.fieldOnlyOdometry = new Field2d();

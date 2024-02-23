@@ -21,8 +21,6 @@ public class DriveCommand extends Command {
 
         double driveRotationX();
 
-        double driveRotationY();
-
         boolean driveResetYaw();
 
         boolean driveResetGlobalPose();

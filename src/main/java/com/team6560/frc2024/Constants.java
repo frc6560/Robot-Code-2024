@@ -54,25 +54,25 @@ public final class Constants {
   public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 6;
   public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 11;
   public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2;
-  public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(22.04);
+  public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(202.04);
 
   public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 7;
   public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 12;
   public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 3;
-  public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(289.20);
+  public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(109.20);
 
   public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5;
   public static final int BACK_LEFT_MODULE_STEER_MOTOR = 9;
   public static final int BACK_LEFT_MODULE_STEER_ENCODER = 1;
-  public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(140.58);
+  public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(320.58);
 
   public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 8;
   public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 10;
   public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 4;
-  public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(124.18);
+  public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(304.18);
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-      SdsModuleConfigurations.MK4I_L2.getDriveReduction() *
+      SdsModuleConfigurations.MK4I_L2.getDriveReduction() * 
       SdsModuleConfigurations.MK4I_L2.getWheelDiameter() * Math.PI;
 
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
@@ -93,9 +93,9 @@ public final class Constants {
       new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
   
   public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-    new PIDConstants(0.5, 0, 0), // Translation constants 
+    new PIDConstants(0.4, 0, 0), // Translation constants 
     new PIDConstants(0.5, 0, 0), // Rotation constants 
-    MAX_VELOCITY_METERS_PER_SECOND,
+    MAX_VELOCITY_METERS_PER_SECOND / 2,
     DRIVETRAIN_WHEELBASE_METERS,// Drive base radius (distance from center to furthest module) 
     new ReplanningConfig()
   );
