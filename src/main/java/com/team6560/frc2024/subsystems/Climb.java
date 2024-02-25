@@ -27,8 +27,12 @@ public class Climb extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setClimbOutput(double output){
-    leftClimbMotor.set(output);
+  public void setClimbOutputLeft(double output){
+    leftClimbMotor.set(-output);
+    
+  }
+
+  public void setClimbOutputRight(double output){
     rightClimbMotor.set(output);
   }
 }

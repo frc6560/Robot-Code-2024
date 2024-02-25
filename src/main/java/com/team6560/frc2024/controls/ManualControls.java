@@ -200,9 +200,12 @@ public class ManualControls implements DriveCommand.Controls {
 
   // ------------------------------ CLIMB ------------------------------ \\
 
-  public double getClimb(){
+  public double getClimbLeft(){
     double l = controlStation.getLeftY();
     return l;
     // return 0.0;
+  }
+  public double getClimbRight(){
+   return controlStation.getRightX();
   }
 }
