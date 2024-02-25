@@ -5,6 +5,7 @@
 package com.team6560.frc2024.commands;
 
 import com.team6560.frc2024.subsystems.Shooter;
+import com.team6560.frc2024.subsystems.Stinger;
 import com.team6560.frc2024.subsystems.Limelight;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,6 +47,7 @@ public class ShooterCommand extends Command {
   }
 
   private final Shooter Shooter;
+  private final Stinger stinger;
   private final Limelight limelight;
   private final Controls controls;
   private final Transfer Transfer;
@@ -56,10 +58,11 @@ public class ShooterCommand extends Command {
   // private final double IDLE_RPM = 60.0;
   // private boolean shooterAutoMoving;
 
-  public ShooterCommand(Shooter Shooter, Limelight limelight, Transfer Transfer, LightWorkNoReaction Light,
+  public ShooterCommand(Shooter Shooter, Stinger stinger, Limelight limelight, Transfer Transfer, LightWorkNoReaction Light,
       Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Shooter = Shooter;
+    this.stinger = stinger;
     this.limelight = limelight;
     this.Transfer = Transfer;
     this.controls = controls;
@@ -84,6 +87,8 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // This method will be called once per scheduler run
+    Shooter.setReadyToMove(stinger.isShooterReadyToMove());
     shooterStuff();
     transferStuff();
   }
@@ -140,7 +145,7 @@ public class ShooterCommand extends Command {
       Transfer.setSpeed(0);
     }
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
