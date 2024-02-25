@@ -39,7 +39,7 @@ public class Shooter extends SubsystemBase {
     this.limelight = limelight;
     this.trap = trap;
 
-    arcMotor = new TalonFX(Constants.ARC_MOTOR);
+    arcMotor = new TalonFX(Constants.ARC_MOTOR, "Canivore");
     shooterMotorRight = new TalonFX(Constants.SHOOTER_RIGHT_MOTOR);
     shooterMotorLeft = new TalonFX(Constants.SHOOTER_LEFT_MOTOR);
 
@@ -58,7 +58,6 @@ public class Shooter extends SubsystemBase {
     .add("Target Position", ()->targetPosition)
     .add("Current Draw Shooter", this::getCurrentDraw)
     .add("Vertical Position Shooter", this::getShooterArcPosition)
-    .add("Vertical Angle Shooter", this::getShooterArcAngleDegrees)
     .add("Transfer Triggered", this::getTransferSensorTriggered)
     .add("Feeder Proximity Sensor", ()->colorSensor.getProximity());
   }
@@ -66,6 +65,8 @@ public class Shooter extends SubsystemBase {
   private void setupMotors(){
     arcMotor.setNeutralMode(NeutralModeValue.Brake);
     arcMotor.setInverted(false);
+    arcMotor.optimizeBusUtilizationForAll(arcMotor);
+
     
     // in init function
     TalonFXConfiguration arcConfigs = new TalonFXConfiguration();
@@ -145,8 +146,8 @@ public class Shooter extends SubsystemBase {
 
   public boolean readyToShoot(){
     return ( 
-      Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
-      Math.abs(getShooterArcPosition() - targetPosition) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF
+      Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF //&&
+      // Math.abs(getShooterArcPosition() - targetPosition) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF
       // (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ) && 
       // trap.isClearOfShooter()
     );
@@ -168,8 +169,5 @@ public class Shooter extends SubsystemBase {
 
   public double getShooterArcPosition(){
     return arcMotor.getRotorPosition().getValueAsDouble();
-  }
-  public double getShooterArcAngleDegrees(){
-    return getShooterArcPosition() / Constants.SHOOTER_ARC_GEAR_RATIO * 360;
   }
 }

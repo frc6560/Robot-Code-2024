@@ -15,6 +15,8 @@ import com.team6560.frc2024.commands.DriveCommand;
 import com.team6560.frc2024.commands.IntakeCommand;
 import com.team6560.frc2024.commands.ShooterCommand;
 import com.team6560.frc2024.commands.TrapCommand;
+import com.team6560.frc2024.commands.Autos.AutoIntake;
+import com.team6560.frc2024.commands.Autos.AutoShooter;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Climb;
 import com.team6560.frc2024.subsystems.Drivetrain;
@@ -62,9 +64,9 @@ public class RobotContainer {
                 drivetrain = new Drivetrain();
                 climb = new Climb();
 
-                NamedCommands.registerCommand("Intake", null);
+                NamedCommands.registerCommand("Intake", new AutoIntake(intake, shooter));
                 NamedCommands.registerCommand("Aim", null);
-                NamedCommands.registerCommand("Shoot", null);
+                NamedCommands.registerCommand("Shoot", new AutoShooter(shooter));
                 NamedCommands.registerCommand("AAS", null); // aim and shoot
 
 
@@ -76,10 +78,10 @@ public class RobotContainer {
 
 
                 drivetrain.setDefaultCommand(driveCommand);
-                // shooter.setDefaultCommand(ShooterCommand);
-                // intake.setDefaultCommand(intakeCommand);
-                // trap.setDefaultCommand(trapCommand);
-                // climb.setDefaultCommand(climbCommand);
+                shooter.setDefaultCommand(ShooterCommand);
+                intake.setDefaultCommand(intakeCommand);
+                trap.setDefaultCommand(trapCommand);
+                climb.setDefaultCommand(climbCommand);
 
                 autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);

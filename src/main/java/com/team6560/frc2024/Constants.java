@@ -93,9 +93,9 @@ public final class Constants {
       new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
   
   public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-    new PIDConstants(0.4, 0, 0), // Translation constants 
-    new PIDConstants(0.5, 0, 0), // Rotation constants 
-    MAX_VELOCITY_METERS_PER_SECOND / 2,
+    new PIDConstants( 0.2, 0.0, 0.0), // Translation constants 
+    new PIDConstants(2.5, 0, 0), // Rotation constants 
+    MAX_VELOCITY_METERS_PER_SECOND / 2 ,
     DRIVETRAIN_WHEELBASE_METERS,// Drive base radius (distance from center to furthest module) 
     new ReplanningConfig()
   );
