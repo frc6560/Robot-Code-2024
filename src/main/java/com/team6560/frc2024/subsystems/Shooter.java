@@ -95,7 +95,7 @@ public class Shooter extends SubsystemBase {
     var arcSlot0Configs = arcPIDConfig.Slot0;
     arcSlot0Configs.kS = 0.1;
     arcSlot0Configs.kV = 0.2;
-    arcSlot0Configs.kP = 0.6;
+    arcSlot0Configs.kP = 0.8;
     arcSlot0Configs.kI = 0;
     arcSlot0Configs.kD = 0;
     
