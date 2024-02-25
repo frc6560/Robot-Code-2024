@@ -41,6 +41,8 @@ public class ShooterCommand extends Command {
     boolean getShooterStingerTransfer();
 
     boolean getStingerShooterTransfer();
+
+    boolean getAmpOuttake();
   }
 
   private final Shooter shooter;
@@ -149,6 +151,10 @@ public class ShooterCommand extends Command {
           }
         }
       }
+    }
+
+    else if (controls.getAmpOuttake()) {
+      shooter.setTargetAngle(StingerConfigs.AMP_OUTTAKE.getShooterAngle());
     }
   }
   
