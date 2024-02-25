@@ -9,31 +9,31 @@ import com.team6560.frc2024.subsystems.Transfer;
 
 public class AutoTransferCommand extends Command {
 
-  private final Transfer Transfer;
+  private final Transfer transfer;
   /** Creates a new AutoTransferCommand. */
-  public AutoTransferCommand(Transfer Transfer) {
+  public AutoTransferCommand(Transfer transfer) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.Transfer = Transfer;
-    addRequirements(Transfer);
+    this.transfer = transfer;
+    addRequirements(transfer);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Transfer.setIsAutoShooting(true);
+    transfer.setIsAutoShooting(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Transfer.setSpeed(1);
+    transfer.setSpeed(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Transfer.setSpeed(0);
-    Transfer.setIsAutoShooting(false);
+    transfer.setSpeed(0);
+    transfer.setIsAutoShooting(false);
   }
 
   // Returns true when the command should end.

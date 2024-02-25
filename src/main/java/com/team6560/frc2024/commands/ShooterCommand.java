@@ -5,7 +5,7 @@
 package com.team6560.frc2024.commands;
 
 import com.team6560.frc2024.subsystems.Shooter;
-import com.team6560.frc2024.subsystems.Stinger;
+// import com.team6560.frc2024.subsystems.Stinger;
 import com.team6560.frc2024.subsystems.Limelight;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,11 +28,6 @@ public class ShooterCommand extends Command {
 
     boolean setStowPos();
 
-    // boolean manualMode();
-    // double getManualAim();
-
-    // double getManualShooterSpeed();
-
     boolean getIntakeIn();
 
     boolean getIntakeInReleased();
@@ -46,31 +41,25 @@ public class ShooterCommand extends Command {
     boolean getShooterStingerTransfer();
   }
 
-  private final Shooter Shooter;
-  private final Stinger stinger;
+  private final Shooter shooter;
   private final Limelight limelight;
   private final Controls controls;
-  private final Transfer Transfer;
-  private final LightWorkNoReaction Light;
+  private final Transfer transfer;
+  private final LightWorkNoReaction light;
 
   private boolean isShooting;
 
-  // private final double IDLE_RPM = 60.0;
-  // private boolean shooterAutoMoving;
-
-  public ShooterCommand(Shooter Shooter, Stinger stinger, Limelight limelight, Transfer Transfer, LightWorkNoReaction Light,
-      Controls controls) {
+  public ShooterCommand(Shooter shooter, Limelight limelight, Transfer transfer, LightWorkNoReaction light, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.Shooter = Shooter;
-    this.stinger = stinger;
+    this.shooter = shooter;
     this.limelight = limelight;
-    this.Transfer = Transfer;
+    this.transfer = transfer;
     this.controls = controls;
-    this.Light = Light;
+    this.light = light;
 
     this.isShooting = false;
   
-    addRequirements(Shooter, Transfer, Light);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -88,19 +77,18 @@ public class ShooterCommand extends Command {
   @Override
   public void execute() {
     // This method will be called once per scheduler run
-    Shooter.setReadyToMove(stinger.isShooterReadyToMove());
     shooterStuff();
     transferStuff();
   }
 
   public void shooterStuff() {
     if (controls.getSetShootMode()) {
-      Light.setColorMode(CandleColorModes.SHOOT_MODE);
+      light.setColorMode(CandleColorModes.SHOOT_MODE);
       isShooting = true;
       if (controls.getManualShootShooter()) {
-        Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
+        transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
       } else {
-        Transfer.setSpeed(0.0);
+        transfer.setSpeed(0.0);
       }
       // if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
       //   Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
@@ -108,44 +96,44 @@ public class ShooterCommand extends Command {
       if (limelight.hasTarget()) {
         double[] shooterAim = autoShooterAim();
         if (!shooterAim.equals(null)) {
-          Shooter.setTargetRPM(shooterAim[0]);
-          Shooter.setTargetAngle(shooterAim[1]);
+          shooter.setTargetRPM(shooterAim[0]);
+          shooter.setTargetAngle(shooterAim[1]);
 
-          if (Transfer.isInProximity() && Shooter.isReadyRPMAndAngle()) {
-            Transfer.setSpeed(1.0);
+          if (transfer.isInProximity() && shooter.isReadyRPMAndAngle()) {
+            transfer.setSpeed(1.0);
           }
         }
       } else {
-        Shooter.setTargetRPM(6000.0);
-        Shooter.setTargetAngle(Constants.MAX_ARC_ANGLE_FOR_INTAKE);
+        shooter.setTargetRPM(6000.0);
+        shooter.setTargetAngle(Constants.MAX_ARC_ANGLE_FOR_INTAKE);
       }
     } else if (!controls.getSetShootMode() && isShooting) {
       isShooting = false;
-      Light.setColorMode(CandleColorModes.NO_MODE);
-      Shooter.setStowPos();
-      Shooter.setTargetRPM(0.0);
-      Transfer.setSpeed(0.0);
+      light.setColorMode(CandleColorModes.NO_MODE);
+      shooter.setStowPos();
+      shooter.setTargetRPM(0.0);
+      transfer.setSpeed(0.0);
     } else if (controls.getHumanStationIntake()) {
-      Shooter.setTargetAngle(StingerConfigs.HUMAN_STATION_INTAKE.getShooterAngle());
+      shooter.setTargetAngle(StingerConfigs.HUMAN_STATION_INTAKE.getShooterAngle());
     } else if (controls.getShooterStingerTransfer()) {
-      Shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
+      shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
     }
   }
 
   public void transferStuff() {
     if (controls.getIntakeIn()) {
-      if (!Transfer.isInProximity()) {
-        Transfer.setSpeed(0.5);
+      if (!transfer.isInProximity()) {
+        transfer.setSpeed(0.5);
       } else {
-        Transfer.setSpeed(0);
+        transfer.setSpeed(0);
       }
     } else if (controls.getIntakeOut()) {
-      Transfer.setSpeed(-0.9);
+      transfer.setSpeed(-0.9);
     } else if (controls.getIntakeInReleased() || controls.getIntakeOutReleased()) {
-      Transfer.setSpeed(0);
+      transfer.setSpeed(0);
     }
   }
-  
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

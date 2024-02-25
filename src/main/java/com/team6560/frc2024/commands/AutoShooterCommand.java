@@ -10,22 +10,22 @@ import com.team6560.frc2024.subsystems.Shooter;
 public class AutoShooterCommand extends Command {
   /** Creates a new AutoShooterCommand. */
 
-  private final Shooter Shooter;
+  private final Shooter shooter;
 
   private final int AUTO_SHOOTER_RPM = 2000;
   
-  public AutoShooterCommand(Shooter Shooter) {
+  public AutoShooterCommand(Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     
-      this.Shooter = Shooter;
+      this.shooter = shooter;
   
-      addRequirements(Shooter);
+      addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Shooter.setTargetRPM(AUTO_SHOOTER_RPM);
+    shooter.setTargetRPM(AUTO_SHOOTER_RPM);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +35,7 @@ public class AutoShooterCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Shooter.setTargetRPM(0);
+    shooter.setTargetRPM(0);
   }
 
   // Returns true when the command should end.

@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class LightWorkNoReactionCommand extends Command {
   /** Creates a new LightWorkNoSweatCommand. */
 
-  private final LightWorkNoReaction Light;
-  private final Transfer Transfer;
+  private final LightWorkNoReaction light;
+  private final Transfer transfer;
   private final Controls controls;
 
   public static interface Controls {
@@ -30,12 +30,11 @@ public class LightWorkNoReactionCommand extends Command {
     boolean getIntakeOutReleased();
   }
 
-  public LightWorkNoReactionCommand(LightWorkNoReaction Light, Transfer Transfer, Controls controls) {
+  public LightWorkNoReactionCommand(LightWorkNoReaction light, Transfer transfer, Controls controls) {
     // Use addRequrements() here to declare subsystem dependencies.
-    addRequirements(Light);
-    addRequirements(Transfer);
-    this.Light = Light;
-    this.Transfer = Transfer;
+    addRequirements(light);
+    this.light = light;
+    this.transfer = transfer;
     this.controls = controls;
   }
 
@@ -47,13 +46,13 @@ public class LightWorkNoReactionCommand extends Command {
   @Override
   public void execute() {
     if (controls.getIntakeInReleased() || controls.getIntakeOutReleased()) {
-      Light.setColorMode(CandleColorModes.NO_MODE);
+      light.setColorMode(CandleColorModes.NO_MODE);
     }
     if (controls.getIntakeIn() || controls.getIntakeOut()) {
-      Light.setColorMode(CandleColorModes.INTAKE_MODE);
+      light.setColorMode(CandleColorModes.INTAKE_MODE);
     }
-    else if (Transfer.isInProximity()) {
-      Light.setColorMode(CandleColorModes.HOLD_MODE);
+    else if (transfer.isInProximity()) {
+      light.setColorMode(CandleColorModes.HOLD_MODE);
     }
   }
 

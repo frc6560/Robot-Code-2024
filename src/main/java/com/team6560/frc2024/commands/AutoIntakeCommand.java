@@ -13,11 +13,11 @@ public class AutoIntakeCommand extends Command {
   private final Intake Intake;
   private final Transfer Transfer;
   /** Creates a new AutoIntakeCommand. */
-  public AutoIntakeCommand(Intake Intake, Transfer Transfer) {
+  public AutoIntakeCommand(Intake intake, Transfer transfer) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.Intake = Intake;
-    this.Transfer = Transfer;
-    addRequirements(Intake, Transfer);
+    this.Intake = intake;
+    this.Transfer = transfer;
+    addRequirements(intake, transfer);
   }
 
   // Called when the command is initially scheduled.

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class IntakeCommand extends Command {
 
-  private final Intake Intake;
+  private final Intake intake;
 
   // private final Transfer Transfer;
 
@@ -23,10 +23,10 @@ public class IntakeCommand extends Command {
 
   }
   /** Creates a new IntakeCommand. */
-  public IntakeCommand(Intake Intake, Controls controls) {
+  public IntakeCommand(Intake intake, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Intake);
-    this.Intake = Intake;
+    addRequirements(intake);
+    this.intake = intake;
     this.controls = controls;
   }
 
@@ -38,11 +38,11 @@ public class IntakeCommand extends Command {
   @Override
   public void execute() {
     if (controls.getIntakeIn()) {
-      Intake.setSpeed(0.9);
+      intake.setSpeed(0.9);
     } else if (controls.getIntakeOut()) {
-      Intake.setSpeed(-0.9);
+      intake.setSpeed(-0.9);
     } else {
-      Intake.setSpeed(0.0);
+      intake.setSpeed(0.0);
     }
   }
 

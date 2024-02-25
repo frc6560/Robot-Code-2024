@@ -39,7 +39,7 @@ public class StingerCommand extends Command {
     this.transfer = transfer;
     this.controls = controls;
 
-    addRequirements(stinger, shooter, transfer); 
+    addRequirements(stinger); 
     
   }
 
