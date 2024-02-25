@@ -80,7 +80,7 @@ public class RobotContainer {
                 transfer = new Transfer();
                 climb = new Climb();
                 lightWorkNoReaction = new LightWorkNoReaction();
-                driveCommand = new DriveCommand(drivetrain, manualControls, limelight);
+                driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
                 intakeCommand = new IntakeCommand(intake, manualControls);
                 shooterCommand = new ShooterCommand(shooter, limelight, transfer, lightWorkNoReaction, manualControls);
                 // stingerCommand = new StingerCommand(stinger, shooter, transfer, manualControls);

@@ -33,7 +33,7 @@ public class DriveCommand extends Command {
 
     private Limelight limelight;
 
-    public DriveCommand(Drivetrain drivetrainSubsystem, Controls controls, Limelight limelight) {
+    public DriveCommand(Drivetrain drivetrainSubsystem, Limelight limelight, Controls controls) {
         this.drivetrain = drivetrainSubsystem;
         this.controls = controls;
         this.limelight = limelight;
