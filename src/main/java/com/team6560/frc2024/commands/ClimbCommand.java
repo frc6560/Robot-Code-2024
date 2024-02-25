@@ -29,7 +29,9 @@ public class ClimbCommand extends Command {
   private final Controls controls; 
 
   public static interface Controls {
-    double getClimbControls();
+    double getLeftClimbControls();
+
+    double getRightClimbControls();
   }
   /** Creates a new ClimbCommand. */
   public ClimbCommand(Climb climb, Controls controls, Shooter shooter, Stinger stinger) {
@@ -76,7 +78,7 @@ public class ClimbCommand extends Command {
     if (shooterDesiredPos 
     && stingerInitDesiredPos
     && !retractedClimb
-    && (Math.abs(climb.getVerticalPose() - ClimbConfigs.CLIMB_RETRACTED.getClimbPos()) < ClimbConstants.CLIMB_ACCEPTABLE_DIFF)) {
+    && (Math.abs(climb.getRightVerticalPose() - ClimbConfigs.CLIMB_RETRACTED.getClimbPos()) < ClimbConstants.CLIMB_ACCEPTABLE_DIFF)) {
       retractedClimb = true;
     }
     
@@ -108,13 +110,15 @@ public class ClimbCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.setHeightVelocity(controls.getClimbControls());
+    climb.setRightHeightVelocity(controls.getRightClimbControls());
+    climb.setLeftHeightVelocity(controls.getLeftClimbControls());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climb.setHeightVelocity(0.0);
+    climb.setRightHeightVelocity(0.0);
+    climb.setLeftHeightVelocity(0.0);
   }
 
   // Returns true when the command should end.

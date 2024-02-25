@@ -66,20 +66,38 @@ public class Climb extends SubsystemBase {
     rightClimbMotorPID.setReference(targetPosRotation, ControlType.kPosition);
   }
 
-  public void setHeightVelocity(double targetVelocity) {
+  public void setLeftHeightVelocity(double targetVelocity) {
     final double slowZone = 0;
-    if (getVerticalPose() < Constants.CLIMB_MIN_VERTICAL_ROTATION && targetVelocity < 0) {
+    if (getRightVerticalPose() < Constants.CLIMB_MIN_VERTICAL_ROTATION && targetVelocity < 0) {
       targetVelocity = 0;
-    } else if (getVerticalPose() < (Constants.CLIMB_MIN_VERTICAL_ROTATION + slowZone) && targetVelocity < 0) {
+    } else if (getRightVerticalPose() < (Constants.CLIMB_MIN_VERTICAL_ROTATION + slowZone) && targetVelocity < 0) {
       targetVelocity = Math.max(targetVelocity, -0.25);
     }
 
-    if (getVerticalPose() > Constants.CLIMB_MAX_VERTICAL_ROTATION && targetVelocity > 0) {
+    if (getRightVerticalPose() > Constants.CLIMB_MAX_VERTICAL_ROTATION && targetVelocity > 0) {
       targetVelocity = 0;
-    } else if (getVerticalPose() > (Constants.CLIMB_MAX_VERTICAL_ROTATION - slowZone) && targetVelocity > 0) {
+    } else if (getRightVerticalPose() > (Constants.CLIMB_MAX_VERTICAL_ROTATION - slowZone) && targetVelocity > 0) {
       targetVelocity = Math.min(targetVelocity, 0.25);
 
       rightClimbMotor.set(targetVelocity);
+    }
+
+  }
+
+  public void setRightHeightVelocity(double targetVelocity) {
+    final double slowZone = 0;
+    if (getRightVerticalPose() < Constants.CLIMB_MIN_VERTICAL_ROTATION && targetVelocity < 0) {
+      targetVelocity = 0;
+    } else if (getRightVerticalPose() < (Constants.CLIMB_MIN_VERTICAL_ROTATION + slowZone) && targetVelocity < 0) {
+      targetVelocity = Math.max(targetVelocity, -0.25);
+    }
+
+    if (getRightVerticalPose() > Constants.CLIMB_MAX_VERTICAL_ROTATION && targetVelocity > 0) {
+      targetVelocity = 0;
+    } else if (getRightVerticalPose() > (Constants.CLIMB_MAX_VERTICAL_ROTATION - slowZone) && targetVelocity > 0) {
+      targetVelocity = Math.min(targetVelocity, 0.25);
+
+      leftClimbMotor.set(targetVelocity);
     }
 
   }
@@ -92,11 +110,11 @@ public class Climb extends SubsystemBase {
     return rightClimbMotor.getEncoder().getVelocity();
   }
 
-  public double getVerticalPose() {
+  public double getRightVerticalPose() {
     return rightClimbMotor.getEncoder().getPosition();
   }
 
-  public double getVerticalPoseLeft() {
+  public double getLeftVerticalPose() {
     return leftClimbMotor.getEncoder().getPosition();
   }
 

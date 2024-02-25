@@ -184,7 +184,12 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   /*CLIMB */
   @Override
-  public double getClimbControls() {
+  public double getRightClimbControls() {
+    return controlStation.getRightY(); 
+  }
+
+  @Override
+  public double getLeftClimbControls() {
     return controlStation.getRightY(); 
   }
 
