@@ -48,10 +48,12 @@ public class ClimbCommand extends Command {
   public void autoClimbSequence() {
     boolean shooterDesiredPos = false, stingerInitDesiredPos = false, retractedClimb = false, shooterIsReady = false; 
     
+    //Sets the angle of the shooter to prepare for climb.
     if (!shooterDesiredPos) {
       shooter.setTargetAngle(ShooterConfigs.CLIMB_ANGLE);
     }
 
+    //if the shooter is in the right position set shooterDesiredPos to true.
     if (!shooterDesiredPos && shooter.getAngleDifference() < ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
       shooterDesiredPos = true;
     }
@@ -59,7 +61,8 @@ public class ClimbCommand extends Command {
     if (shooterDesiredPos && !stingerInitDesiredPos) {
       stinger.setAngle(StingerConfigs.HUMAN_STATION_INTAKE.getStingerAngle());
     }
-
+    
+    // if shooterDesiredPos is true and stingerInitDesiredPos is false but in the right position set stingerInitDesiredPos to true.
     if(shooterDesiredPos && !stingerInitDesiredPos
     && (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
     && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF)) {
@@ -68,7 +71,8 @@ public class ClimbCommand extends Command {
     if(shooterDesiredPos && stingerInitDesiredPos && !retractedClimb) {
       climb.setHeight(ClimbConfigs.CLIMB_RETRACTED.getClimbPos());
     }
-
+    
+    // if shooterDesiredPos is true, stingerInitDesiredPos is true, and retractedClimb is false but in the right position set retractedClimb to true.
     if (shooterDesiredPos 
     && stingerInitDesiredPos
     && !retractedClimb
@@ -77,9 +81,9 @@ public class ClimbCommand extends Command {
     }
     
     if(shooterDesiredPos && stingerInitDesiredPos && retractedClimb) {
-      shooter.setTargetAngle(StingerConfigs.SHOOT_IN_TRAP.getStingerAngle()); 
+      shooter.setTargetAngle(StingerConfigs.SHOOT_IN_TRAP.getShooterAngle()); 
     }
-  
+    // if everything but shooterIsready is false, set shooterIsReady to true.
     if(shooterDesiredPos
      && stingerInitDesiredPos
      && retractedClimb 
@@ -89,6 +93,7 @@ public class ClimbCommand extends Command {
       shooterIsReady = true;
     }
 
+    //if everything is true, set the targetRPM to 10 
     if(shooterDesiredPos && stingerInitDesiredPos && retractedClimb && shooterIsReady) {
       shooter.setTargetRPM(10); //placeholder 
     }
