@@ -62,9 +62,9 @@ public class Stinger extends SubsystemBase {
     elevatorSlot0Configs.kD = 0;
     
     var elevatorMotionMagicConfig = elevatorPIDConfig.MotionMagic;
-    elevatorMotionMagicConfig.MotionMagicCruiseVelocity = 20;
-    elevatorMotionMagicConfig.MotionMagicAcceleration = 35;
-    elevatorMotionMagicConfig.MotionMagicJerk = 70;
+    elevatorMotionMagicConfig.MotionMagicCruiseVelocity = 30;
+    elevatorMotionMagicConfig.MotionMagicAcceleration = 60;
+    elevatorMotionMagicConfig.MotionMagicJerk = 180;
 
     elevatorMotor.getConfigurator().apply(elevatorPIDConfig);
 

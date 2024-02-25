@@ -24,7 +24,7 @@ public class ShooterCommand extends Command {
 
     boolean getSetShootMode();
 
-    // boolean getSetShootModeReleased();
+    boolean getSetShootModeReleased();
 
     boolean setStowPos();
 
@@ -56,8 +56,6 @@ public class ShooterCommand extends Command {
     this.transfer = transfer;
     this.controls = controls;
     this.light = light;
-
-    this.isShooting = false;
   
     addRequirements(shooter);
   }
@@ -107,8 +105,7 @@ public class ShooterCommand extends Command {
         shooter.setTargetRPM(6000.0);
         shooter.setTargetAngle(Constants.MAX_ARC_ANGLE_FOR_INTAKE);
       }
-    } else if (!controls.getSetShootMode() && isShooting) {
-      isShooting = false;
+    } else if (controls.getSetShootModeReleased()) {
       light.setColorMode(CandleColorModes.NO_MODE);
       shooter.setStowPos();
       shooter.setTargetRPM(0.0);
