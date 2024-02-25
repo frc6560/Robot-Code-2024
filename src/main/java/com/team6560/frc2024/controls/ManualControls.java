@@ -201,9 +201,8 @@ public class ManualControls implements DriveCommand.Controls {
   // ------------------------------ CLIMB ------------------------------ \\
 
   public double getClimb(){
-    // double r = xbox.getRightTriggerAxis();
-    // double l = xbox.getLeftTriggerAxis();
-    // return r > 0.1 ? r : l > 0.1 ? -l : 0;
-    return 0.0;
+    double l = controlStation.getLeftY();
+    return l;
+    // return 0.0;
   }
 }
