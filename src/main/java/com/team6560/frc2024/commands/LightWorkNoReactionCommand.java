@@ -31,7 +31,7 @@ public class LightWorkNoReactionCommand extends Command {
   }
 
   public LightWorkNoReactionCommand(LightWorkNoReaction light, Transfer transfer, Controls controls) {
-    // Use addRequrements() here to declare subsystem dependencies.
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(light);
     this.light = light;
     this.transfer = transfer;
