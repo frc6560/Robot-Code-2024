@@ -252,20 +252,24 @@ public final class Constants {
     public static final int WRIST_ENCODER_PORT = 9;
     public static final double WRIST_GEAR_RATIO = 7.0;
 
-    public static final double TRAP_CLEARANCE_ANGLE = 0;
-    public static final double STINGER_ANGLE_ACCEPTABLE_DIFF = 0.1;
-    public static final double STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF = 0.1;
+    public static final double TRAP_CLEARANCE_ANGLE = -25;
+    public static final double STINGER_ANGLE_ACCEPTABLE_DIFF = 0.3;
+    public static final double STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF = 0.5;
 
-    public static final double MAX_WRIST_POS = -61;
+    public static final double MIN_ELEVATOR_POS = 0.4;
+    public static final double MAX_ELEVATOR_POS = 9;
 
+    public static final double MIN_WRIST_POS = 12;
+    public static final double MAX_WRIST_POS = -90;
+    
   }
 
   public enum StingerConfigs {
     // add position here
     STOW(0.0, 0.0, 0.0),
-    HUMAN_STATION_INTAKE(8.0, -50.0, 10.0),
-    SHOOT_IN_TRAP(8.0, -50.0, 10.0), // placeholder values
-    SHOOTER_TRANSFER(8.0, -50.0, 10.0);
+    HUMAN_STATION_INTAKE(8.0, 10.0, 50.0),
+    SHOOT_IN_TRAP(8.0,-50.0,10.0), //placeholder values
+    SHOOTER_TRANSFER(8.0, -80.0, 10.0);
 
     private double elevatorPos;
     private double stingerAngle;

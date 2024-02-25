@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 // import com.ctre.phoenix6.configs.Slot1Configs;
 // import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 // import com.ctre.phoenix6.controls.PositionVoltage;
@@ -37,7 +38,7 @@ public class Shooter extends SubsystemBase {
 
   private final TalonFX m_arc;
 
-  private final PositionVoltage m_arcRequest;
+  private final MotionMagicVoltage m_arcRequest;
   private final VelocityVoltage m_shooterRequest;
   
   // private double targetRPM;
@@ -89,16 +90,23 @@ public class Shooter extends SubsystemBase {
 
     // private final PositionVoltage m_voltagePosition = new PositionVoltage(0, 0, true, 0, 0, false, false, false); 
 
-    var arcPIDConfig = new Slot0Configs();
-    arcPIDConfig.kS = 0;
-    arcPIDConfig.kV = 0;
-    arcPIDConfig.kP = 0.73;
-    arcPIDConfig.kD = 0.0;
-    arcPIDConfig.kI = 0.07;
+    var arcPIDConfig = new TalonFXConfiguration();
+
+    var arcSlot0Configs = arcPIDConfig.Slot0;
+    arcSlot0Configs.kS = 0.1;
+    arcSlot0Configs.kV = 0.2;
+    arcSlot0Configs.kP = 0.6;
+    arcSlot0Configs.kI = 0;
+    arcSlot0Configs.kD = 0;
+    
+    var arcMotionMagicConfig = arcPIDConfig.MotionMagic;
+    arcMotionMagicConfig.MotionMagicCruiseVelocity = 30;
+    arcMotionMagicConfig.MotionMagicAcceleration = 60;
+    arcMotionMagicConfig.MotionMagicJerk = 180;
 
     m_arc.getConfigurator().apply(arcPIDConfig);
 
-    m_arcRequest = new PositionVoltage(0).withSlot(0);
+    m_arcRequest = new MotionMagicVoltage(0);
 
     ntDispTab("Shooter")
       .add("Current RPS", this::getShooterRPM)
