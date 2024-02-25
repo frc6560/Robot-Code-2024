@@ -204,6 +204,14 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     return controlStation.getYButton();
   }
 
+  public boolean getAmpOuttake() {
+    return controlStation.getAButton();
+  }
+
+  public boolean getManualStingerOuttake() {
+    return xbox.getRightBumper();
+  }
+
   /**
    * Returns the x component of the robot's velocity, as controlled by the Xbox
    * controller.

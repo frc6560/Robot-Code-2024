@@ -171,6 +171,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setTargetAngle (double angle) {
+    if (angle < 0) angle = 0;
+    else if (angle > ShooterConstants.MAX_ARC_ANGLE) angle = ShooterConstants.MAX_ARC_ANGLE;
+    
     targetAngle.setDouble(angle);
   }
 

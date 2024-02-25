@@ -85,7 +85,10 @@ public class ShooterCommand extends Command {
   }
 
   public void shooterStuff() {
-    if (controls.getSetShootMode()) {
+    if (controls.getIntakeIn() || controls.getIntakeOut()) {
+      shooter.setTargetAngle(0);
+    }
+    else if (controls.getSetShootMode()) {
       light.setColorMode(CandleColorModes.SHOOT_MODE);
       // isShooting = true;
       if (controls.getManualShootShooter()) {
@@ -116,34 +119,39 @@ public class ShooterCommand extends Command {
       shooter.setStowPos();
       shooter.setTargetRPM(0.0);
       transfer.setSpeed(0.0);
+
+
     } else if (controls.getShooterStingerTransfer()) {
       shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
       if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
         shooter.setTargetRPM(10.0); // placeholder value
         if (shooter.isReadyRPM()) {
-          if (!stinger.stingerRollerHasNote()) {
+          while (!stinger.stingerRollerHasNote()) {
             transfer.setSpeed(1.0);
-          } else {
-            transfer.setSpeed(0.0);
-            shooter.setTargetRPM(0.0);
           }
+          transfer.setSpeed(0.0);
+          shooter.setTargetRPM(0.0);
         }
       }
+
+      
     } else if (controls.getStingerShooterTransfer()) {
       shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
       if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
         shooter.setTargetRPM(-10.0); // placeholder value
         if (shooter.isReadyRPM()) {
-          if (transfer.getTransferSensorValue() < 460) {
+          while (transfer.getTransferSensorValue() < 460) {
             transfer.setSpeed(-1.0);
-          } else {
-            transfer.setSpeed(0.0);
-            shooter.setTargetRPM(0.0);
+          }
+          if (transfer.getTransferSensorValue() < 300) { // this is to prevent a situation where the color sensor detects the "bottom" of the note and stopping the transfer motor while the note still is in contact with shooter wheels
+            transfer.setSpeed(0);
+            shooter.setTargetRPM(0);
           }
         }
       }
     }
   }
+  
 
   public void transferStuff() {
     if (controls.getIntakeIn()) {

@@ -21,6 +21,10 @@ public class StingerCommand extends Command {
     boolean getShooterStingerTransfer();
 
     boolean getStingerShooterTransfer();
+
+    boolean getAmpOuttake();
+
+    boolean getManualStingerOuttake();
   }
 
   private final Stinger stinger;
@@ -61,11 +65,12 @@ public class StingerCommand extends Command {
   }
 
   public void autoIntakeHumanStation() {
-    if (isAutoTransferReady() || transfer.isInProximity()) {
+    if (!stinger.stingerRollerHasNote()) {
+      setBothPosPresets(StingerConfigs.STOW);
       stinger.setRoller(0.0);
     } else {
       setElevatorPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
-      if (stinger.isStingerReady(StingerConfigs.HUMAN_STATION_INTAKE) && !stinger.stingerRollerHasNote()) {
+      if (stinger.isStingerReady(StingerConfigs.HUMAN_STATION_INTAKE)) {
         stinger.setRoller(-1.0);
       } else {
 
@@ -91,10 +96,23 @@ public class StingerCommand extends Command {
       stinger.setRoller(0.0);
     } else {
       setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-      if (transfer.getTransferSensorValue() > 460) {
+      if (!stinger.stingerRollerHasNote()) {
         stinger.setRoller(1.0);
       }
     }
+  }
+
+  public void ampOuttake() {
+    if (!stinger.stingerRollerHasNote()) {
+      setBothPosPresets(StingerConfigs.STOW);
+    } else {
+      setBothPosPresets(StingerConfigs.AMP_OUTTAKE);
+    }
+    
+    if (controls.getManualStingerOuttake()) {
+      stinger.setRoller(-1.0); //TODO: choose whether to keep getManualStingerOuttake restricted to be only used in this function or move it into execute() for general use
+    }
+    
   }
 
   // Called when the command is initially scheduled.
@@ -113,7 +131,7 @@ public class StingerCommand extends Command {
       autoTransferFromShooter();
     } else if (controls.getStingerShooterTransfer()) {
       autoTransferToShooter();
-    }
+    } else if (controls.getAmpOuttake());
   }
 
   // Called once the command ends or is interrupted.

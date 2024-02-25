@@ -207,6 +207,8 @@ public final class Constants {
 
     public static final double ARC_GEAR_RATIO = 189.583;
     public static final double RPM_PER_FALCON_UNIT = 600.0 / 2480.0;
+
+    public static final double MAX_ARC_ANGLE = 60;
   }
 
   public static final class ShooterConfigs {
@@ -268,6 +270,7 @@ public final class Constants {
     // add position here
     STOW(0.0, 0.0, 0.0),
     HUMAN_STATION_INTAKE(8.0, 10.0, 50.0),
+    AMP_OUTTAKE(4.0, -40.0, 50.0), //placeholder values
     SHOOT_IN_TRAP(8.0,-50.0,10.0), //placeholder values
     SHOOTER_TRANSFER(8.0, -80.0, 10.0);
 
