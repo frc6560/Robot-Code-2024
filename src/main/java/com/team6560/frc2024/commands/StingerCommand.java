@@ -67,6 +67,7 @@ public class StingerCommand extends Command {
       if (!stingerToIntakePos)
         setElevatorPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
       
+        // if stingerToIntakePos is false but at the right position, set stingerToIntakePos to true
       if (!stingerToIntakePos 
           && Math.abs(stinger.getAngle() - StingerConfigs.HUMAN_STATION_INTAKE.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
           && Math.abs(stinger.getExtension() - StingerConfigs.HUMAN_STATION_INTAKE.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
@@ -96,6 +97,7 @@ public class StingerCommand extends Command {
         setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
       }
 
+      // if stinger is at right position, set shooterStingerAligned to true
       if (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
             && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
           shooterStingerAligned = true;
@@ -113,7 +115,9 @@ public class StingerCommand extends Command {
         stinger.setRoller(-1);
         transfer.setSpeed(1);
 
+        
         if (transfer.getTransferSensorValue() > 460) maxTransferSensorReached = true;
+        
         if (maxTransferSensorReached && transfer.getTransferSensorValue() < 210) transferHasNote = true;
           
       }
@@ -143,7 +147,8 @@ public class StingerCommand extends Command {
       if (!shooterStingerAligned) {
         setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
       }
-
+      
+      // if stinger is at right position, set shooterStingerAligned to true
       if (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
             && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
         shooterStingerAligned = true;

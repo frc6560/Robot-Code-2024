@@ -22,6 +22,7 @@ public class IntakeCommand extends Command {
     boolean getIntakeOut();
 
   }
+
   /** Creates a new IntakeCommand. */
   public IntakeCommand(Intake intake, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,15 +33,19 @@ public class IntakeCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     if (controls.getIntakeIn()) {
       intake.setSpeed(0.9);
+
     } else if (controls.getIntakeOut()) {
       intake.setSpeed(-0.9);
+
     } else {
       intake.setSpeed(0.0);
     }
@@ -48,7 +53,8 @@ public class IntakeCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

@@ -41,6 +41,7 @@ public class DriveCommand extends Command {
         addRequirements(drivetrainSubsystem);
     }
 
+    // calculates the auto aim rotation for the drivetrain based on the Limelight data.
     public double drivetrainAutoAim() {
         double horizontalDelta = limelight.getHorizontalAngle();
         double p = 0.1;

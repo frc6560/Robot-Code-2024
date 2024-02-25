@@ -45,6 +45,7 @@ public class LightWorkNoReactionCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     if (controls.getIntakeInReleased() || controls.getIntakeOutReleased()) {
       light.setColorMode(CandleColorModes.NO_MODE);
     }

@@ -48,10 +48,15 @@ public class LightWorkNoReaction extends SubsystemBase {
       isFlashOnCounter = 0;
     }
     isFlashOn = !isFlashOn;
+    // sets to blue
     if (mode == CandleColorModes.HOLD_MODE) {
       candle.setLEDs(0, 187, 255);
+
     } else if (mode == CandleColorModes.INTAKE_MODE && isFlashOn) {
+      //sets to orange
       candle.setLEDs(255, 93, 13); 
+      
+      //sets to rainbow
     } else if (mode == CandleColorModes.SHOOT_MODE) {
       candle.setLEDs((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
     }
