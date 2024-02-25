@@ -4,11 +4,11 @@
 
 package com.team6560.frc2024.commands;
 
-import com.team6560.frc2024.subsystems.Shooter;
+// import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Stinger;
 import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.Constants.StingerConfigs;
-import com.team6560.frc2024.Constants.StingerConstants;
+// import com.team6560.frc2024.Constants.StingerConstants;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -19,28 +19,28 @@ public class StingerCommand extends Command {
     boolean getHumanStationIntake();
 
     boolean getShooterStingerTransfer();
+
+    boolean getStingerShooterTransfer();
   }
 
   private final Stinger stinger;
-  private final Shooter shooter;
+  // private final Shooter shooter;
   private final Transfer transfer;
   private final Controls controls;
 
+  // private boolean isDoneTransfer = true, shooterStingerAligned = false, correctShooterRpm = false,
+  //     maxTransferSensorReached = false, transferHasNote = false;
+  // private boolean stingerToIntakePos = false;
 
-  private boolean isDoneTransfer = true, shooterStingerAligned = false, correctShooterRpm = false, maxTransferSensorReached = false, transferHasNote = false;
-  private boolean stingerToIntakePos = false;
-
-
-
-  public StingerCommand(Stinger stinger, Shooter shooter, Transfer transfer, Controls controls) {
+  public StingerCommand(Stinger stinger, Transfer transfer, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.stinger = stinger;
-    this.shooter = shooter;
+    // this.shooter = shooter;
     this.transfer = transfer;
     this.controls = controls;
 
-    addRequirements(stinger); 
-    
+    addRequirements(stinger);
+
   }
 
   public void setElevatorPosPresets(StingerConfigs pos) {
@@ -61,126 +61,38 @@ public class StingerCommand extends Command {
   }
 
   public void autoIntakeHumanStation() {
-    if (isAutoTransferReady() || transfer.isInProximity()) 
-      return;
-    else {
-      if (!stingerToIntakePos)
-        setElevatorPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
-      
-        // if stingerToIntakePos is false but at the right position, set stingerToIntakePos to true
-      if (!stingerToIntakePos 
-          && Math.abs(stinger.getAngle() - StingerConfigs.HUMAN_STATION_INTAKE.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
-          && Math.abs(stinger.getExtension() - StingerConfigs.HUMAN_STATION_INTAKE.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
-          
-          stingerToIntakePos = true;
-        }
+    if (isAutoTransferReady() || transfer.isInProximity()) {
+      stinger.setRoller(0.0);
+    } else {
+      setElevatorPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
+      if (stinger.isStingerReady(StingerConfigs.HUMAN_STATION_INTAKE) && !stinger.stingerRollerHasNote()) {
+        stinger.setRoller(-1.0);
+      } else {
 
-      if (stingerToIntakePos) {
-        stinger.setRoller(1); //placeholder value
-      }
-
-      if (stinger.stingerRollerHasNote()) {
-        stinger.setRoller(0);
-
-        stingerToIntakePos = false;
       }
     }
   }
 
-  public void autoTransferToShooter() { 
-    if (transfer.isInProximity() && isDoneTransfer) return;
-    
-    else {
-      isDoneTransfer = false;
-
-      if (!shooterStingerAligned) {
-        setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-      }
-
-      // if stinger is at right position, set shooterStingerAligned to true
-      if (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
-            && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
-          shooterStingerAligned = true;
-        }
-
-      if (shooterStingerAligned && !correctShooterRpm) {
-          shooter.setTargetRPM(10); //placeholder value
-      }
-
-      if (shooterStingerAligned && shooter.isReadyRPM()) {
-            correctShooterRpm = true;
-          }
-
-      if (shooterStingerAligned && correctShooterRpm && !transferHasNote) {
-        stinger.setRoller(-1);
-        transfer.setSpeed(1);
-
-        
-        if (transfer.getTransferSensorValue() > 460) maxTransferSensorReached = true;
-        
-        if (maxTransferSensorReached && transfer.getTransferSensorValue() < 210) transferHasNote = true;
-          
-      }
-
-      if (shooterStingerAligned && correctShooterRpm && transferHasNote) {
-        transfer.setSpeed(0);
-        shooter.setTargetRPM(0);
-        stinger.setRoller(0);
-
-        setBothPosPresets(StingerConfigs.STOW);
-
-        shooterStingerAligned = false;
-        correctShooterRpm = false;
-        maxTransferSensorReached = false;
-        transferHasNote = false;
-        isDoneTransfer = true;
+  public void autoTransferToShooter() {
+    if (transfer.isInProximity()) {
+      setBothPosPresets(StingerConfigs.STOW);
+      stinger.setRoller(0.0);
+    } else {
+      setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
+      if (transfer.getTransferSensorValue() < 460) {
+        stinger.setRoller(-1.0);
       }
     }
   }
 
   public void autoTransferFromShooter() {
-    if (stinger.stingerRollerHasNote() && isDoneTransfer) return;
-
-    else {
-      isDoneTransfer = false;
-
-      if (!shooterStingerAligned) {
-        setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-      }
-      
-      // if stinger is at right position, set shooterStingerAligned to true
-      if (Math.abs(stinger.getAngle() - StingerConfigs.SHOOTER_TRANSFER.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
-            && Math.abs(stinger.getExtension() - StingerConfigs.SHOOTER_TRANSFER.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF) {
-        shooterStingerAligned = true;
-      }
-
-      if (shooterStingerAligned && !correctShooterRpm) {
-        shooter.setTargetRPM(10); //placeholder value
-      }
-
-      if (shooterStingerAligned && shooter.isReadyRPM()) {
-        correctShooterRpm = true;
-      }
-
-      if (shooterStingerAligned && correctShooterRpm && !transferHasNote) {
-        stinger.setRoller(1);
-        transfer.setSpeed(-1);
-
-        if (stinger.stingerRollerHasNote()) transferHasNote = true;
-      }
-
-      if (shooterStingerAligned && correctShooterRpm && transferHasNote) {
-        transfer.setSpeed(0);
-        shooter.setTargetRPM(0);
-        stinger.setRoller(0);
-
-        setBothPosPresets(StingerConfigs.STOW);
-
-        shooterStingerAligned = false;
-        correctShooterRpm = false;
-        maxTransferSensorReached = false;
-        transferHasNote = false;
-        isDoneTransfer = true;
+    if (stinger.stingerRollerHasNote()) {
+      setBothPosPresets(StingerConfigs.STOW);
+      stinger.setRoller(0.0);
+    } else {
+      setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
+      if (transfer.getTransferSensorValue() > 460) {
+        stinger.setRoller(1.0);
       }
     }
   }
@@ -194,12 +106,14 @@ public class StingerCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() { 
-      if (controls.getHumanStationIntake()) {
-        setBothPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
-      } else if (controls.getShooterStingerTransfer()) {
-        setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-      }
+  public void execute() {
+    if (controls.getHumanStationIntake()) {
+      autoIntakeHumanStation();
+    } else if (controls.getShooterStingerTransfer()) {
+      autoTransferFromShooter();
+    } else if (controls.getStingerShooterTransfer()) {
+      autoTransferToShooter();
+    }
   }
 
   // Called once the command ends or is interrupted.

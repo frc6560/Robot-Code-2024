@@ -17,6 +17,8 @@ import com.revrobotics.SparkAnalogSensor.Mode;
 // import com.revrobotics.SparkPIDController.AccelStrategy;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.team6560.frc2024.Constants.StingerConfigs;
 import com.team6560.frc2024.Constants.StingerConstants;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -138,6 +140,11 @@ public class Stinger extends SubsystemBase {
 
   public void setRoller(double output) {
     rollerMotor.set(output);
+  }
+
+  public boolean isStingerReady(StingerConfigs pos) {
+    return Math.abs(getAngle() - pos.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
+          && Math.abs(getExtension() - pos.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF;
   }
 
   public double getAngle() {

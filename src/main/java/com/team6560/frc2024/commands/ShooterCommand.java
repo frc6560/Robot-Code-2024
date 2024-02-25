@@ -5,7 +5,7 @@
 package com.team6560.frc2024.commands;
 
 import com.team6560.frc2024.subsystems.Shooter;
-// import com.team6560.frc2024.subsystems.Stinger;
+import com.team6560.frc2024.subsystems.Stinger;
 import com.team6560.frc2024.subsystems.Limelight;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,27 +36,32 @@ public class ShooterCommand extends Command {
 
     boolean getIntakeOutReleased();
 
-    boolean getHumanStationIntake();
+    // boolean getHumanStationIntake();
 
     boolean getShooterStingerTransfer();
+
+    boolean getStingerShooterTransfer();
   }
 
   private final Shooter shooter;
   private final Limelight limelight;
+  private final Stinger stinger;
   private final Controls controls;
   private final Transfer transfer;
   private final LightWorkNoReaction light;
 
-  private boolean isShooting;
+  // private boolean isShooting;
 
-  public ShooterCommand(Shooter shooter, Limelight limelight, Transfer transfer, LightWorkNoReaction light, Controls controls) {
+  public ShooterCommand(Shooter shooter, Limelight limelight, Stinger stinger, Transfer transfer,
+      LightWorkNoReaction light, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.limelight = limelight;
+    this.stinger = stinger;
     this.transfer = transfer;
     this.controls = controls;
     this.light = light;
-  
+
     addRequirements(shooter);
   }
 
@@ -82,14 +87,15 @@ public class ShooterCommand extends Command {
   public void shooterStuff() {
     if (controls.getSetShootMode()) {
       light.setColorMode(CandleColorModes.SHOOT_MODE);
-      isShooting = true;
+      // isShooting = true;
       if (controls.getManualShootShooter()) {
         transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
       } else {
         transfer.setSpeed(0.0);
       }
       // if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
-      //   Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
+      // Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly
+      // shooting the ring.
       // }
       if (limelight.hasTarget()) {
         double[] shooterAim = autoShooterAim();
@@ -110,10 +116,32 @@ public class ShooterCommand extends Command {
       shooter.setStowPos();
       shooter.setTargetRPM(0.0);
       transfer.setSpeed(0.0);
-    } else if (controls.getHumanStationIntake()) {
-      shooter.setTargetAngle(StingerConfigs.HUMAN_STATION_INTAKE.getShooterAngle());
     } else if (controls.getShooterStingerTransfer()) {
       shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
+      if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
+        shooter.setTargetRPM(10.0); // placeholder value
+        if (shooter.isReadyRPM()) {
+          if (!stinger.stingerRollerHasNote()) {
+            transfer.setSpeed(1.0);
+          } else {
+            transfer.setSpeed(0.0);
+            shooter.setTargetRPM(0.0);
+          }
+        }
+      }
+    } else if (controls.getStingerShooterTransfer()) {
+      shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
+      if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
+        shooter.setTargetRPM(-10.0); // placeholder value
+        if (shooter.isReadyRPM()) {
+          if (transfer.getTransferSensorValue() < 460) {
+            transfer.setSpeed(-1.0);
+          } else {
+            transfer.setSpeed(0.0);
+            shooter.setTargetRPM(0.0);
+          }
+        }
+      }
     }
   }
 

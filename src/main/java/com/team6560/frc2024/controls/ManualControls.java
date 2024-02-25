@@ -195,6 +195,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   }
 
   @Override
+  public boolean getStingerShooterTransfer() {
+    return controlStation.getXButton();
+  }
+
+  @Override
   public boolean getHumanStationIntake() {
     return controlStation.getYButton();
   }
