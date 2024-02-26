@@ -25,7 +25,6 @@ import com.team6560.frc2024.subsystems.Limelight;
 import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Trap;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -65,9 +64,8 @@ public class RobotContainer {
                 climb = new Climb();
 
                 NamedCommands.registerCommand("Intake", new AutoIntake(intake, shooter));
-                NamedCommands.registerCommand("Aim", null);
-                NamedCommands.registerCommand("Shoot", new AutoShooter(shooter));
-                NamedCommands.registerCommand("AAS", null); // aim and shoot
+                NamedCommands.registerCommand("Aim", new AutoShooter(shooter, limelight, drivetrain, false));
+                NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight, drivetrain, true));
 
 
                 driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
@@ -86,6 +84,7 @@ public class RobotContainer {
                 autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
                 autoChooser.addOption("2b far", new PathPlannerAuto("2b far"));
+                autoChooser.addOption("4 ball", new PathPlannerAuto("4 ball"));
                 autoChooser.addOption("straight", new PathPlannerAuto("straight"));
                 autoChooser.setDefaultOption("2b far", new PathPlannerAuto("2b far"));
         }

@@ -32,7 +32,7 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.getRunIntake() && shooter.getShooterArcPosition() < Constants.SHOOTER_ARC_ACCEPTABLE_INTAKE_POS){
+    if (controls.getRunIntake() && shooter.getShooterArcPosition() < Constants.SHOOTER_ARC_ACCEPTABLE_INTAKE_POS && !shooter.getTransferSensorTriggered()){
       intake.setIntakeFeed(Constants.INTAKE_FEED_RATE);
       
     } else if (controls.getReverseTransfer()){

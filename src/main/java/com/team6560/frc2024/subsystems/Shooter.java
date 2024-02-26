@@ -17,10 +17,50 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import java.util.ArrayList;
+
+import edu.wpi.first.math.interpolation.Interpolatable;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+  
+  public class AimTrajectory implements Interpolatable<AimTrajectory>{
+    double rpm;
+    double angle;
+
+    double distance;
+
+    public AimTrajectory(double distance, double rpm, double angle){
+      this.rpm = rpm;
+      this.angle = angle;
+      this.distance = distance;
+    }
+
+    public double getDistance(){
+      return distance;
+    }
+    public double getAngle() {
+        return angle;
+    }
+    public double getRpm() {
+        return rpm;
+    }
+
+    @Override
+    public AimTrajectory interpolate(AimTrajectory endValue, double t) {
+      double angle = getAngle() + (endValue.getAngle() - getAngle()) * t;
+      double rpm = getRpm() + (endValue.getRpm() - getRpm()) * t;
+      double distance = getDistance() + (endValue.getDistance() - getDistance()) * t;
+
+      return new AimTrajectory(distance, rpm, angle);
+    }
+
+    public String toString(){
+      return "Distance: " + getDistance() + ", Angle: " + getAngle() + ", RPM: " + getRpm();
+    }
+  }
+  
+  
   final Limelight limelight;
   final Trap trap;
 
@@ -34,6 +74,10 @@ public class Shooter extends SubsystemBase {
 
   double targetRPM = 0;
   double targetPosition = 0;
+  
+
+  ArrayList<AimTrajectory> aimMap = new ArrayList<>();
+
 
   public Shooter(Limelight limelight, Trap trap) {
     this.limelight = limelight;
@@ -49,6 +93,23 @@ public class Shooter extends SubsystemBase {
 
 
     setupMotors();
+
+    
+    aimMap.add(new AimTrajectory(-100.0, 6100 , 17));
+
+    aimMap.add(new AimTrajectory(-3.19, 6100 , 17));
+    aimMap.add(new AimTrajectory(-1.93, 6100 , 16));
+    aimMap.add(new AimTrajectory(-0.345, 6100 , 14));
+    aimMap.add(new AimTrajectory(1.29, 6100 , 16.5));
+    aimMap.add(new AimTrajectory(2.73, 6000 , 19));
+    aimMap.add(new AimTrajectory(4.42, 6000 , 21));
+    aimMap.add(new AimTrajectory(6.76, 6000 , 25));
+    aimMap.add(new AimTrajectory(9.53, 6000 , 30));
+    aimMap.add(new AimTrajectory(13.47, 6000 , 35));
+    aimMap.add(new AimTrajectory(18.70, 5800 , 40));
+    aimMap.add(new AimTrajectory(20.0, 5500 , 45));
+    
+    aimMap.add(new AimTrajectory(100.0, 5500 , 45));
 
 
 
@@ -134,9 +195,6 @@ public class Shooter extends SubsystemBase {
     arcMotor.setControl(m_request);
   }
 
-  // public void setArcOutput(double output){
-  //   arcMotor.set(output);
-  // }
 
   public void setTransfer(double output){
     feedMotor.set(output);
@@ -151,6 +209,28 @@ public class Shooter extends SubsystemBase {
       // (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ) && 
       // trap.isClearOfShooter()
     );
+  }
+  
+  public AimTrajectory findClosest(double dist){
+    AimTrajectory lower = new AimTrajectory(0, Constants.SHOOTER_SUBWOOFER_RPM, Constants.SHOOTER_SUBWOOFER_POSITION);
+    AimTrajectory upper = new AimTrajectory(0, Constants.SHOOTER_SUBWOOFER_RPM, Constants.SHOOTER_SUBWOOFER_POSITION);
+    double t;
+
+    for(AimTrajectory trajectory : aimMap){
+      // System.out.println(trajectory);
+      if(trajectory.getDistance() < dist){
+        lower = trajectory;
+      } else {
+        upper = trajectory;
+        break;
+      }
+    }
+
+    t = (dist - lower.getDistance()) / (upper.getDistance() - lower.getDistance());
+
+    AimTrajectory newTrajectory = lower.interpolate(upper, t);
+    // System.out.println("new traj = " + newTrajectory);
+    return newTrajectory;
   }
 
 

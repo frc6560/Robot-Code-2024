@@ -38,9 +38,6 @@ public class TrapCommand extends Command {
     } else if(controls.getTrapPlace() && !taskCompleted){
       taskCompleted = placeNote(controls.getShoot());
 
-    } else if(controls.getTrapTransferOut() && !taskCompleted){
-       taskCompleted = transferToShooter(controls.getShoot());
-
     } else if(controls.getTrapTransferIn() && !taskCompleted){
       taskCompleted = transferFromShooter();
 

@@ -4,8 +4,6 @@
 
 package com.team6560.frc2024.commands;
 
-import java.util.ResourceBundle.Control;
-
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Climb;
 

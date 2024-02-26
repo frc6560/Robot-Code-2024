@@ -28,8 +28,6 @@ import static com.team6560.frc2024.Constants.*;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -61,7 +59,6 @@ public class Drivetrain extends SubsystemBase {
         private final SwerveModule m_backLeftModule;
         private final SwerveModule m_backRightModule;
 
-        private NetworkTable nttable = NetworkTableInstance.getDefault().getTable("Drivetrain");
 
         // private SwerveDriveKinematics kinematics;
 
