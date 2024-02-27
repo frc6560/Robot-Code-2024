@@ -90,7 +90,7 @@ public class DriveCommand extends Command {
 
             speed = -limelightInput * p * rotateSpeed;
 
-            return speed;
+            return -speed;
         }
 
         return controllerInput;

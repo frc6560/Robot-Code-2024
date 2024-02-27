@@ -69,10 +69,10 @@ public class ShooterCommand extends Command {
       double dist = limelight.getVerticalAngle();
 
       if(controls.getSafeAim()){
-        shooter.setArcPosition(Constants.SHOOTER_SUBWOOFER_POSITION);
-        shooter.setRPM(Constants.SHOOTER_SUBWOOFER_RPM);
-        // shooter.setArcPosition(shooterSetAngle.getDouble(0.0));
-        // shooter.setRPM(shooterSetRPM.getDouble(0.0));
+        // shooter.setArcPosition(Constants.SHOOTER_SUBWOOFER_POSITION);
+        // shooter.setRPM(Constants.SHOOTER_SUBWOOFER_RPM);
+        shooter.setArcPosition(shooterSetAngle.getDouble(0.0));
+        shooter.setRPM(shooterSetRPM.getDouble(0.0));
       } else {
         shooter.setArcPosition(shooter.findClosest(dist).getAngle());
         shooter.setRPM(shooter.findClosest(dist).getRpm());

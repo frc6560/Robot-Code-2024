@@ -100,7 +100,7 @@ public class Shooter extends SubsystemBase {
     aimMap.add(new AimTrajectory(-3.19, 6100 , 17));
     aimMap.add(new AimTrajectory(-1.93, 6100 , 16));
     aimMap.add(new AimTrajectory(-0.345, 6100 , 14));
-    aimMap.add(new AimTrajectory(1.29, 6100 , 16.5));
+    aimMap.add(new AimTrajectory(1.29, 6100 , 17));
     aimMap.add(new AimTrajectory(2.73, 6000 , 19));
     aimMap.add(new AimTrajectory(4.42, 6000 , 21));
     aimMap.add(new AimTrajectory(6.76, 6000 , 25));
@@ -158,8 +158,8 @@ public class Shooter extends SubsystemBase {
       var slot0Configs = new Slot0Configs();
       slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
       slot0Configs.kV = 0.11; // A velocity target of 1 rps results in 0.12 V output
-      slot0Configs.kP = 0.1; // An error of 1 rps results in 0.11 V output
-      slot0Configs.kI = 0; // no output for integrated error
+      slot0Configs.kP = 0.2; // An error of 1 rps results in 0.11 V output
+      slot0Configs.kI = 0.001; // no output for integrated error
       slot0Configs.kD = 0; // no output for error derivative
 
       motor.getConfigurator().apply(slot0Configs);
@@ -179,7 +179,11 @@ public class Shooter extends SubsystemBase {
 
   public void setRPM(double speed){
     targetRPM = speed;
+    
+    // if (speed > 5800) speed += 100;
+    
     speed = Math.max(0,speed) / 60;
+
 
 
     final VelocityVoltage m_request = new VelocityVoltage(speed).withSlot(0);
@@ -248,6 +252,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterArcPosition(){
-    return arcMotor.getRotorPosition().getValueAsDouble();
+    return arcMotor.getPosition().getValueAsDouble();
+    // return arcMotor.getRotorPosition().getValueAsDouble();
+  }
+
+  public boolean isAtTargetArcAngle(){
+    return Math.abs(getShooterArcPosition() - targetPosition) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF;
   }
 }

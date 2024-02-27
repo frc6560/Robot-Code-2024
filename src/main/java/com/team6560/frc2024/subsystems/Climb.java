@@ -7,12 +7,13 @@ package com.team6560.frc2024.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.team6560.frc2024.Constants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climb extends SubsystemBase {
-  private final CANSparkMax leftClimbMotor = new CANSparkMax(22, MotorType.kBrushless);
-  private final CANSparkMax rightClimbMotor = new CANSparkMax(23, MotorType.kBrushless);
+  private final CANSparkMax leftClimbMotor = new CANSparkMax(Constants.CLIMB_MOTOR_LEFT, MotorType.kBrushless);
+  private final CANSparkMax rightClimbMotor = new CANSparkMax(Constants.CLIMB_MOTOR_RIGHT, MotorType.kBrushless);
   /** Creates a new Climb. */
   public Climb() {
     leftClimbMotor.restoreFactoryDefaults();

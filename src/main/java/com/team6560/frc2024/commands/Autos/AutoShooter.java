@@ -15,21 +15,27 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class AutoShooter extends Command {
   final Shooter shooter;
   final Limelight limelight;
-  final Drivetrain drivetrain;
-  final boolean shootWhenReady;
 
   boolean isShooting = false;
-  final double shootDuration = 30;
-  double shootCounter = 0;
+
+  double endTimer = 0;
+  double endTotalTime = 10;
+
+  final double rpm, arc;
   
   /** Creates a new AutoShooterHead. */
-  public AutoShooter(Shooter shooter, Limelight limelight, Drivetrain drivetrain, boolean shootWhenReady) {
+  public AutoShooter(Shooter shooter, Limelight limelight, double arc, double rpm) {
     this.shooter = shooter;
     this.limelight = limelight;
-    this.drivetrain = drivetrain;
-    this.shootWhenReady = shootWhenReady;
 
-    addRequirements(shooter, drivetrain);
+    this.arc = arc;
+    this.rpm = rpm;
+
+    addRequirements(shooter);
+  }
+
+  public AutoShooter(Shooter shooter, Limelight limelight){
+    this(shooter, limelight, 18.5, 5800);
   }
 
   
@@ -40,21 +46,13 @@ public class AutoShooter extends Command {
   @Override
   public void execute() {
     if(shooter.getTransferSensorTriggered() || isShooting){
-      shooter.setArcPosition(Constants.SHOOTER_SUBWOOFER_POSITION);
-      shooter.setRPM(Constants.SHOOTER_SUBWOOFER_RPM);
+      shooter.setArcPosition(arc);//shooter.findClosest(1.6).getAngle());//Constants.SHOOTER_SUBWOOFER_POSITION);
+      shooter.setRPM(rpm);//shooter.findClosest(1.4).getRpm());//Constants.SHOOTER_SUBWOOFER_RPM);
 
-      if(shootWhenReady)
-        drivetrain.drive(
-            ChassisSpeeds.fromFieldRelativeSpeeds(0, 0,
-                getRotation(),
-                drivetrain.getGyroscopeRotationNoApriltags())); // perhaps use getRawGyroRotation() instead?
-      
-
-      if(shootWhenReady && (shooter.readyToShoot() || isShooting)){
+      if(shooter.readyToShoot() || isShooting){
         shooter.setTransfer(Constants.TRANSFER_FEED_RATE);
 
         isShooting = true;
-        shootCounter ++;
       }
     } else {
       shooter.setRPM(0.0);
@@ -62,10 +60,9 @@ public class AutoShooter extends Command {
       shooter.setArcPosition(Constants.SHOOTER_GROUND_INTAKE_POSITION);
     }
 
-    if(shootDuration >= shootCounter){
-      isShooting = false;
-      shootCounter = 0;
-    }
+    if(!shooter.getTransferSensorTriggered()){
+      endTimer++;
+    } 
   }
 
   private double getRotation(){
@@ -82,7 +79,7 @@ public class AutoShooter extends Command {
 
     speed = -limelightInput * p * rotateSpeed;
 
-    return speed;
+    return 0;//speed;
 }
 
 
@@ -91,11 +88,14 @@ public class AutoShooter extends Command {
   public void end(boolean interrupted) {
     shooter.setRPM(0.0);
     shooter.setTransfer(0.0);
+    isShooting = false;
+    endTimer = 0;
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return endTimer >= endTotalTime;
   }
 }

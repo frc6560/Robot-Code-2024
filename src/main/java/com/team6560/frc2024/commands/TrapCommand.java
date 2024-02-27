@@ -6,19 +6,22 @@ package com.team6560.frc2024.commands;
 
 import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.controls.ManualControls;
+import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Trap;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TrapCommand extends Command {
   final Trap trap;
+  final Shooter shooter;
   final ManualControls controls;
 
 
 
-  public TrapCommand(Trap trap, ManualControls controls) {
+  public TrapCommand(Trap trap, Shooter shooter, ManualControls controls) {
     this.trap = trap;
     this.controls = controls;
+    this.shooter = shooter;
 
     addRequirements(trap);
   }
@@ -103,7 +106,7 @@ public class TrapCommand extends Command {
     trap.setAngle(Constants.TRAP_AMP_ANGLE);
     trap.setExtention(Constants.TRAP_AMP_EXTENTION);
 
-    if(runFeed){
+    if(runFeed && trap.isAtTargetAngle() && trap.isAtTargetExtention() && shooter.isAtTargetArcAngle()){
       trap.setFeed(Constants.TRAP_AMP_FEED_RATE);
     } else {
       trap.setFeed(0);

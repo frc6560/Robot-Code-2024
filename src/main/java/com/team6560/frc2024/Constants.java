@@ -93,7 +93,7 @@ public final class Constants {
       new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
   
   public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-    new PIDConstants( 0.2, 0.0, 0.0), // Translation constants 
+    new PIDConstants( .22, 0.0, 0.0), // Translation constants 
     new PIDConstants(2.5, 0, 0), // Rotation constants 
     MAX_VELOCITY_METERS_PER_SECOND / 2 ,
     DRIVETRAIN_WHEELBASE_METERS,// Drive base radius (distance from center to furthest module) 
@@ -112,7 +112,7 @@ public static final double TRANSFER_FEED_RATE = 1;
 public static final double TRANSFER_INTAKE_RATE = 0.2;
 
 
-public static final double SHOOTER_GROUND_INTAKE_POSITION = 5;
+public static final double SHOOTER_GROUND_INTAKE_POSITION = 1;
 
 public static final double SHOOTER_WALL_INTAKE_POSITION = 36.8;
 
@@ -163,15 +163,15 @@ public static final double TRAP_STOW_EXTENTION = 0;
 public static final double SHOOTER_ARC_ACCEPTABLE_INTAKE_POS = 15;
 
 
-public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 100;
+public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 50;
 
-public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 1;
+public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 0.2;
 
 public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1;
 
 public static final double TRAP_ACCEPTABLE_ANGLE_DIFF = 1;
 
-public static final double TRAP_ACCEPTABLE_EXTENTION_DIFF = 2;
+public static final double TRAP_ACCEPTABLE_EXTENTION_DIFF = 0.2;
 
 public static final int SENSOR_TRIGGER_PROXIMITY_VALUE = 150;
 
@@ -236,6 +236,12 @@ public static final int TRAP_ELEVATOR_MOTOR = 19;
 public static final int TRAP_FEED_MOTOR = 21;
 
 public static final int TRAP_LIMIT_SWITCH_ID = 0;
+
+
+
+public static final int CLIMB_MOTOR_LEFT = 22;
+
+public static final int CLIMB_MOTOR_RIGHT = 23;
 
 
 

@@ -157,6 +157,6 @@ elevatorSwitches.ForwardLimitAutosetPositionEnable = true;
   }
 
   public boolean isAtTargetExtention() {
-      return Math.abs(wristMotor.getEncoder().getPosition() - targetExtention) < Constants.TRAP_ACCEPTABLE_EXTENTION_DIFF;
+      return Math.abs(extentionMotor.getRotorPosition().getValueAsDouble() - targetExtention) < Constants.TRAP_ACCEPTABLE_EXTENTION_DIFF;
   }
 }

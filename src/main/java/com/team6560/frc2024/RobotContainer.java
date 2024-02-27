@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class RobotContainer {
         // The robot's subsystems and commands are defined here...
@@ -64,14 +65,14 @@ public class RobotContainer {
                 climb = new Climb();
 
                 NamedCommands.registerCommand("Intake", new AutoIntake(intake, shooter));
-                NamedCommands.registerCommand("Aim", new AutoShooter(shooter, limelight, drivetrain, false));
-                NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight, drivetrain, true));
+                // NamedCommands.registerCommand("Aim", new AutoShooter(shooter, limelight, drivetrain, false));
+                NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight));
 
 
                 driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
                 ShooterCommand = new ShooterCommand(shooter, trap, limelight, manualControls);
                 intakeCommand = new IntakeCommand(intake, shooter, manualControls);
-                trapCommand = new TrapCommand(trap, manualControls);
+                trapCommand = new TrapCommand(trap, shooter, manualControls);
                 climbCommand = new ClimbCommand(climb, manualControls);
 
 
@@ -79,14 +80,21 @@ public class RobotContainer {
                 shooter.setDefaultCommand(ShooterCommand);
                 intake.setDefaultCommand(intakeCommand);
                 trap.setDefaultCommand(trapCommand);
-                climb.setDefaultCommand(climbCommand);
+                // climb.setDefaultCommand(climbCommand);
 
                 autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
                 autoChooser.addOption("2b far", new PathPlannerAuto("2b far"));
                 autoChooser.addOption("4 ball", new PathPlannerAuto("4 ball"));
                 autoChooser.addOption("straight", new PathPlannerAuto("straight"));
-                autoChooser.setDefaultOption("2b far", new PathPlannerAuto("2b far"));
+
+
+                Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 18.25, 5900))
+                .andThen(new PathPlannerAuto("One")).andThen(new AutoShooter(shooter, limelight, 18.25  , 5800))
+                .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 18.35, 5800))
+                .andThen(new PathPlannerAuto("Three")).andThen(new PathPlannerAuto("Four")).andThen(new AutoShooter(shooter, limelight, 28, 5800));
+
+                autoChooser.setDefaultOption("combo", combo4);
         }
 
         /**
