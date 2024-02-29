@@ -166,7 +166,7 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   public boolean getReverseTransfer(){
-    return controlStation.getRightStickButton();
+    return controlStation.getXButton();
   }
   
 

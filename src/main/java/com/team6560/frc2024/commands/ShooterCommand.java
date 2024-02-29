@@ -93,9 +93,11 @@ public class ShooterCommand extends Command {
     }else if (controls.getTrapTransferIn()){
       if(!trap.getSensorTriggered()){
         shooter.setRPM(Constants.SHOOTER_TRANSFER_OUT_RPM);
+      } else {
+        shooter.setRPM(0.0);
       }
 
-      if(trap.isAtTargetAngle() && trap.isAtTargetExtention() && !trap.getSensorTriggered()){
+      if(controls.getShoot() && trap.isAtTargetAngle() && trap.isAtTargetExtention() && !trap.getSensorTriggered()){
         shooter.setTransfer(Constants.TRANSFER_FEED_RATE);
       } else {
         shooter.setTransfer(0.0);

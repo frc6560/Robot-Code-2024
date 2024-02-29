@@ -154,7 +154,7 @@ public class Shooter extends SubsystemBase {
     arcSwitches.ForwardLimitAutosetPositionEnable = true;
     arcSwitches.ForwardLimitAutosetPositionValue = 45;
 
-    arcMotor.getConfigurator().apply(arcConfigs.withHardwareLimitSwitch(arcSwitches));
+    // arcMotor.getConfigurator().apply(arcConfigs.withHardwareLimitSwitch(arcSwitches));
     
     arcMotor.setPosition(0.0); // TODO: CHECK IF THIS DOES ANYTHING
 

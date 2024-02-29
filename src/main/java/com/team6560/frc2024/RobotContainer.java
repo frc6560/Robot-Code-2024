@@ -80,21 +80,54 @@ public class RobotContainer {
                 shooter.setDefaultCommand(ShooterCommand);
                 intake.setDefaultCommand(intakeCommand);
                 trap.setDefaultCommand(trapCommand);
-                // climb.setDefaultCommand(climbCommand);
+                climb.setDefaultCommand(climbCommand);
 
                 autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
-                autoChooser.addOption("2b far", new PathPlannerAuto("2b far"));
-                autoChooser.addOption("4 ball", new PathPlannerAuto("4 ball"));
-                autoChooser.addOption("straight", new PathPlannerAuto("straight"));
+                
+                autoChooser.addOption("One Still", oneBall());
+                autoChooser.addOption("One Taxi", oneBallTaxi());
+                autoChooser.addOption("Two", twoBall());
+                autoChooser.addOption("Three", threeBall());
 
 
-                Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 19.75, 5800))
-                .andThen(new PathPlannerAuto("One")).andThen(new AutoShooter(shooter, limelight, 15  , 5500))
-                .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 18.85, 5500))
-                .andThen(new PathPlannerAuto("Three")).andThen(new PathPlannerAuto("Four")).andThen(new AutoShooter(shooter, limelight, 28, 5800));
+                // Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 19.75, 5800))
+                // .andThen(new PathPlannerAuto("One")).andThen(new AutoShooter(shooter, limelight, 15  , 5500))
+                // .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 18.85, 5500))
+                // .andThen(new PathPlannerAuto("Three")).andThen(new PathPlannerAuto("Four")).andThen(new AutoShooter(shooter, limelight, 28, 5800));
 
-                autoChooser.setDefaultOption("combo", combo4);
+                autoChooser.setDefaultOption("Three", threeBall());
+        }
+
+
+        public Command farThreeBall() {
+                Command combo = (new AutoShooter(shooter, limelight, 45, 5000))
+                        .andThen(new PathPlannerAuto("F1")).andThen(new AutoShooter(shooter, limelight, 22, 5200))
+                        .andThen(new PathPlannerAuto("F2"))
+                        .andThen(new PathPlannerAuto("F3")).andThen(new AutoShooter(shooter,limelight,22,5200));
+
+                return combo;
+        }
+        
+        public Command oneBall(){
+                Command combo = new AutoShooter(shooter, limelight, 45, 5000);
+                return combo;
+        }
+             
+        public Command oneBallTaxi(){
+                Command combo = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 45, 5000));
+                return combo;
+        }
+        public Command twoBall(){
+                Command combo = oneBallTaxi()
+                .andThen(new PathPlannerAuto("One")).andThen(new AutoShooter(shooter, limelight, 22 , 5200));
+                return combo;
+        }
+
+        public Command threeBall(){
+                Command combo = twoBall()
+                        .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 24, 5200));
+                return combo;
         }
 
         /**
