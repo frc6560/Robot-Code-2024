@@ -101,14 +101,14 @@ public class Shooter extends SubsystemBase {
     aimMap.add(new AimTrajectory(-3.19, 6100 , 17));
     aimMap.add(new AimTrajectory(-1.93, 6100 , 16));
     aimMap.add(new AimTrajectory(-0.345, 6100 , 14));
-    aimMap.add(new AimTrajectory(1.29, 6100 , 17));
-    aimMap.add(new AimTrajectory(2.73, 6000 , 19));
-    aimMap.add(new AimTrajectory(4.42, 6000 , 21));
-    aimMap.add(new AimTrajectory(6.76, 6000 , 25));
-    aimMap.add(new AimTrajectory(9.53, 6000 , 30));
-    aimMap.add(new AimTrajectory(13.47, 6000 , 35));
-    aimMap.add(new AimTrajectory(18.70, 5800 , 40));
-    aimMap.add(new AimTrajectory(20.0, 5500 , 45));
+    aimMap.add(new AimTrajectory(1.29, 5400 , 17));
+    aimMap.add(new AimTrajectory(2.73, 5200 , 20    ));
+    aimMap.add(new AimTrajectory(4.42, 5200 , 24));
+    aimMap.add(new AimTrajectory(6.76, 5100 , 25));
+    aimMap.add(new AimTrajectory(9.53, 5100 , 30));
+    aimMap.add(new AimTrajectory(13.47, 5100 , 35));
+    aimMap.add(new AimTrajectory(18.70, 5100 , 40));
+    aimMap.add(new AimTrajectory(20.0, 5000 , 45));
     
     aimMap.add(new AimTrajectory(100.0, 5500 , 45));
 

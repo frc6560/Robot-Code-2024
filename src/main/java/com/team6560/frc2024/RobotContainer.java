@@ -89,9 +89,9 @@ public class RobotContainer {
                 autoChooser.addOption("straight", new PathPlannerAuto("straight"));
 
 
-                Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 18.25, 5900))
-                .andThen(new PathPlannerAuto("One")).andThen(new AutoShooter(shooter, limelight, 18.25  , 5800))
-                .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 18.35, 5800))
+                Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 19.75, 5800))
+                .andThen(new PathPlannerAuto("One")).andThen(new AutoShooter(shooter, limelight, 15  , 5500))
+                .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 18.85, 5500))
                 .andThen(new PathPlannerAuto("Three")).andThen(new PathPlannerAuto("Four")).andThen(new AutoShooter(shooter, limelight, 28, 5800));
 
                 autoChooser.setDefaultOption("combo", combo4);
