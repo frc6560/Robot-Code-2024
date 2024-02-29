@@ -4,6 +4,7 @@
 
 package com.team6560.frc2024.subsystems;
 
+import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -147,7 +148,17 @@ public class Shooter extends SubsystemBase {
     arcMM.MotionMagicAcceleration = arcMM.MotionMagicCruiseVelocity / 0.5; // Target acceleration of 160 rps/s (0.5 seconds)
     arcMM.MotionMagicJerk = 0;//1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
 
-    arcMotor.getConfigurator().apply(arcConfigs);
+    HardwareLimitSwitchConfigs arcSwitches = new HardwareLimitSwitchConfigs();
+    arcSwitches.ReverseLimitAutosetPositionEnable = true;
+    arcSwitches.ReverseLimitAutosetPositionValue = 0.0;
+    arcSwitches.ForwardLimitAutosetPositionEnable = true;
+    arcSwitches.ForwardLimitAutosetPositionValue = 45;
+
+    arcMotor.getConfigurator().apply(arcConfigs.withHardwareLimitSwitch(arcSwitches));
+    
+    arcMotor.setPosition(0.0); // TODO: CHECK IF THIS DOES ANYTHING
+
+    
 
     TalonFX[] shooterMotors = new TalonFX[]{shooterMotorLeft,shooterMotorRight};
 
@@ -252,7 +263,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterArcPosition(){
-    return arcMotor.getPosition().getValueAsDouble();
+    return arcMotor.getRotorPosition().getValueAsDouble();
     // return arcMotor.getRotorPosition().getValueAsDouble();
   }
 
