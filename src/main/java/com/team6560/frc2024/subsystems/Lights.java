@@ -11,6 +11,7 @@ import com.team6560.frc2024.Constants;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Lights extends SubsystemBase {
   private final CANdle candle;
@@ -18,11 +19,15 @@ public class Lights extends SubsystemBase {
   /** Creates a new Lights. */
   public Lights() {
     this.candle = new CANdle(Constants.CANDLE_ID);
-    candle.configBrightnessScalar(0.6);
+    candle.configBrightnessScalar(0.7);
+    
+    ntDispTab("Lights")
+    .add("candle current", () -> candle.getCurrent());
   }
 
   @Override
   public void periodic() {
+    
     // candle.setLEDs((int)(targetColor.red *255),(int)(targetColor.green *255), (int)(targetColor.blue *255));
   }
 
@@ -33,7 +38,7 @@ public class Lights extends SubsystemBase {
   }
 
   public void setLightsIntake() {
-    setColor(Color.kOrangeRed);
+    setColor(Color.kYellow);
     // candle.animate(new FireAnimation(0.8, 0.4, 70, 0, 0));
   }
 
@@ -54,7 +59,7 @@ public class Lights extends SubsystemBase {
   }
 
   public void setLightsIdle() {
-    setColor(Color.kAqua);
+    setColor(Color.kBlack);
   }
 
   public void setLightsTrapTransfer(boolean sensorTriggered) {

@@ -118,6 +118,7 @@ public class RobotContainer {
                         prefix = "R";
                 }
 
+
                 Command combo = (new AutoShooter(shooter, limelight, 45, 5000))
                         .andThen(new PathPlannerAuto(prefix + "F1")).withTimeout(5)
                         .andThen(new PathPlannerAuto("straight")).andThen(new AutoShooter(shooter, limelight, 20, 5200))
@@ -131,9 +132,9 @@ public class RobotContainer {
         public Command farThreeBallRed() {
                 Command combo = (new AutoShooter(shooter, limelight, 45, 5000))
                         .andThen(new PathPlannerAuto("RF1")).withTimeout(5)
-                        .andThen(new PathPlannerAuto("straight")).andThen(new AutoShooter(shooter, limelight, 20, 5200))
-                        .andThen(new PathPlannerAuto("RF2")).withTimeout(7)
-                        .andThen(new PathPlannerAuto("RF3")).andThen(new AutoShooter(shooter,limelight,20,5200));
+                        .andThen(new PathPlannerAuto("straight")).andThen(new AutoShooter(shooter, limelight, 19, 5200));
+                        // .andThen(new PathPlannerAuto("RF2")).withTimeout(7)
+                        // .andThen(new PathPlannerAuto("RF3")).andThen(new AutoShooter(shooter,limelight,20,5200));
 
                 return combo;
         }

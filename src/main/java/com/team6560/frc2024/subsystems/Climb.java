@@ -13,6 +13,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
+
 public class Climb extends SubsystemBase {
   private final CANSparkMax leftClimbMotor = new CANSparkMax(Constants.CLIMB_MOTOR_LEFT, MotorType.kBrushless);
   private final CANSparkMax rightClimbMotor = new CANSparkMax(Constants.CLIMB_MOTOR_RIGHT, MotorType.kBrushless);
@@ -33,6 +35,10 @@ public class Climb extends SubsystemBase {
     
 
     climbOverride.setBoolean(false);
+
+    ntDispTab("Climb")
+    .add("Left Position", this::getLeftClimbPos)
+    .add("Right Position", this::getRightClimbPos);
   }
 
   @Override
@@ -55,5 +61,13 @@ public class Climb extends SubsystemBase {
     }
 
     rightClimbMotor.set(output);
+  }
+
+  public double getLeftClimbPos(){
+    return leftClimbMotor.getEncoder().getPosition();
+  }
+
+  public double getRightClimbPos(){
+    return rightClimbMotor.getEncoder().getPosition();
   }
 }

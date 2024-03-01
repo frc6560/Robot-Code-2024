@@ -92,6 +92,8 @@ public class ManualControls implements DriveCommand.Controls {
 
     armTable.getEntry("overrideSoftLimits").setBoolean(false);
 
+
+
   }
 
   private static double deadband(double value, double deadband) {
@@ -121,12 +123,16 @@ public class ManualControls implements DriveCommand.Controls {
 
   @Override
   public double driveX() {
-    return -modifyAxis(xbox.getLeftY() * speed.get());
+    double speedModifier = nitroMode() ? 1.25 : 1;
+
+    return -modifyAxis(xbox.getLeftY() * speed.get() * speedModifier);
   }
 
   @Override
   public double driveY() {
-    return -modifyAxis(xbox.getLeftX() * speed.get());
+    double speedModifier = nitroMode() ? 1.25 : 1;
+
+    return -modifyAxis(xbox.getLeftX() * speed.get() * speedModifier);
   }
 
   @Override
@@ -142,6 +148,10 @@ public class ManualControls implements DriveCommand.Controls {
   @Override
   public boolean driveResetGlobalPose() {
     return xbox.getBackButton();
+  }
+
+  public boolean nitroMode(){
+    return xbox.getRightTriggerAxis() > 0.2;
   }
 
   

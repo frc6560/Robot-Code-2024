@@ -109,7 +109,7 @@ public static final double INTAKE_REVERSE_RATE = -0.3;
 
 public static final double TRANSFER_FEED_RATE = 1;
 
-public static final double TRANSFER_INTAKE_RATE = 0.35;
+public static final double TRANSFER_INTAKE_RATE = 0.25;
 
 
 public static final double SHOOTER_GROUND_INTAKE_POSITION = 1;
