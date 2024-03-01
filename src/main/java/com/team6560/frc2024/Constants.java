@@ -118,9 +118,9 @@ public static final double SHOOTER_WALL_INTAKE_POSITION = 36.8;
 
 public static final double SHOOTER_AMP_ARC_POS = 45.03;
 
-public static final double SHOOTER_SUBWOOFER_POSITION = 45;
+public static final double SHOOTER_SUBWOOFER_POSITION = 44;
 
-public static final double SHOOTER_SUBWOOFER_RPM = 5500;
+public static final double SHOOTER_SUBWOOFER_RPM = 5000;
 
 public static final double SHOOTER_TRANSFER_IN_RPM = -3000;
 
@@ -243,6 +243,9 @@ public static final int CLIMB_MOTOR_LEFT = 22;
 
 public static final int CLIMB_MOTOR_RIGHT = 23;
 
+
+
+public static final int CANDLE_ID = 31;
 
 
 

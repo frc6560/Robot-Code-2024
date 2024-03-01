@@ -142,8 +142,9 @@ public class Shooter extends SubsystemBase {
     arcPID.kI = 0; // no output for integrated error
     arcPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
 
+
     // set Motion Magic settings
-    MotionMagicConfigs arcMM = arcConfigs.MotionMagic;
+    MotionMagicConfigs arcMM = arcConfigs.MotionMagic;  
     arcMM.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
     arcMM.MotionMagicAcceleration = arcMM.MotionMagicCruiseVelocity / 0.5; // Target acceleration of 160 rps/s (0.5 seconds)
     arcMM.MotionMagicJerk = 0;//1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
@@ -154,9 +155,8 @@ public class Shooter extends SubsystemBase {
     arcSwitches.ForwardLimitAutosetPositionEnable = true;
     arcSwitches.ForwardLimitAutosetPositionValue = 45;
 
-    // arcMotor.getConfigurator().apply(arcConfigs.withHardwareLimitSwitch(arcSwitches));
+    arcMotor.getConfigurator().apply(arcConfigs.withHardwareLimitSwitch(arcSwitches));
     
-    arcMotor.setPosition(0.0); // TODO: CHECK IF THIS DOES ANYTHING
 
     
 

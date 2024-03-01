@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.04,
-      "y": 6.55
+      "x": 2.7,
+      "y": 6.8
     },
-    "rotation": -150.0
+    "rotation": 150.0
   },
   "command": {
     "type": "sequential",
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "one"
+                  "pathName": "NTF"
                 }
               }
             ]
