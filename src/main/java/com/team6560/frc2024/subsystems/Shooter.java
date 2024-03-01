@@ -21,6 +21,7 @@ import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab
 import java.util.ArrayList;
 
 import edu.wpi.first.math.interpolation.Interpolatable;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -30,6 +31,7 @@ public class Shooter extends SubsystemBase {
     double angle;
 
     double distance;
+
 
     public AimTrajectory(double distance, double rpm, double angle){
       this.rpm = rpm;
@@ -61,6 +63,7 @@ public class Shooter extends SubsystemBase {
     }
   }
   
+  DigitalInput limitSwitchSensor = new DigitalInput(9);
   
   final Limelight limelight;
   final Trap trap;
@@ -71,10 +74,15 @@ public class Shooter extends SubsystemBase {
 
   final CANSparkMax feedMotor;
 
-  final ColorSensorV3 colorSensor;
+  // final ColorSensorV3 colorSensor;
 
   double targetRPM = 0;
   double targetPosition = 0;
+
+  int cc = 0;
+  int freq = 3;
+
+  double sensorValue = 0;
   
 
   ArrayList<AimTrajectory> aimMap = new ArrayList<>();
@@ -90,7 +98,8 @@ public class Shooter extends SubsystemBase {
 
     feedMotor = new CANSparkMax(Constants.SHOOTER_FEED_MOTOR, MotorType.kBrushless);
 
-    colorSensor = new ColorSensorV3(Constants.SHOOTER_COLOR_SENSOR_PORT);
+    // colorSensor = new ColorSensorV3(Constants.SHOOTER_COLOR_SENSOR_PORT);
+
 
 
     setupMotors();
@@ -120,8 +129,8 @@ public class Shooter extends SubsystemBase {
     .add("Target Position", ()->targetPosition)
     .add("Current Draw Shooter", this::getCurrentDraw)
     .add("Vertical Position Shooter", this::getShooterArcPosition)
-    .add("Transfer Triggered", this::getTransferSensorTriggered)
-    .add("Feeder Proximity Sensor", ()->colorSensor.getProximity());
+    .add("Transfer Triggered", this::getTransferSensorTriggered);
+    // .add("Feeder Proximity Sensor", ()->colorSensor.getProximity());
   }
 
   private void setupMotors(){
@@ -185,6 +194,12 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    cc++;
+
+    // if( cc % freq == 0){
+    //   sensorValue = colorSensor.getProximity();
+      
+    // }
   }
 
 
@@ -250,7 +265,8 @@ public class Shooter extends SubsystemBase {
 
 
   public boolean getTransferSensorTriggered(){
-    return colorSensor.getProximity() > Constants.SENSOR_TRIGGER_PROXIMITY_VALUE;
+    // return sensorValue > Constants.SENSOR_TRIGGER_PROXIMITY_VALUE;
+    return  ! limitSwitchSensor.get();
   }
 
 

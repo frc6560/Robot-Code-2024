@@ -80,8 +80,12 @@ public class Drivetrain extends SubsystemBase {
 
         public Drivetrain() {
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
+                MkModuleConfiguration mkConfig = MkModuleConfiguration.getDefaultSteerNEO();
+                mkConfig.setDriveCurrentLimit(40);
+                mkConfig.setSteerCurrentLimit(20);
                 
-                m_frontLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                m_frontLeftModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
                                         .withSize(2, 4)
                                         .withPosition(6, 0))
@@ -92,7 +96,7 @@ public class Drivetrain extends SubsystemBase {
                                 .withSteerOffset(Constants.FRONT_LEFT_MODULE_STEER_OFFSET)
                                 .build();
 
-                m_frontRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                m_frontRightModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
                                         .withSize(2, 4)
                                         .withPosition(6, 0))
@@ -103,7 +107,7 @@ public class Drivetrain extends SubsystemBase {
                                 .withSteerOffset(Constants.FRONT_RIGHT_MODULE_STEER_OFFSET)
                                 .build();
 
-                m_backLeftModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                m_backLeftModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                                         .withSize(2, 4)
                                         .withPosition(6, 0))
@@ -113,8 +117,9 @@ public class Drivetrain extends SubsystemBase {
                                 .withSteerEncoderPort(Constants.BACK_LEFT_MODULE_STEER_ENCODER, "Canivore")
                                 .withSteerOffset(Constants.BACK_LEFT_MODULE_STEER_OFFSET)
                                 .build();
-
-                m_backRightModule = new MkSwerveModuleBuilder(MkModuleConfiguration.getDefaultSteerNEO())
+                
+                                
+                m_backRightModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                                         .withSize(2, 4)
                                         .withPosition(6, 0))

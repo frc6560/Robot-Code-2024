@@ -115,15 +115,14 @@ public class RobotContainer {
                 var alliance = DriverStation.getAlliance();
                 String prefix = "";
                 if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-                        prefix = "R";
-                }
+                        prefix = "R";                }
 
 
                 Command combo = (new AutoShooter(shooter, limelight, 45, 5000))
-                        .andThen(new PathPlannerAuto(prefix + "F1")).withTimeout(5)
-                        .andThen(new PathPlannerAuto("straight")).andThen(new AutoShooter(shooter, limelight, 20, 5200))
-                        .andThen(new PathPlannerAuto(prefix + "F2")).withTimeout(7)
-                        .andThen(new PathPlannerAuto(prefix + "F3")).andThen(new AutoShooter(shooter,limelight,20,5200));
+                        .andThen(new PathPlannerAuto("F1")).withTimeout(5)
+                        .andThen(new PathPlannerAuto("straight")).andThen(new AutoShooter(shooter, limelight, 19, 5200));
+                        // .andThen(new PathPlannerAuto("F2")).withTimeout(7)
+                        // .andThen(new PathPlannerAuto("F3")).andThen(new AutoShooter(shooter,limelight,20,5200));
 
                 return combo;
         }
