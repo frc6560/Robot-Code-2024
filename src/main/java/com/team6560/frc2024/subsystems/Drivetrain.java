@@ -42,6 +42,7 @@ import com.swervedrivespecialties.swervelib.MkSwerveModuleBuilder;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 import com.team6560.frc2024.Constants;
+import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Drivetrain extends SubsystemBase {
         /**
@@ -84,6 +85,8 @@ public class Drivetrain extends SubsystemBase {
                 MkModuleConfiguration mkConfig = MkModuleConfiguration.getDefaultSteerNEO();
                 mkConfig.setDriveCurrentLimit(40);
                 mkConfig.setSteerCurrentLimit(20);
+
+
                 
                 m_frontLeftModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
@@ -165,6 +168,9 @@ public class Drivetrain extends SubsystemBase {
 
                 this.fieldOnlyOdometry = new Field2d();
                 SmartDashboard.putData("FieldOnlyOdometry", fieldOnlyOdometry);
+
+                ntDispTab("Drivetrain")
+                .add("Gyro", () -> getRawGyroRotation().getDegrees());
         }
 
         public SwerveModule[] getModules() {

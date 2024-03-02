@@ -211,7 +211,7 @@ public class ManualControls implements DriveCommand.Controls {
   // ------------------------------ CLIMB ------------------------------ \\
 
   public double getClimbLeft(){
-    return deadband(-controlStation.getRightY(), 0.1);
+    return deadband(-controlStation.getRightY()/1.1, 0.1);
   }
   public double getClimbRight(){
    return deadband(-controlStation.getLeftY(), 0.1);
