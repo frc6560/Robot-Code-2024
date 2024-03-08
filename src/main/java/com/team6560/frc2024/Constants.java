@@ -54,22 +54,22 @@ public final class Constants {
   public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 6;
   public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 11;
   public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2;
-  public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(202.04);
+  public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(202.89078659807276);
 
   public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 7;
   public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 12;
   public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 3;
-  public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(109.20);
+  public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(110.70318014300058);
 
   public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5;
   public static final int BACK_LEFT_MODULE_STEER_MOTOR = 9;
   public static final int BACK_LEFT_MODULE_STEER_ENCODER = 1;
-  public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(320.58);
+  public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(317.96008371688592);
 
   public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 8;
   public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 10;
   public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 4;
-  public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(304.18);
+  public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(305.02355283233524);
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
       SdsModuleConfigurations.MK4I_L2.getDriveReduction() * 
@@ -116,11 +116,11 @@ public static final double SHOOTER_GROUND_INTAKE_POSITION = 1;
 
 public static final double SHOOTER_WALL_INTAKE_POSITION = 36.8;
 
-public static final double SHOOTER_AMP_ARC_POS = 45.03;
+public static final double SHOOTER_AMP_ARC_POS = 45;
 
 public static final double SHOOTER_SUBWOOFER_POSITION = 44;
 
-public static final double SHOOTER_SUBWOOFER_RPM = 5000;
+public static final double SHOOTER_SUBWOOFER_RPM = 4000;
 
 public static final double SHOOTER_TRANSFER_IN_RPM = -3000;
 
@@ -140,7 +140,7 @@ public static final double TRAP_WALL_FEED_RATE = -0.8;
 
 public static final double TRAP_AMP_ANGLE = 35;
 
-public static final double TRAP_AMP_EXTENTION = 5.06;
+public static final double TRAP_AMP_EXTENTION = 4.5;
 
 public static final double TRAP_AMP_FEED_RATE = 1;
 

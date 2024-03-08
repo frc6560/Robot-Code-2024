@@ -105,21 +105,32 @@ public class Shooter extends SubsystemBase {
     setupMotors();
 
     
-    aimMap.add(new AimTrajectory(-100.0, 6100 , 17));
+    aimMap.add(new AimTrajectory(-100.0, 5000 , 16));
 
-    aimMap.add(new AimTrajectory(-3.19, 6100 , 17));
-    aimMap.add(new AimTrajectory(-1.93, 6100 , 16));
-    aimMap.add(new AimTrajectory(-0.345, 6100 , 14));
-    aimMap.add(new AimTrajectory(1.29, 5400 , 17));
-    aimMap.add(new AimTrajectory(2.73, 5200 , 20    ));
-    aimMap.add(new AimTrajectory(4.42, 5200 , 24));
-    aimMap.add(new AimTrajectory(6.76, 5100 , 25));
-    aimMap.add(new AimTrajectory(9.53, 5100 , 30));
-    aimMap.add(new AimTrajectory(13.47, 5100 , 35));
-    aimMap.add(new AimTrajectory(18.70, 5100 , 40));
-    aimMap.add(new AimTrajectory(20.0, 5000 , 45));
+    // aimMap.add(new AimTrajectory(-3.19, 6100 , 17));
+    // aimMap.add(new AimTrajectory(-1.93, 6100 , 16));
+    // aimMap.add(new AimTrajectory(-0.345, 6100 , 14));
+    // aimMap.add(new AimTrajectory(1.29, 5400 , 17));
+    // aimMap.add(new AimTrajectory(2.73, 5200 , 20    ));
+    // aimMap.add(new AimTrajectory(4.42, 5200 , 24));
+    // aimMap.add(new AimTrajectory(6.76, 5100 , 25));
+    // aimMap.add(new AimTrajectory(9.53, 5100 , 30));
+    // aimMap.add(new AimTrajectory(13.47, 5100 , 35));
+    // aimMap.add(new AimTrajectory(18.70, 5100 , 40));
+    // aimMap.add(new AimTrajectory(20.0, 5000 , 45));
+
+
+    aimMap.add(new AimTrajectory(1.00, 4750 , 15));
+    aimMap.add(new AimTrajectory(2.03, 4550 , 16));
+    aimMap.add(new AimTrajectory(2.97, 4200 , 18));
+    aimMap.add(new AimTrajectory(4.00, 4200 , 20));
+    aimMap.add(new AimTrajectory(4.99, 4200 , 20));
+    aimMap.add(new AimTrajectory(9.05, 4000 , 27));
+    aimMap.add(new AimTrajectory(12.02, 4000 , 30));
+    aimMap.add(new AimTrajectory(14.5, 4000 , 35));
+    aimMap.add(new AimTrajectory(20, 4000 , 44));
     
-    aimMap.add(new AimTrajectory(100.0, 5500 , 45));
+    aimMap.add(new AimTrajectory(100.0, 4000 , 45));
 
 
 
@@ -136,7 +147,6 @@ public class Shooter extends SubsystemBase {
   private void setupMotors(){
     arcMotor.setNeutralMode(NeutralModeValue.Brake);
     arcMotor.setInverted(false);
-    arcMotor.optimizeBusUtilizationForAll(arcMotor);
 
     
     // in init function
@@ -234,8 +244,8 @@ public class Shooter extends SubsystemBase {
 
   public boolean readyToShoot(){
     return ( 
-      Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF //&&
-      // Math.abs(getShooterArcPosition() - targetPosition) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF
+      Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
+      isAtTargetArcAngle()
       // (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ) && 
       // trap.isClearOfShooter()
     );
