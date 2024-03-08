@@ -242,11 +242,11 @@ public class Shooter extends SubsystemBase {
  
 
 
-  public boolean readyToShoot(){
+  public boolean readyToShoot(boolean isShootingSafe){
     return ( 
       Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
-      isAtTargetArcAngle()
-      // (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ) && 
+      isAtTargetArcAngle() &&
+      (isShootingSafe || (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ))
       // trap.isClearOfShooter()
     );
   }

@@ -75,7 +75,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight));
 
 
-                driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
+                driveCommand = new DriveCommand(drivetrain, shooter, limelight, manualControls);
                 ShooterCommand = new ShooterCommand(shooter, trap, limelight, manualControls);
                 intakeCommand = new IntakeCommand(intake, shooter, manualControls);
                 trapCommand = new TrapCommand(trap, shooter, manualControls);

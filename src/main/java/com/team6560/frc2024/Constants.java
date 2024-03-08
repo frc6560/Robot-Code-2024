@@ -167,7 +167,7 @@ public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 50;
 
 public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 0.2;
 
-public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1;
+public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 3;
 
 public static final double TRAP_ACCEPTABLE_ANGLE_DIFF = 1;
 

@@ -49,7 +49,7 @@ public class AutoShooter extends Command {
       shooter.setArcPosition(arc);//shooter.findClosest(1.6).getAngle());//Constants.SHOOTER_SUBWOOFER_POSITION);
       shooter.setRPM(rpm);//shooter.findClosest(1.4).getRpm());//Constants.SHOOTER_SUBWOOFER_RPM);
 
-      if(shooter.readyToShoot() || isShooting){
+      if(shooter.readyToShoot(false) || isShooting){
         shooter.setTransfer(Constants.TRANSFER_FEED_RATE);
 
         isShooting = true;

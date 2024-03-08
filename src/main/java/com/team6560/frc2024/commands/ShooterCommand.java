@@ -78,7 +78,7 @@ public class ShooterCommand extends Command {
         shooter.setRPM(shooter.findClosest(dist).getRpm());
       }
 
-      if (controls.getShoot() && shooter.readyToShoot()){
+      if (controls.getShoot() && shooter.readyToShoot(controls.getSafeAim())){
         shooter.setTransfer(Constants.TRANSFER_FEED_RATE);
       } else {
         shooter.setTransfer(0);

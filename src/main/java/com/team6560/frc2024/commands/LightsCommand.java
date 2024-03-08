@@ -46,7 +46,7 @@ public class LightsCommand extends Command {
     // if()
     if (controls.getRunIntake()) {
       if(shooter.getTransferSensorTriggered()){
-        light.setLightsShooting(shooter.readyToShoot());
+        light.setLightsShooting(shooter.readyToShoot(controls.getSafeAim()));
       } else {
         light.setLightsIntake();
       } 

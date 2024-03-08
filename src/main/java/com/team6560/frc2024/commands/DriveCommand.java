@@ -4,6 +4,8 @@ import com.pathplanner.lib.util.GeometryUtil;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Drivetrain;
 import com.team6560.frc2024.subsystems.Limelight;
+import com.team6560.frc2024.subsystems.Shooter;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class DriveCommand extends Command {
     private final Limelight limelight;
+    private final Shooter shooter;
     private final Drivetrain drivetrain;
 
     public static interface Controls {
@@ -30,9 +33,10 @@ public class DriveCommand extends Command {
 
     private ManualControls controls;
 
-    public DriveCommand(Drivetrain drivetrainSubsystem, Limelight limelight, ManualControls controls) {
+    public DriveCommand(Drivetrain drivetrainSubsystem, Shooter shooter, Limelight limelight, ManualControls controls) {
         this.drivetrain = drivetrainSubsystem;
         this.limelight = limelight;
+        this.shooter = shooter;
         this.controls = controls;
 
         addRequirements(drivetrainSubsystem);
@@ -80,7 +84,7 @@ public class DriveCommand extends Command {
         double llDeadband = 2; // in degrees
         double rotateSpeed = 0.3; // multiplyer for max speed
 
-        if (controllerInput == 0 && controls.getAutoTarget()){ 
+        if (controllerInput <= 0.1 && controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
             double speed = 0;
             double p = 0.25;
 
