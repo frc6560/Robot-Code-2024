@@ -84,20 +84,15 @@ public class ShooterCommand extends Command {
   }
 
   public void shooterStuff() {
-    if (controls.getIntakeIn() || controls.getIntakeOut()) {
+    if ((controls.getIntakeIn() && !transfer.isInProximity()) || controls.getIntakeOut()) {
       shooter.setTargetAngle(0);
     }
-    else if (controls.getSetShootMode()) {
-      // isShooting = true;
+    else if (controls.getSetShootMode() && transfer.isInProximity()) {
       if (controls.getManualShootShooter()) {
         transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
       } else {
         transfer.setSpeed(0.0);
       }
-      // if (Transfer.isInProximity() && Shooter.isReadyAutoAim()) {
-      // Transfer.setSpeed(1.0); // maybe add a down frames to fix not properly
-      // shooting the ring.
-      // }
       if (limelight.hasTarget()) {
         double[] shooterAim = autoShooterAim();
         if (!shooterAim.equals(null)) {

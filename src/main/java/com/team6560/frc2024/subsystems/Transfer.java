@@ -28,7 +28,7 @@ public class Transfer extends SubsystemBase {
     transferMotor.setIdleMode(IdleMode.kBrake);
     transferMotor.setInverted(true);
     transferMotor.setSmartCurrentLimit(25);
-    limitSwitchSensor = new DigitalInput(19);
+    limitSwitchSensor = new DigitalInput(9);
     isAutoShooting = false;
   }
 

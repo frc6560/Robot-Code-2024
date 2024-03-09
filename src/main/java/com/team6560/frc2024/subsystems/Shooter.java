@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
 
   private final MotionMagicVoltage m_arcRequest;
   private final VelocityVoltage m_shooterRequest;
-  
+
   // private double targetRPM;
   // private double targetAngle;
 
@@ -48,18 +48,16 @@ public class Shooter extends SubsystemBase {
   NetworkTableEntry targetRPM = ntTable.getEntry("targetRPM");
   NetworkTableEntry targetAngle = ntTable.getEntry("targetAngle");
 
-
   // private NetworkTableEntry ntRPM;
   // private NetworkTableEntry ntAngle;
 
   // private final double arcTurnSpeed = 0.5;
-  
+
   public Shooter() {
     // targetRPM = 0;
     // targetAngle = 0;
 
-
-    //Shooter Motor Config
+    // Shooter Motor Config
     m_shooterLeft = new TalonFX(ShooterConstants.SHOOTER_LEFT_ID);
     m_shooterRight = new TalonFX(ShooterConstants.SHOOTER_RIGHT_ID);
 
@@ -72,7 +70,7 @@ public class Shooter extends SubsystemBase {
     shooterPIDConfig.kP = 0.1;
     shooterPIDConfig.kI = 0;
     shooterPIDConfig.kD = 0;
-    
+
     var shooterGearRatio = new FeedbackConfigs();
     shooterGearRatio.SensorToMechanismRatio = ShooterConstants.SHOOTER_GEAR_RATIO;
 
@@ -84,11 +82,12 @@ public class Shooter extends SubsystemBase {
 
     m_shooterRequest = new VelocityVoltage(0.0).withSlot(0);
 
-    //Arc Motor Config
+    // Arc Motor Config
     m_arc = new TalonFX(ShooterConstants.ARC_MOTOR_ID);
     m_arc.getConfigurator().apply(new TalonFXConfiguration());
 
-    // private final PositionVoltage m_voltagePosition = new PositionVoltage(0, 0, true, 0, 0, false, false, false); 
+    // private final PositionVoltage m_voltagePosition = new PositionVoltage(0, 0,
+    // true, 0, 0, false, false, false);
 
     var arcPIDConfig = new TalonFXConfiguration();
 
@@ -98,7 +97,7 @@ public class Shooter extends SubsystemBase {
     arcSlot0Configs.kP = 0.8;
     arcSlot0Configs.kI = 0;
     arcSlot0Configs.kD = 0;
-    
+
     var arcMotionMagicConfig = arcPIDConfig.MotionMagic;
     arcMotionMagicConfig.MotionMagicCruiseVelocity = 30;
     arcMotionMagicConfig.MotionMagicAcceleration = 60;
@@ -109,8 +108,8 @@ public class Shooter extends SubsystemBase {
     m_arcRequest = new MotionMagicVoltage(0);
 
     ntDispTab("Shooter")
-      .add("Current RPS", this::getShooterRPM)
-      .add("Current Arc Angle", this::getArcAngle);
+        .add("Current RPS", this::getShooterRPM)
+        .add("Current Arc Angle", this::getArcAngle);
 
     targetRPM.setDouble(0.0);
     targetAngle.setDouble(0.0);
@@ -119,22 +118,25 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_shooterLeft.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS).withFeedForward(0));
-    m_shooterRight.setControl(m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS).withFeedForward(0));
+    m_shooterLeft.setControl(
+        m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS).withFeedForward(0));
+    m_shooterRight.setControl(
+        m_shooterRequest.withVelocity(targetRPM.getDouble(0.0) * ShooterConstants.RPM_TO_RPS).withFeedForward(0));
     m_arc.setControl(m_arcRequest.withPosition(targetAngle.getDouble(0.0)));
   }
 
   public boolean isReadyRPMAndAngle() {
-    if (getRPMDifference() < ShooterConstants.ACCEPTABLE_RPM_DIFF && getAngleDifference() < ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
+    if (getRPMDifference() < ShooterConstants.ACCEPTABLE_RPM_DIFF
+        && getAngleDifference() < ShooterConstants.ACCEPTABLE_ANGLE_DIFF) {
       return true;
-    }   
+    }
     return false;
   }
 
   public boolean isReadyRPM() {
     if (getRPMDifference() < ShooterConstants.ACCEPTABLE_RPM_DIFF) {
       return true;
-    }   
+    }
     return false;
   }
 
@@ -166,14 +168,17 @@ public class Shooter extends SubsystemBase {
     return (getArcAngle() > Constants.MIN_ARC_ANGLE_FOR_INTAKE || getArcAngle() < Constants.MAX_ARC_ANGLE_FOR_INTAKE);
   }
 
-  public void setTargetRPM (double input) {
-      targetRPM.setDouble(input);
+  public void setTargetRPM(double input) {
+    targetRPM.setDouble(input);
   }
 
-  public void setTargetAngle (double angle) {
-    if (angle < 0) angle = 0;
-    else if (angle > ShooterConstants.MAX_ARC_ANGLE) angle = ShooterConstants.MAX_ARC_ANGLE;
-    
+  public void setTargetAngle(double angle) {
+    if (angle < 0) {
+      angle = 0;
+    } else if (angle > ShooterConstants.MAX_ARC_ANGLE) {
+      angle = ShooterConstants.MAX_ARC_ANGLE;
+    }
+
     targetAngle.setDouble(angle);
   }
 

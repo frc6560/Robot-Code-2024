@@ -161,19 +161,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public boolean getSetShootMode() {
-    if (controlStation.getLeftTriggerAxis() > 0.2) {
-      isSetShootMode = true;
-      return true;
-    }
-    return false;
+    return controlStation.getRightBumper();
   }
 
   public boolean getSetShootModeReleased() {
-    if (!getSetShootMode() && isSetShootMode) {
-      isSetShootMode = false;
-      return true;
-    }
-    return false;
+    return controlStation.getRightBumperReleased();
   }
 
   @Override
