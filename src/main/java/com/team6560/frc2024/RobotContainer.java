@@ -90,7 +90,9 @@ public class RobotContainer {
                 climb.setDefaultCommand(climbCommand);
                 lights.setDefaultCommand(lightsCommand);
 
-                autoChooser = AutoBuilder.buildAutoChooser();
+
+                autoChooser = new SendableChooser<Command>();
+                // autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
                 
                 autoChooser.addOption("One Still", oneBall());
@@ -100,6 +102,9 @@ public class RobotContainer {
                 autoChooser.addOption("five", farThreeBall());
                 autoChooser.addOption("red five", farThreeBallRed());
                 autoChooser.addOption("Two mid", twoBallMid());
+
+
+                autoChooser.addOption("calibration", (new PathPlannerAuto("cali1")).andThen(new PathPlannerAuto("cali2")));
 
 
                 // Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 19.75, 5800))

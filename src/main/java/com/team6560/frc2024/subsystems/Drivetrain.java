@@ -265,6 +265,13 @@ public class Drivetrain extends SubsystemBase {
                 return odometry.getPoseMeters();
         }
 
+        public Pose2d getOdometryForAuto() {
+                Pose2d pos = getOdometryPose2dNoApriltags();
+                double scaleValue = 3/2;
+
+                return new Pose2d(pos.getX() * scaleValue, pos.getY() * scaleValue, pos.getRotation());
+        }
+
         public SwerveModulePosition[] getModulePositions() {
                 return new SwerveModulePosition[] { m_frontLeftModule.getPosition(), m_frontRightModule.getPosition(),
                                 m_backLeftModule.getPosition(), m_backRightModule.getPosition() };

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 7.0
+      "x": 1.0,
+      "y": 5.0
     },
     "rotation": 0
   },
@@ -14,12 +14,18 @@
         {
           "type": "path",
           "data": {
-            "pathName": "three.five"
+            "pathName": "cal1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
           }
         }
       ]
     }
   },
-  "folder": "Old",
+  "folder": "New",
   "choreoAuto": false
 }

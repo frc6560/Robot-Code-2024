@@ -41,13 +41,13 @@ public final class Constants {
    *
    * Should be measured from center to center.
    */
-  public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57785; 
+  public static final double DRIVETRAIN_TRACKWIDTH_METERS = 20.375 * 0.0254; // 0.517525
   /**
    * The front-to-back distance between the drivetrain wheels.
    *
    * Should be measured from center to center.
    */
-  public static final double DRIVETRAIN_WHEELBASE_METERS = 0.57785;
+  public static final double DRIVETRAIN_WHEELBASE_METERS = 20.375 * 0.0254; // 0.517525
 
   
 
@@ -64,16 +64,14 @@ public final class Constants {
   public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5;
   public static final int BACK_LEFT_MODULE_STEER_MOTOR = 9;
   public static final int BACK_LEFT_MODULE_STEER_ENCODER = 1;
-  public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(317.96008371688592);
+  public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(320.96008371688592);
 
   public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 8;
   public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 10;
   public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 4;
   public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(305.02355283233524);
 
-  public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-      SdsModuleConfigurations.MK4I_L2.getDriveReduction() * 
-      SdsModuleConfigurations.MK4I_L2.getWheelDiameter() * Math.PI;
+  public static final double MAX_VELOCITY_METERS_PER_SECOND = 4.3;
 
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
       Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
@@ -93,17 +91,19 @@ public final class Constants {
       new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
   
   public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-    new PIDConstants( .22, 0.0, 0.0), // Translation constants 
+    new PIDConstants( 0.15, 0.0, 0.0), // Translation constants 
     new PIDConstants(2.5, 0, 0), // Rotation constants 
-    MAX_VELOCITY_METERS_PER_SECOND / 2 ,
-    DRIVETRAIN_WHEELBASE_METERS,// Drive base radius (distance from center to furthest module) 
-    new ReplanningConfig()
+    // new PIDConstants( 5, 0.0, 0.0), // Translation constants 
+    // new PIDConstants(5, 0, 0), // Rotation constants 
+    0,//MAX_VELOCITY_METERS_PER_SECOND / 4 ,
+    Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),// Drive base radius (distance from center to furthest module) 
+    new ReplanningConfig(true, false)
   );
 
 
 
 
-public static final double INTAKE_FEED_RATE = 0.6;
+public static final double INTAKE_FEED_RATE = 0.4;
 
 public static final double INTAKE_REVERSE_RATE = -0.3;
 
