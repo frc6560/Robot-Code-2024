@@ -84,7 +84,7 @@ public class StingerCommand extends Command {
       stinger.setRoller(0.0);
     } else {
       setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-      if (transfer.getTransferSensorValue() < 460) {
+      if (!transfer.isInProximity()) {
         stinger.setRoller(-1.0);
       }
     }

@@ -5,6 +5,7 @@
 package com.team6560.frc2024.commands;
 
 import com.team6560.frc2024.subsystems.Intake;
+import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,7 +14,7 @@ public class IntakeCommand extends Command {
 
   private final Intake intake;
 
-  // private final Transfer Transfer;
+  private final Transfer transfer;
 
   private final Shooter shooter;
 
@@ -27,11 +28,12 @@ public class IntakeCommand extends Command {
   }
 
   /** Creates a new IntakeCommand. */
-  public IntakeCommand(Intake intake, Shooter shooter, Controls controls) {
+  public IntakeCommand(Intake intake, Transfer transfer, Shooter shooter, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
     this.intake = intake;
     this.shooter = shooter;
+    this.transfer = transfer;
     this.controls = controls;
   }
 
@@ -44,7 +46,7 @@ public class IntakeCommand extends Command {
   @Override
   public void execute() {
   if (shooter.canIntake()) {
-    if (controls.getIntakeIn()) {
+    if (controls.getIntakeIn() && !transfer.isInProximity()) {
       intake.setSpeed(0.9);
 
     } else if (controls.getIntakeOut()) {

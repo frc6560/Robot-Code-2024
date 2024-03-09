@@ -51,7 +51,7 @@ public class RobotContainer {
         private final Stinger stinger;
         private final Climb climb;
         private final Limelight limelight;
-        private final LightWorkNoReaction lightWorkNoReaction;
+        // private final LightWorkNoReaction lightWorkNoReaction;
         private final DriveCommand driveCommand;
         private final IntakeCommand intakeCommand;
         private final StingerCommand stingerCommand;
@@ -59,7 +59,7 @@ public class RobotContainer {
         // private final AutoIntakeCommand autoIntakeCommand;
         // private final AutoShooterCommand autoShooterCommand;
         // private final AutoTransferCommand autoTransferCommand;
-        private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
+        // private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
         // private final ClimbCommand climbCommand;
       
 
@@ -79,22 +79,22 @@ public class RobotContainer {
                 stinger = new Stinger();
                 transfer = new Transfer();
                 climb = new Climb();
-                lightWorkNoReaction = new LightWorkNoReaction();
+                // lightWorkNoReaction = new LightWorkNoReaction();
                 driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
-                intakeCommand = new IntakeCommand(intake, shooter, manualControls);
-                shooterCommand = new ShooterCommand(shooter, limelight, stinger, transfer, lightWorkNoReaction, manualControls);
+                intakeCommand = new IntakeCommand(intake, transfer, shooter, manualControls);
+                shooterCommand = new ShooterCommand(shooter, limelight, stinger, transfer, manualControls);
                 stingerCommand = new StingerCommand(stinger, transfer, manualControls);
                 // autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
                 // autoShooterCommand = new AutoShooterCommand(shooter);
                 // autoTransferCommand = new AutoTransferCommand(transfer);
-                lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, manualControls);
+                // lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, shooter, manualControls);
                 // climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
 
                 drivetrain.setDefaultCommand(driveCommand);
                 intake.setDefaultCommand(intakeCommand);
                 stinger.setDefaultCommand(stingerCommand);
                 shooter.setDefaultCommand(shooterCommand);
-                lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
+                // lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
                 // climb.setDefaultCommand(climbCommand);
 
                 NamedCommands.registerCommand("print hello", Commands.print("hello"));

@@ -13,8 +13,8 @@ import com.team6560.frc2024.Constants.ShooterConfigs;
 import com.team6560.frc2024.Constants.StingerConfigs;
 import com.team6560.frc2024.subsystems.Transfer;
 import com.team6560.frc2024.Constants;
-import com.team6560.frc2024.Constants.CandleColorModes;
-import com.team6560.frc2024.subsystems.LightWorkNoReaction;
+// import com.team6560.frc2024.Constants.CandleColorModes;
+// import com.team6560.frc2024.subsystems.LightWorkNoReaction;
 
 public class ShooterCommand extends Command {
   /** Creates a new ShooterCommand. */
@@ -50,19 +50,16 @@ public class ShooterCommand extends Command {
   private final Stinger stinger;
   private final Controls controls;
   private final Transfer transfer;
-  private final LightWorkNoReaction light;
 
   // private boolean isShooting;
 
-  public ShooterCommand(Shooter shooter, Limelight limelight, Stinger stinger, Transfer transfer,
-      LightWorkNoReaction light, Controls controls) {
+  public ShooterCommand(Shooter shooter, Limelight limelight, Stinger stinger, Transfer transfer, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.limelight = limelight;
     this.stinger = stinger;
     this.transfer = transfer;
     this.controls = controls;
-    this.light = light;
 
     addRequirements(shooter);
   }
@@ -91,7 +88,6 @@ public class ShooterCommand extends Command {
       shooter.setTargetAngle(0);
     }
     else if (controls.getSetShootMode()) {
-      light.setColorMode(CandleColorModes.SHOOT_MODE);
       // isShooting = true;
       if (controls.getManualShootShooter()) {
         transfer.setSpeed(1.0); // maybe add a down frames to fix not properly shooting the ring.
@@ -117,7 +113,6 @@ public class ShooterCommand extends Command {
         shooter.setTargetAngle(Constants.MAX_ARC_ANGLE_FOR_INTAKE);
       }
     } else if (controls.getSetShootModeReleased()) {
-      light.setColorMode(CandleColorModes.NO_MODE);
       shooter.setStowPos();
       shooter.setTargetRPM(0.0);
       transfer.setSpeed(0.0);
@@ -142,12 +137,8 @@ public class ShooterCommand extends Command {
       if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
         shooter.setTargetRPM(-10.0); // placeholder value
         if (shooter.isReadyRPM()) {
-          while (transfer.getTransferSensorValue() < 460) {
+          while (!transfer.isInProximity()) {
             transfer.setSpeed(-1.0);
-          }
-          if (transfer.getTransferSensorValue() < 300) { // this is to prevent a situation where the color sensor detects the "bottom" of the note and stopping the transfer motor while the note still is in contact with shooter wheels
-            transfer.setSpeed(0);
-            shooter.setTargetRPM(0);
           }
         }
       }

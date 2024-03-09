@@ -13,14 +13,10 @@ import com.team6560.frc2024.Constants.CandleColorModes;
 public class LightWorkNoReaction extends SubsystemBase {
   private final CANdle candle; 
   private CandleColorModes mode;
-  private boolean isFlashOn;
-  private int isFlashOnCounter;
   /** Creates a new LightWorkNoSweat. */
   public LightWorkNoReaction() {
     this.candle = new CANdle(Constants.CANdleID);
     this.mode = CandleColorModes.NO_MODE; 
-    this.isFlashOn = false;
-    this.isFlashOnCounter = 0;
   }
   public CandleColorModes getColorMode() {
     return mode; 
@@ -42,21 +38,14 @@ public class LightWorkNoReaction extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    isFlashOnCounter++;
-    if (isFlashOnCounter == 4) {
-      isFlashOn = !isFlashOn;
-      isFlashOnCounter = 0;
-    }
-    isFlashOn = !isFlashOn;
     // sets to blue
-    if (mode == CandleColorModes.HOLD_MODE) {
-      candle.setLEDs(0, 187, 255);
-
-    } else if (mode == CandleColorModes.INTAKE_MODE && isFlashOn) {
+    if (mode == CandleColorModes.INTAKE_MODE) {
+      candle.setLEDs(0, 255, 255);
+      //sets to rainbow
+    } else if (mode == CandleColorModes.HOLD_UNREADY_MODE) {
       //sets to orange
       candle.setLEDs(255, 93, 13); 
-      
-      //sets to rainbow
+
     } else if (mode == CandleColorModes.SHOOT_MODE) {
       candle.setLEDs((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
     }

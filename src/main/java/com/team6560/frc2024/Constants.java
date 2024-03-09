@@ -319,7 +319,7 @@ public final class Constants {
   }
 
   public enum CandleColorModes {
-    INTAKE_MODE, HOLD_MODE, SHOOT_MODE, NO_MODE;
+    INTAKE_MODE, HOLD_UNREADY_MODE, SHOOT_MODE, NO_MODE, HUMAN_STATION_MODE;
 
     CandleColorModes() {
     };

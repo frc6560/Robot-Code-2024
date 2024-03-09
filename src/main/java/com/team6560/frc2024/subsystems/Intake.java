@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
 
   private CANSparkMax intakeMotor;
-  private Shooter shooter;
+  // private Shooter shooter;
   /** Creates a new Intake. */
   public Intake(Shooter shooter) {
     intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR, MotorType.kBrushless);
@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
     intakeMotor.setIdleMode(IdleMode.kBrake);
     intakeMotor.setSmartCurrentLimit(25);
 
-    this.shooter = new Shooter();
+    // this.shooter = new Shooter();
   }
 
   public void setSpeed(double speed) {

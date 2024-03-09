@@ -1,0 +1,14 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/5 Balls": "Command",
+      "/SmartDashboard/Auto Mode": "String Chooser",
+      "/SmartDashboard/Basic 2 Ball": "Command",
+      "/SmartDashboard/FieldOnlyOdometry": "Field2d",
+      "/SmartDashboard/New Auto": "Command",
+      "/SmartDashboard/New New Auto": "Command",
+      "/SmartDashboard/aprilTagField": "Field2d"
+    }
+  }
+}

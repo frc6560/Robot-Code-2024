@@ -6,6 +6,7 @@ package com.team6560.frc2024.commands;
 
 import com.team6560.frc2024.Constants.CandleColorModes;
 import com.team6560.frc2024.subsystems.LightWorkNoReaction;
+import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Transfer;
 
 
@@ -18,6 +19,7 @@ public class LightWorkNoReactionCommand extends Command {
 
   private final LightWorkNoReaction light;
   private final Transfer transfer;
+  private final Shooter shooter;
   private final Controls controls;
 
   public static interface Controls {
@@ -28,13 +30,16 @@ public class LightWorkNoReactionCommand extends Command {
     boolean getIntakeOut();
 
     boolean getIntakeOutReleased();
+
+    boolean getHumanStationIntake();
   }
 
-  public LightWorkNoReactionCommand(LightWorkNoReaction light, Transfer transfer, Controls controls) {
+  public LightWorkNoReactionCommand(LightWorkNoReaction light, Transfer transfer, Shooter shooter, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(light);
     this.light = light;
     this.transfer = transfer;
+    this.shooter = shooter;
     this.controls = controls;
   }
 
@@ -49,11 +54,17 @@ public class LightWorkNoReactionCommand extends Command {
     if (controls.getIntakeInReleased() || controls.getIntakeOutReleased()) {
       light.setColorMode(CandleColorModes.NO_MODE);
     }
+    if (controls.getHumanStationIntake()) {
+      light.setColorMode(CandleColorModes.HUMAN_STATION_MODE);
+    }
     if (controls.getIntakeIn() || controls.getIntakeOut()) {
       light.setColorMode(CandleColorModes.INTAKE_MODE);
-    }
-    else if (transfer.isInProximity()) {
-      light.setColorMode(CandleColorModes.HOLD_MODE);
+      if (transfer.isInProximity()) {
+        light.setColorMode(CandleColorModes.HOLD_UNREADY_MODE);
+      }
+      if (shooter.isReadyRPMAndAngle()) {
+        light.setColorMode(CandleColorModes.SHOOT_MODE);
+      }
     }
   }
 

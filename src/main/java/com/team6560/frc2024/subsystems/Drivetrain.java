@@ -87,9 +87,9 @@ public class Drivetrain extends SubsystemBase {
                                 .withSize(2, 4)
                                 .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-                                .withDriveMotor(MotorType.FALCON, Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR)
+                                .withDriveMotor(MotorType.FALCON, Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR, "Canivore")
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_LEFT_MODULE_STEER_MOTOR)
-                                .withSteerEncoderPort(Constants.FRONT_LEFT_MODULE_STEER_ENCODER)
+                                .withSteerEncoderPort(Constants.FRONT_LEFT_MODULE_STEER_ENCODER, "Canivore")
                                 .withSteerOffset(Constants.FRONT_LEFT_MODULE_STEER_OFFSET)
                                 .build();
 
@@ -98,9 +98,9 @@ public class Drivetrain extends SubsystemBase {
                 .withSize(2, 4)
                 .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-                                .withDriveMotor(MotorType.FALCON, Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR)
+                                .withDriveMotor(MotorType.FALCON, Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR, "Canivore")
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_RIGHT_MODULE_STEER_MOTOR)
-                                .withSteerEncoderPort(Constants.FRONT_RIGHT_MODULE_STEER_ENCODER)
+                                .withSteerEncoderPort(Constants.FRONT_RIGHT_MODULE_STEER_ENCODER, "Canivore")
                                 .withSteerOffset(Constants.FRONT_RIGHT_MODULE_STEER_OFFSET)
                                 .build();
 
@@ -109,9 +109,9 @@ public class Drivetrain extends SubsystemBase {
                                 .withSize(2, 4)
                                 .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-                                .withDriveMotor(MotorType.FALCON, Constants.BACK_LEFT_MODULE_DRIVE_MOTOR)
+                                .withDriveMotor(MotorType.FALCON, Constants.BACK_LEFT_MODULE_DRIVE_MOTOR, "Canivore")
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_LEFT_MODULE_STEER_MOTOR)
-                                .withSteerEncoderPort(Constants.BACK_LEFT_MODULE_STEER_ENCODER)
+                                .withSteerEncoderPort(Constants.BACK_LEFT_MODULE_STEER_ENCODER, "Canivore")
                                 .withSteerOffset(Constants.BACK_LEFT_MODULE_STEER_OFFSET)
                                 .build();
 
@@ -120,9 +120,9 @@ public class Drivetrain extends SubsystemBase {
                                 .withSize(2, 4)
                                 .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-                                .withDriveMotor(MotorType.FALCON, Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR)
+                                .withDriveMotor(MotorType.FALCON, Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR, "Canivore")
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_RIGHT_MODULE_STEER_MOTOR)
-                                .withSteerEncoderPort(Constants.BACK_RIGHT_MODULE_STEER_ENCODER)
+                                .withSteerEncoderPort(Constants.BACK_RIGHT_MODULE_STEER_ENCODER, "Canivore")
                                 .withSteerOffset(Constants.BACK_RIGHT_MODULE_STEER_OFFSET)
                                 .build();
 
