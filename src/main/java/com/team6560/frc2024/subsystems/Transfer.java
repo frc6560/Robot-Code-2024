@@ -11,6 +11,9 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import com.team6560.frc2024.Constants;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 // import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,7 +22,9 @@ public class Transfer extends SubsystemBase {
 
   private CANSparkMax transferMotor;
   private DigitalInput limitSwitchSensor;
-  private boolean isAutoShooting;
+
+  NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Transfer");
+    NetworkTableEntry isAutoShooting = ntTable.getEntry("isAutoShooting");
 
   /** Creates a new Transfer. */
   public Transfer() {
@@ -29,7 +34,8 @@ public class Transfer extends SubsystemBase {
     transferMotor.setInverted(true);
     transferMotor.setSmartCurrentLimit(25);
     limitSwitchSensor = new DigitalInput(9);
-    isAutoShooting = false;
+
+    isAutoShooting.setBoolean(false);
   }
 
    public void setSpeed(double speed) {
@@ -43,11 +49,11 @@ public class Transfer extends SubsystemBase {
   
 
   public boolean getIsAutoShooting() {
-    return isAutoShooting;
+    return isAutoShooting.getBoolean(false);
   }
 
   public void setIsAutoShooting(boolean isAutoShooting) {
-    this.isAutoShooting = isAutoShooting;
+    this.isAutoShooting.setBoolean(isAutoShooting);
   }
 
   @Override
