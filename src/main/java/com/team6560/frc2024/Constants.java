@@ -271,8 +271,9 @@ public final class Constants {
     STOW(0.0, 0.0, 0.0),
     HUMAN_STATION_INTAKE(8.0, 10.0, 50.0),
     AMP_OUTTAKE(4.0, -40.0, 50.0), //placeholder values
-    SHOOT_IN_TRAP(8.0,-50.0,10.0), //placeholder values
+    TRAP(8.0,-50.0,10.0), //placeholder values
     SHOOTER_TRANSFER(8.0, -80.0, 10.0);
+
 
     private double elevatorPos;
     private double stingerAngle;

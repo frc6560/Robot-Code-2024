@@ -83,7 +83,7 @@ public class ClimbCommand extends Command {
     }
     
     if(shooterDesiredPos && stingerInitDesiredPos && retractedClimb) {
-      shooter.setTargetAngle(StingerConfigs.SHOOT_IN_TRAP.getShooterAngle()); 
+      shooter.setTargetAngle(StingerConfigs.TRAP.getShooterAngle()); 
     }
     // if everything but shooterIsready is false, set shooterIsReady to true.
     if(shooterDesiredPos

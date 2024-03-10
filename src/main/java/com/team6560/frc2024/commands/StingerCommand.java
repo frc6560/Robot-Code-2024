@@ -65,54 +65,49 @@ public class StingerCommand extends Command {
   }
 
   public void autoIntakeHumanStation() {
-    if (!stinger.stingerRollerHasNote()) {
-      setBothPosPresets(StingerConfigs.STOW);
-      stinger.setRoller(0.0);
-    } else {
+    if (stinger.stingerRollerHasNote()) {
       setElevatorPosPresets(StingerConfigs.HUMAN_STATION_INTAKE);
-      if (stinger.isStingerReady(StingerConfigs.HUMAN_STATION_INTAKE)) {
+    }
+    if (stinger.isStingerReady(StingerConfigs.HUMAN_STATION_INTAKE)) {
         stinger.setRoller(-1.0);
-      } else {
-
-      }
     }
   }
 
   public void autoTransferToShooter() {
-    if (transfer.isInProximity()) {
-      setBothPosPresets(StingerConfigs.STOW);
-      stinger.setRoller(0.0);
-    } else {
+    if (!transfer.isInProximity()) {
       setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-      if (!transfer.isInProximity()) {
+    }
+
+    if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
         stinger.setRoller(-1.0);
-      }
     }
   }
 
   public void autoTransferFromShooter() {
-    if (stinger.stingerRollerHasNote()) {
-      setBothPosPresets(StingerConfigs.STOW);
-      stinger.setRoller(0.0);
-    } else {
+    if (!stinger.stingerRollerHasNote()) {
       setBothPosPresets(StingerConfigs.SHOOTER_TRANSFER);
-      if (!stinger.stingerRollerHasNote()) {
+    }
+
+    if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
         stinger.setRoller(1.0);
-      }
     }
   }
 
   public void ampOuttake() {
-    if (!stinger.stingerRollerHasNote()) {
-      setBothPosPresets(StingerConfigs.STOW);
-    } else {
+    if (stinger.stingerRollerHasNote()) {
       setBothPosPresets(StingerConfigs.AMP_OUTTAKE);
     }
-    
+
+    if (stinger.isStingerReady(StingerConfigs.AMP_OUTTAKE))  {
+      stinger.setRoller(1.0);
+    }
+  }
+
+  public void trapScore() {
+    setBothPosPresets(StingerConfigs.TRAP);
     if (controls.getManualStingerOuttake()) {
       stinger.setRoller(-1.0); //TODO: choose whether to keep getManualStingerOuttake restricted to be only used in this function or move it into execute() for general use
     }
-    
   }
 
   // Called when the command is initially scheduled.
@@ -125,13 +120,21 @@ public class StingerCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (false) { //TODO: replace with a getter from climb that indicates that climb is going
+      trapScore();
+      return;
+    }
     if (controls.getHumanStationIntake()) {
       autoIntakeHumanStation();
     } else if (controls.getShooterStingerTransfer()) {
       autoTransferFromShooter();
     } else if (controls.getStingerShooterTransfer()) {
       autoTransferToShooter();
-    } else if (controls.getAmpOuttake());
+    } else if (controls.getAmpOuttake()) {
+      ampOuttake();
+    } else {
+      setBothPosPresets(StingerConfigs.STOW);
+    }
   }
 
   // Called once the command ends or is interrupted.
