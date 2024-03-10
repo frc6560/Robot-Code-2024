@@ -43,6 +43,8 @@ public class ShooterCommand extends Command {
     boolean getStingerShooterTransfer();
 
     boolean getAmpOuttake();
+
+    boolean getShootInTrap();
   }
 
   private final Shooter shooter;
@@ -114,7 +116,6 @@ public class ShooterCommand extends Command {
 
 
     } else if (controls.getShooterStingerTransfer()) {
-      shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
       if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
         shooter.setTargetRPM(10.0); // placeholder value
         if (shooter.isReadyRPM()) {
@@ -128,7 +129,6 @@ public class ShooterCommand extends Command {
 
       
     } else if (controls.getStingerShooterTransfer()) {
-      shooter.setTargetAngle(StingerConfigs.SHOOTER_TRANSFER.getShooterAngle());
       if (stinger.isStingerReady(StingerConfigs.SHOOTER_TRANSFER)) {
         shooter.setTargetRPM(-10.0); // placeholder value
         if (shooter.isReadyRPM()) {
@@ -141,6 +141,9 @@ public class ShooterCommand extends Command {
 
     else if (controls.getAmpOuttake()) {
       shooter.setTargetAngle(StingerConfigs.AMP_OUTTAKE.getShooterAngle());
+    }
+    else if (controls.getShootInTrap()) { //TODO: add control 
+      shooter.setTargetAngle(StingerConfigs.TRAP.getShooterAngle());
     }
   }
   
