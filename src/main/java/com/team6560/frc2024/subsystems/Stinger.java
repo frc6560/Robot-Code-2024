@@ -9,12 +9,14 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAnalogSensor;
+import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 // import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAnalogSensor.Mode;
 // import com.revrobotics.SparkPIDController.AccelStrategy;
+import com.revrobotics.SparkLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -34,7 +36,7 @@ public class Stinger extends SubsystemBase {
 
   private SparkPIDController wristPID;
 
-  final SparkAnalogSensor rollerLimitSwitch;
+  final SparkLimitSwitch limitSwitch;
 
   final double MAX_ROTATION = 8.0390625; // elevator
   final double MIN_ROTATION = 0.0;
@@ -81,7 +83,8 @@ public class Stinger extends SubsystemBase {
     wristPID.setFF(0.0);
     wristPID.setOutputRange(-0.2, 0.2);
 
-    rollerLimitSwitch = rollerMotor.getAnalog(Mode.kAbsolute);
+    limitSwitch = rollerMotor.getForwardLimitSwitch(Type.kNormallyOpen);
+    limitSwitch.enableLimitSwitch(false);
 
     ntDispTab("Stinger")
         .add("Current Elevator Pos", this::getExtension)
@@ -156,7 +159,7 @@ public class Stinger extends SubsystemBase {
   }
 
   public boolean stingerRollerHasNote() {
-    return rollerLimitSwitch.getVoltage() > 1.0;
+    return limitSwitch.isPressed();
   }
 
 }

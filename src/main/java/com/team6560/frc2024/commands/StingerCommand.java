@@ -25,6 +25,8 @@ public class StingerCommand extends Command {
     boolean getAmpOuttake();
 
     boolean getManualStingerOuttake();
+
+    boolean getShootInTrap();
   }
 
   private final Stinger stinger;
@@ -120,7 +122,7 @@ public class StingerCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (false) { //TODO: replace with a getter from climb that indicates that climb is going
+    if (controls.getShootInTrap()) { //TODO: replace with a getter from climb that indicates that climb is going
       trapScore();
       return;
     }

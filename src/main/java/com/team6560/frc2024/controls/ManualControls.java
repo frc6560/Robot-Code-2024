@@ -145,7 +145,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public boolean getIntakeOut() {
-    return controlStation.getLeftBumper();
+    return controlStation.getXButton();
   }
   
   @Override
@@ -156,7 +156,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
   /* SHOOTER */
   @Override
   public boolean getManualShootShooter() {
-    return xbox.getRightTriggerAxis() > 0.5;
+    return xbox.getRightBumper();
   }
 
   @Override
@@ -193,12 +193,12 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   @Override
   public boolean getStingerShooterTransfer() {
-    return controlStation.getXButton();
+    return false;
   }
 
   @Override
   public boolean getHumanStationIntake() {
-    return controlStation.getYButton();
+    return controlStation.getLeftBumper();
   }
 
   public boolean getAmpOuttake() {
@@ -207,6 +207,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   public boolean getManualStingerOuttake() {
     return xbox.getRightBumper();
+  }
+
+  @Override
+  public boolean getShootInTrap() {
+    return xbox.getAButton();
   }
 
   /**
