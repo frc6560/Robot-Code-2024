@@ -41,7 +41,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
   private NetworkTable armTable;
 
-  private boolean isSetShootMode;
+  // private boolean isSetShootMode;
 
   // private boolean prevclimbEngaged;
   // private boolean climbEngaged;
@@ -57,7 +57,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
    */
   public ManualControls(XboxController xbox) {
     this(xbox, null);
-    this.isSetShootMode = false;
+    // this.isSetShootMode = false;
   }
 
   public ManualControls(XboxController xbox, XboxController controlStation) {
@@ -105,7 +105,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     armTable.getEntry("overrideSoftLimits").setBoolean(false);
 
-    this.isSetShootMode = false;
+    // this.isSetShootMode = false;
   }
 
   private static double deadband(double value, double deadband) {

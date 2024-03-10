@@ -28,7 +28,7 @@ import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab
 
 public class Stinger extends SubsystemBase {
 
-  final CANSparkMax wristMotor; 
+  final CANSparkMax wristMotor;
   final TalonFX elevatorMotor;
   final CANSparkMax rollerMotor;
 
@@ -36,7 +36,7 @@ public class Stinger extends SubsystemBase {
 
   final SparkAnalogSensor rollerLimitSwitch;
 
-  final double MAX_ROTATION = 8.0390625; //elevator
+  final double MAX_ROTATION = 8.0390625; // elevator
   final double MIN_ROTATION = 0.0;
   private MotionMagicVoltage m_elevatorRequest;
 
@@ -45,7 +45,6 @@ public class Stinger extends SubsystemBase {
   NetworkTableEntry targetWristAngle = ntTable.getEntry("targetWristAngle");
   NetworkTableEntry isStingerRollerOn = ntTable.getEntry("isStingerRollerOn");
   NetworkTableEntry reverseStingerRoller = ntTable.getEntry("reverseStingerRoller");
-
 
   public Stinger() {
     this.wristMotor = new CANSparkMax(StingerConstants.STINGER_WRIST_ID, MotorType.kBrushless);
@@ -62,7 +61,7 @@ public class Stinger extends SubsystemBase {
     elevatorSlot0Configs.kP = 2;
     elevatorSlot0Configs.kI = 0;
     elevatorSlot0Configs.kD = 0;
-    
+
     var elevatorMotionMagicConfig = elevatorPIDConfig.MotionMagic;
     elevatorMotionMagicConfig.MotionMagicCruiseVelocity = 30;
     elevatorMotionMagicConfig.MotionMagicAcceleration = 60;
@@ -82,15 +81,11 @@ public class Stinger extends SubsystemBase {
     wristPID.setFF(0.0);
     wristPID.setOutputRange(-0.2, 0.2);
 
-    // wristPID.setSmartMotionMaxVelocity(1.5, 0);
-    // wristPID.setSmartMotionMinOutputVelocity(0, 0);
-    // wristPID.setSmartMotionMaxAccel(2, 0);
-    // wristPID.setSmartMotionAllowedClosedLoopError(0.01, 0);
-      rollerLimitSwitch = rollerMotor.getAnalog(Mode.kAbsolute);
+    rollerLimitSwitch = rollerMotor.getAnalog(Mode.kAbsolute);
 
     ntDispTab("Stinger")
-      .add("Current Elevator Pos", this::getExtension)
-      .add("Current Wrist Angle", this::getAngle);
+        .add("Current Elevator Pos", this::getExtension)
+        .add("Current Wrist Angle", this::getAngle);
 
     targetElevatorPos.setDouble(0.0);
     targetWristAngle.setDouble(0.0);
@@ -98,11 +93,8 @@ public class Stinger extends SubsystemBase {
 
   @Override
   public void periodic() {
-     setElevatorPos(targetElevatorPos.getDouble(0.0));
-     setAngle(targetWristAngle.getDouble(0.0));
-    //  if (isStingerRollerOn.getBoolean(false)) {
-    //     // setRoller(reverseStingerRoller.getBoolean(false) ? -1 : 1);
-    //  } else setRoller(0);
+    setElevatorPos(targetElevatorPos.getDouble(0.0));
+    setAngle(targetWristAngle.getDouble(0.0));
   }
 
   public void setAngle(double angle) {
@@ -144,7 +136,7 @@ public class Stinger extends SubsystemBase {
 
   public boolean isStingerReady(StingerConfigs pos) {
     return Math.abs(getAngle() - pos.getStingerAngle()) < StingerConstants.STINGER_ANGLE_ACCEPTABLE_DIFF
-          && Math.abs(getExtension() - pos.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF;
+        && Math.abs(getExtension() - pos.getElevatorPos()) < StingerConstants.STINGER_ELEVATOR_POS_ACCEPTABLE_DIFF;
   }
 
   public double getAngle() {

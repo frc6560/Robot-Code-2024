@@ -8,8 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
-import com.team6560.frc2024.commands.AutoIntakeCommand;
-import com.team6560.frc2024.commands.AutoShooterCommand;
+import com.team6560.frc2024.commands.AutoInitCommand;
 import com.team6560.frc2024.commands.AutoTransferCommand;
 import com.team6560.frc2024.commands.ClimbCommand;
 
@@ -49,16 +48,15 @@ public class RobotContainer {
         private final Shooter shooter;
         private final Transfer transfer;
         private final Stinger stinger;
-        private final Climb climb;
+        // private final Climb climb;
         private final Limelight limelight;
         private final LightWorkNoReaction lightWorkNoReaction;
         private final DriveCommand driveCommand;
         private final IntakeCommand intakeCommand;
         private final StingerCommand stingerCommand;
         private final ShooterCommand shooterCommand;
-        // private final AutoIntakeCommand autoIntakeCommand;
-        // private final AutoShooterCommand autoShooterCommand;
-        // private final AutoTransferCommand autoTransferCommand;
+        private final AutoInitCommand autoInitCommand;
+        private final AutoTransferCommand autoTransferCommand;
         private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
         // private final ClimbCommand climbCommand;
       
@@ -78,15 +76,14 @@ public class RobotContainer {
                 intake = new Intake(shooter);
                 stinger = new Stinger();
                 transfer = new Transfer();
-                climb = new Climb();
+                // climb = new Climb();
                 lightWorkNoReaction = new LightWorkNoReaction();
                 driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
                 intakeCommand = new IntakeCommand(intake, transfer, shooter, manualControls);
                 shooterCommand = new ShooterCommand(shooter, limelight, stinger, transfer, manualControls);
                 stingerCommand = new StingerCommand(stinger, transfer, manualControls);
-                // autoIntakeCommand = new AutoIntakeCommand(intake, transfer);
-                // autoShooterCommand = new AutoShooterCommand(shooter);
-                // autoTransferCommand = new AutoTransferCommand(transfer);
+                autoInitCommand = new AutoInitCommand(shooter, limelight, transfer, intake);
+                autoTransferCommand = new AutoTransferCommand(transfer);
                 lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, shooter, manualControls);
                 // climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
 
@@ -94,13 +91,12 @@ public class RobotContainer {
                 intake.setDefaultCommand(intakeCommand);
                 stinger.setDefaultCommand(stingerCommand);
                 shooter.setDefaultCommand(shooterCommand);
-                // lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
+                lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
                 // climb.setDefaultCommand(climbCommand);
 
                 NamedCommands.registerCommand("print hello", Commands.print("hello"));
-                // NamedCommands.registerCommand("startShooter", autoShooterCommand);
-                // NamedCommands.registerCommand("startIntake", autoIntakeCommand);
-                // NamedCommands.registerCommand("shoot", autoTransferCommand.withTimeout(0.5));
+                NamedCommands.registerCommand("startAuto", autoInitCommand);
+                NamedCommands.registerCommand("shoot", autoTransferCommand);
 
                 configureBindings();
                 autoChooser = AutoBuilder.buildAutoChooser();
