@@ -95,7 +95,7 @@ public final class Constants {
     new PIDConstants(2.5, 0, 0), // Rotation constants 
     // new PIDConstants( 5, 0.0, 0.0), // Translation constants 
     // new PIDConstants(5, 0, 0), // Rotation constants 
-    0,//MAX_VELOCITY_METERS_PER_SECOND / 4 ,
+    4.3,//MAX_VELOCITY_METERS_PER_SECOND / 4 ,
     Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),// Drive base radius (distance from center to furthest module) 
     new ReplanningConfig(true, false)
   );
@@ -103,13 +103,13 @@ public final class Constants {
 
 
 
-public static final double INTAKE_FEED_RATE = 0.4;
+public static final double INTAKE_FEED_RATE = 0.6;
 
 public static final double INTAKE_REVERSE_RATE = -0.3;
 
 public static final double TRANSFER_FEED_RATE = 1;
 
-public static final double TRANSFER_INTAKE_RATE = 0.25;
+public static final double TRANSFER_INTAKE_RATE = 0.4;
 
 
 public static final double SHOOTER_GROUND_INTAKE_POSITION = 1;
@@ -167,7 +167,7 @@ public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 50;
 
 public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 0.2;
 
-public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 3;
+public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1.5;
 
 public static final double TRAP_ACCEPTABLE_ANGLE_DIFF = 1;
 
@@ -226,7 +226,7 @@ public static final int SHOOTER_LEFT_MOTOR = 17;
 
 public static final int SHOOTER_FEED_MOTOR = 16;
 
-public static final Port SHOOTER_COLOR_SENSOR_PORT = Port.kOnboard;
+public static final int SHOOTER_PROXIMITY_SENSOR_PORT = 9;
 
 
 public static final int TRAP_WRIST_MOTOR = 20;

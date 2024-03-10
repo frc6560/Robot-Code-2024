@@ -15,27 +15,36 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class AutoShooter extends Command {
   final Shooter shooter;
   final Limelight limelight;
+  Drivetrain drivetrain;
 
   boolean isShooting = false;
 
   double endTimer = 0;
   double endTotalTime = 10;
 
-  final double rpm, arc;
+  double rpm, arc;
+  
+  boolean shootingSafe;
   
   /** Creates a new AutoShooterHead. */
   public AutoShooter(Shooter shooter, Limelight limelight, double arc, double rpm) {
     this.shooter = shooter;
     this.limelight = limelight;
+    this.drivetrain = null;
 
     this.arc = arc;
     this.rpm = rpm;
 
     addRequirements(shooter);
+
+    this.shootingSafe = true;
   }
 
-  public AutoShooter(Shooter shooter, Limelight limelight){
-    this(shooter, limelight, 18.5, 5800);
+  public AutoShooter(Shooter shooter, Limelight limelight, Drivetrain drivetrain){
+    this(shooter, limelight, -1, -1);
+    this.drivetrain = drivetrain;
+    this.shootingSafe = false;
+
   }
 
   
@@ -46,10 +55,27 @@ public class AutoShooter extends Command {
   @Override
   public void execute() {
     if(shooter.getTransferSensorTriggered() || isShooting){
+      if(arc == -1 && rpm == -1){
+        if(limelight.hasTarget()){
+          arc = shooter.findClosest(limelight.getVerticalAngle()).getAngle();
+          rpm = shooter.findClosest(limelight.getVerticalAngle()).getRpm();
+        } else {
+          // shootingSafe = true;
+          arc = shooter.findClosest(6).getAngle();
+          rpm = shooter.findClosest(6).getRpm();
+
+        }
+      }
+
       shooter.setArcPosition(arc);//shooter.findClosest(1.6).getAngle());//Constants.SHOOTER_SUBWOOFER_POSITION);
       shooter.setRPM(rpm);//shooter.findClosest(1.4).getRpm());//Constants.SHOOTER_SUBWOOFER_RPM);
 
-      if(shooter.readyToShoot(false) || isShooting){
+      if(!shootingSafe){
+        aimChassis();
+      }
+
+
+      if(shooter.readyToShoot(shootingSafe) || isShooting){
         shooter.setTransfer(Constants.TRANSFER_FEED_RATE);
 
         isShooting = true;
@@ -66,21 +92,29 @@ public class AutoShooter extends Command {
   }
 
   private double getRotation(){
-    double limelightInput = -limelight.getHorizontalAngle();
-    double llDeadband = 2; // in degrees
+    double limelightInput = limelight.hasTarget() ? -limelight.getHorizontalAngle() : 0;
     double rotateSpeed = 0.3; // multiplyer for max speed
 
     double speed = 0;
-    double p = 0.25;
+    double p = 0.3;
 
-    if(Math.abs(limelightInput) < llDeadband){
+    if(Math.abs(limelightInput) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF){
         limelightInput = 0;
     }
 
-    speed = -limelightInput * p * rotateSpeed;
+    speed = limelightInput * p * rotateSpeed;
 
-    return 0;//speed;
+    return speed;
 }
+
+  private void aimChassis(){
+    drivetrain.drive(
+            ChassisSpeeds.fromFieldRelativeSpeeds(
+                0,
+                0,
+                getRotation(),
+                drivetrain.getGyroscopeRotationNoApriltags()));
+  }
 
 
   // Called once the command ends or is interrupted.

@@ -3,11 +3,15 @@
   "robotLength": 0.914,
   "holonomicMode": true,
   "pathFolders": [
+    "Five Ball",
     "New",
+    "Robin Hood",
     "Old"
   ],
   "autoFolders": [
+    "Five Ball",
     "New",
+    "Robin Hood",
     "Old"
   ],
   "defaultMaxVel": 4.5,

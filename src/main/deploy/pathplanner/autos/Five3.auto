@@ -1,0 +1,38 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 2.25,
+      "y": 5.7
+    },
+    "rotation": -170.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "five3"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Five Ball",
+  "choreoAuto": false
+}

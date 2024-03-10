@@ -18,6 +18,7 @@ import com.team6560.frc2024.commands.ShooterCommand;
 import com.team6560.frc2024.commands.TrapCommand;
 import com.team6560.frc2024.commands.Autos.AutoIntake;
 import com.team6560.frc2024.commands.Autos.AutoShooter;
+import com.team6560.frc2024.commands.Autos.Outake;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Climb;
 import com.team6560.frc2024.subsystems.Drivetrain;
@@ -71,8 +72,9 @@ public class RobotContainer {
                 lights = new Lights();
 
                 NamedCommands.registerCommand("Intake", new AutoIntake(intake, shooter));
+                NamedCommands.registerCommand("Outake", new Outake(intake));
                 // NamedCommands.registerCommand("Aim", new AutoShooter(shooter, limelight, drivetrain, false));
-                NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight));
+                // NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight));
 
 
                 driveCommand = new DriveCommand(drivetrain, shooter, limelight, manualControls);
@@ -95,24 +97,41 @@ public class RobotContainer {
                 // autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
                 
-                autoChooser.addOption("One Still", oneBall());
-                autoChooser.addOption("One Taxi", oneBallTaxi());
-                autoChooser.addOption("Two", twoBall());
-                autoChooser.addOption("Three", threeBall());
-                autoChooser.addOption("five", farThreeBall());
-                autoChooser.addOption("red five", farThreeBallRed());
-                autoChooser.addOption("Two mid", twoBallMid());
+                // autoChooser.addOption("One Still", oneBall());
+                // autoChooser.addOption("One Taxi", oneBallTaxi());
+                // autoChooser.addOption("Two", twoBall());
+                // autoChooser.addOption("Three", threeBall());
+                // autoChooser.addOption("five", farThreeBall());
+                // autoChooser.addOption("red five", farThreeBallRed());
+                // autoChooser.addOption("Two mid", twoBallMid());
 
 
                 autoChooser.addOption("calibration", (new PathPlannerAuto("cali1")).andThen(new PathPlannerAuto("cali2")));
 
 
+                autoChooser.addOption("Four ball test 1", fourBall());
+
+                autoChooser.addOption("Robin", robinHood());
                 // Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 19.75, 5800))
-                // .andThen(new PathPlannerAuto("One")).andThen(new AutoShooter(shooter, limelight, 15  , 5500))
+                // .andThen(new PathPlannerAuto("One")).andThen()new AutoShooter(shooter, limelight, 15  , 5500))
                 // .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 18.85, 5500))
                 // .andThen(new PathPlannerAuto("Three")).andThen(new PathPlannerAuto("Four")).andThen(new AutoShooter(shooter, limelight, 28, 5800));
 
-                autoChooser.setDefaultOption("Three", threeBall());
+                // autoChooser.setDefaultOption("Three", threeBall());
+        }
+
+        public Command fourBall(){
+                return (new AutoShooter(shooter, limelight, 44, 4000))
+                                .andThen(new PathPlannerAuto("Five1")
+                                .andThen(new PathPlannerAuto("Five2")
+                                .andThen(new AutoShooter(shooter, limelight, drivetrain)))
+                        .andThen(new PathPlannerAuto("Five3"))
+                        .andThen(new PathPlannerAuto("Five3.5"))
+                                .andThen(new AutoShooter(shooter, limelight, drivetrain))
+                                
+                        .andThen(new PathPlannerAuto("Five4"))
+                        .andThen(new PathPlannerAuto("Five5"))
+                                .andThen(new AutoShooter(shooter, limelight, drivetrain)));
         }
 
 
@@ -130,6 +149,13 @@ public class RobotContainer {
                         // .andThen(new PathPlannerAuto("F3")).andThen(new AutoShooter(shooter,limelight,20,5200));
 
                 return combo;
+        }
+
+        public Command robinHood() {
+                return (new PathPlannerAuto("RH1"))
+                        .andThen(new PathPlannerAuto("RH2"))
+                        .andThen(new AutoShooter(shooter, limelight, drivetrain));
+                        // .andThen(new )
         }
 
 

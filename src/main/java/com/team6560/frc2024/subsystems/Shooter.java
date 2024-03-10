@@ -63,7 +63,7 @@ public class Shooter extends SubsystemBase {
     }
   }
   
-  DigitalInput limitSwitchSensor = new DigitalInput(9);
+  DigitalInput limitSwitchSensor = new DigitalInput(Constants.SHOOTER_PROXIMITY_SENSOR_PORT);
   
   final Limelight limelight;
   final Trap trap;

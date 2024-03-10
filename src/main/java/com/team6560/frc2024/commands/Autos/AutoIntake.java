@@ -41,7 +41,8 @@ public class AutoIntake extends Command {
     } else {
       intake.setIntakeFeed(0.0);
       shooter.setTransfer(0.0);
-      shooter.setArcPosition(Constants.SHOOTER_SUBWOOFER_POSITION);
+      shooter.setArcPosition(20);
+      shooter.setRPM(Constants.SHOOTER_SUBWOOFER_RPM);
     }
   }
 

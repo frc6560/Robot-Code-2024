@@ -1,6 +1,7 @@
 package com.team6560.frc2024.commands;
 
 import com.pathplanner.lib.util.GeometryUtil;
+import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Drivetrain;
 import com.team6560.frc2024.subsystems.Limelight;
@@ -80,13 +81,13 @@ public class DriveCommand extends Command {
     private double getRotation(){
         double controllerInput = controls.driveRotationX();
 
-        double limelightInput = -limelight.getHorizontalAngle();
-        double llDeadband = 2; // in degrees
-        double rotateSpeed = 0.3; // multiplyer for max speed
+        double limelightInput = limelight.hasTarget() ? -limelight.getHorizontalAngle() : 0;
+        double llDeadband = Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF; // in degrees
+        double rotateSpeed = 0.25; // multiplyer for max speed
 
-        if (controllerInput <= 0.1 && controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
+        if (Math.abs(controllerInput) <= 0.1 && controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
             double speed = 0;
-            double p = 0.25;
+            double p = 0.3;
 
             if(Math.abs(limelightInput) < llDeadband){
                 limelightInput = 0;
