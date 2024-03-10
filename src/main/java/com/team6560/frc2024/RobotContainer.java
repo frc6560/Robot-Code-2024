@@ -40,102 +40,98 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class RobotContainer {
-        // The robot's subsystems and commands are defined here...
+    // The robot's subsystems and commands are defined here...
 
-        // not public or private so Robot.java has access to it.
-        final Drivetrain drivetrain;
-        private final Intake intake;
-        private final Shooter shooter;
-        private final Transfer transfer;
-        private final Stinger stinger;
-        // private final Climb climb;
-        private final Limelight limelight;
-        private final LightWorkNoReaction lightWorkNoReaction;
-        private final DriveCommand driveCommand;
-        private final IntakeCommand intakeCommand;
-        private final StingerCommand stingerCommand;
-        private final ShooterCommand shooterCommand;
-        private final AutoInitCommand autoInitCommand;
-        private final AutoTransferCommand autoTransferCommand;
-        private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
-        // private final ClimbCommand climbCommand;
-      
+    // not public or private so Robot.java has access to it.
+    final Drivetrain drivetrain;
+    private final Intake intake;
+    private final Shooter shooter;
+    private final Transfer transfer;
+    private final Stinger stinger;
+    // private final Climb climb;
+    private final Limelight limelight;
+    private final LightWorkNoReaction lightWorkNoReaction;
+    private final DriveCommand driveCommand;
+    private final IntakeCommand intakeCommand;
+    private final StingerCommand stingerCommand;
+    private final ShooterCommand shooterCommand;
+    private final AutoInitCommand autoInitCommand;
+    private final AutoTransferCommand autoTransferCommand;
+    private final LightWorkNoReactionCommand lightWorkNoReactionCommand;
+    // private final ClimbCommand climbCommand;
 
+    private final ManualControls manualControls = new ManualControls(new XboxController(0), new XboxController(1));
 
-        private final ManualControls manualControls = new ManualControls(new XboxController(0), new XboxController(1));
+    private final SendableChooser<Command> autoChooser;
 
-        private final SendableChooser<Command> autoChooser;
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        limelight = new Limelight();
+        drivetrain = new Drivetrain();
+        shooter = new Shooter();
+        intake = new Intake(shooter);
+        stinger = new Stinger();
+        transfer = new Transfer();
+        // climb = new Climb();
+        lightWorkNoReaction = new LightWorkNoReaction();
+        driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
+        intakeCommand = new IntakeCommand(intake, transfer, shooter, manualControls);
+        shooterCommand = new ShooterCommand(shooter, limelight, stinger, transfer, manualControls);
+        stingerCommand = new StingerCommand(stinger, transfer, manualControls);
+        autoInitCommand = new AutoInitCommand(shooter, limelight, transfer, intake);
+        autoTransferCommand = new AutoTransferCommand(transfer);
+        lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, shooter,
+                manualControls);
+        // climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
 
-        /**
-         * The container for the robot. Contains subsystems, OI devices, and commands.
-         */
-        public RobotContainer() {
-                limelight = new Limelight();
-                drivetrain = new Drivetrain();
-                shooter = new Shooter();
-                intake = new Intake(shooter);
-                stinger = new Stinger();
-                transfer = new Transfer();
-                // climb = new Climb();
-                lightWorkNoReaction = new LightWorkNoReaction();
-                driveCommand = new DriveCommand(drivetrain, limelight, manualControls);
-                intakeCommand = new IntakeCommand(intake, transfer, shooter, manualControls);
-                shooterCommand = new ShooterCommand(shooter, limelight, stinger, transfer, manualControls);
-                stingerCommand = new StingerCommand(stinger, transfer, manualControls);
-                autoInitCommand = new AutoInitCommand(shooter, limelight, transfer, intake);
-                autoTransferCommand = new AutoTransferCommand(transfer);
-                lightWorkNoReactionCommand = new LightWorkNoReactionCommand(lightWorkNoReaction, transfer, shooter, manualControls);
-                // climbCommand = new ClimbCommand(climb, manualControls, shooter, stinger);
+        drivetrain.setDefaultCommand(driveCommand);
+        intake.setDefaultCommand(intakeCommand);
+        stinger.setDefaultCommand(stingerCommand);
+        shooter.setDefaultCommand(shooterCommand);
+        lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
+        // climb.setDefaultCommand(climbCommand);
 
-                drivetrain.setDefaultCommand(driveCommand);
-                intake.setDefaultCommand(intakeCommand);
-                stinger.setDefaultCommand(stingerCommand);
-                shooter.setDefaultCommand(shooterCommand);
-                lightWorkNoReaction.setDefaultCommand(lightWorkNoReactionCommand);
-                // climb.setDefaultCommand(climbCommand);
+        NamedCommands.registerCommand("print hello", Commands.print("hello"));
+        NamedCommands.registerCommand("startAuto", autoInitCommand);
+        NamedCommands.registerCommand("shoot", autoTransferCommand);
 
-                NamedCommands.registerCommand("print hello", Commands.print("hello"));
-                NamedCommands.registerCommand("startAuto", autoInitCommand);
-                NamedCommands.registerCommand("shoot", autoTransferCommand);
+        configureBindings();
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Mode", autoChooser);
+    }
 
-                configureBindings();
-                autoChooser = AutoBuilder.buildAutoChooser();
-                SmartDashboard.putData("Auto Mode", autoChooser);
-        }
+    private void configureBindings() {
+        SmartDashboard.putData("5 Balls", new PathPlannerAuto("5 Ball"));
+        SmartDashboard.putData("Basic 2 Ball", new PathPlannerAuto("Basic 2 Ball"));
+        SmartDashboard.putData("3 Ball Inside Mid", new PathPlannerAuto("3 Ball Inside Mid"));
+    }
 
-        private void configureBindings() {
-                SmartDashboard.putData("5 Balls", new PathPlannerAuto("5 Ball"));
-                SmartDashboard.putData("Basic 2 Ball", new PathPlannerAuto("Basic 2 Ball"));
-                // SmartDashboard.putData("Short Line", new PathPlannerAuto("Short Lines"));
-                // SmartDashboard.putData("Copy of Short Line", new PathPlannerAuto("Copy of Short Lines"));
-                SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
-                SmartDashboard.putData("New New Auto", new PathPlannerAuto("New New Auto"));
-        }
+    public Command goToPose(Pose2d desiredPose) {
 
-        public Command goToPose(Pose2d desiredPose) {
+        // Pose2d currPose = drivetrain.getPose();
 
-                // Pose2d currPose = drivetrain.getPose();
+        // ChassisSpeeds currChassisSpeeds = drivetrain.getChassisSpeeds();
 
-                // ChassisSpeeds currChassisSpeeds = drivetrain.getChassisSpeeds();
+        // double currSpeed = Math
+        // .abs(Math.hypot(currChassisSpeeds.vxMetersPerSecond,
+        // currChassisSpeeds.vyMetersPerSecond));
 
-                // double currSpeed = Math
-                // .abs(Math.hypot(currChassisSpeeds.vxMetersPerSecond,
-                // currChassisSpeeds.vyMetersPerSecond));
+        // Rotation2d heading = Rotation2d
+        // .fromRadians(Math.atan2(currChassisSpeeds.vyMetersPerSecond,
+        // currChassisSpeeds.vxMetersPerSecond));
 
-                // Rotation2d heading = Rotation2d
-                // .fromRadians(Math.atan2(currChassisSpeeds.vyMetersPerSecond,
-                // currChassisSpeeds.vxMetersPerSecond));
+        return AutoBuilder.pathfindToPose(desiredPose, new PathConstraints(1.0, 1.0, 1.0, 1.0));
+    }
 
-                return AutoBuilder.pathfindToPose(desiredPose, new PathConstraints(1.0, 1.0, 1.0, 1.0));
-        }
-
-        /**
-         * Use this to pass the autonomous command to the main {@link Robot} class.
-         *
-         * @return the command to run in autonomous
-         */
-        public Command getAutonomousCommand() {
-                return autoChooser.getSelected();
-        }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
 
 }

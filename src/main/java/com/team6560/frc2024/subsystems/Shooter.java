@@ -83,7 +83,7 @@ public class Shooter extends SubsystemBase {
     m_shooterRequest = new VelocityVoltage(0.0).withSlot(0);
 
     // Arc Motor Config
-    m_arc = new TalonFX(ShooterConstants.ARC_MOTOR_ID);
+    m_arc = new TalonFX(ShooterConstants.ARC_MOTOR_ID, "Canivore");
     m_arc.getConfigurator().apply(new TalonFXConfiguration());
 
     // private final PositionVoltage m_voltagePosition = new PositionVoltage(0, 0,

@@ -4,12 +4,19 @@
 
 package com.team6560.frc2024.commands;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.team6560.frc2024.subsystems.Transfer;
 
 public class AutoTransferCommand extends Command {
 
   private final Transfer transfer;
+
+  NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Transfer");
+  NetworkTableEntry isAutoShooting = ntTable.getEntry("isAutoShooting");
+
   /** Creates a new AutoTransferCommand. */
   public AutoTransferCommand(Transfer transfer) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -20,7 +27,7 @@ public class AutoTransferCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    transfer.setIsAutoShooting(true);
+    isAutoShooting.setBoolean(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,7 +40,7 @@ public class AutoTransferCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     transfer.setSpeed(0);
-    transfer.setIsAutoShooting(false);
+    isAutoShooting.setBoolean(false);
   }
 
   // Returns true when the command should end.

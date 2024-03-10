@@ -216,21 +216,33 @@ public final class Constants {
 
     static {
       shooterMap.add(
-          new Point(-100.0, 6100, 17),
+          // new Point(-100.0, 6100, 17),
 
-          new Point(-3.19, 6100, 17),
-          new Point(-1.93, 6100, 16),
-          new Point(-0.345, 6100, 14),
-          new Point(1.29, 6100, 16.5),
-          new Point(2.73, 6000, 19),
-          new Point(4.42, 6000, 21),
-          new Point(6.76, 6000, 25),
-          new Point(9.53, 6000, 30),
-          new Point(13.47, 6000, 35),
-          new Point(18.70, 5800, 40),
-          new Point(20.0, 5500, 45),
+          // new Point(-3.19, 6100, 17),
+          // new Point(-1.93, 6100, 16),
+          // new Point(-0.345, 6100, 14),
+          // new Point(1.29, 6100, 16.5),
+          // new Point(2.73, 6000, 19),
+          // new Point(4.42, 6000, 21),
+          // new Point(6.76, 6000, 25),
+          // new Point(9.53, 6000, 30),
+          // new Point(13.47, 6000, 35),
+          // new Point(18.70, 5800, 40),
+          // new Point(20.0, 5500, 45),
+          new Point(-100.0, 5000, 16),
 
-          new Point(100.0, 5500, 45));
+          new Point(1.00, 4750, 15),
+          new Point(2.03, 4550, 16),
+          new Point(2.97, 4200, 18),
+          new Point(4.00, 4200, 20),
+          new Point(4.99, 4200, 20),
+          new Point(9.05, 4000, 27),
+          new Point(12.02, 4000, 30),
+          new Point(14.5, 4000, 35),
+          new Point(20, 4000, 44),
+
+          // new Point(100.0, 5500, 45));
+          new Point(100.0, 4000, 45));
     }
 
     public static final double STINGER_TRANSFER_ANGLE = 10.0; // placeholder values
@@ -263,15 +275,15 @@ public final class Constants {
 
     public static final double MIN_WRIST_POS = 12;
     public static final double MAX_WRIST_POS = -90;
-    
+
   }
 
   public enum StingerConfigs {
     // add position here
     STOW(0.0, 0.0, 0.0),
     HUMAN_STATION_INTAKE(8.0, 10.0, 50.0),
-    AMP_OUTTAKE(4.0, -40.0, 50.0), //placeholder values
-    SHOOT_IN_TRAP(8.0,-50.0,10.0), //placeholder values
+    AMP_OUTTAKE(4.0, -40.0, 50.0), // placeholder values
+    SHOOT_IN_TRAP(8.0, -50.0, 10.0), // placeholder values
     SHOOTER_TRANSFER(8.0, -80.0, 10.0);
 
     private double elevatorPos;
