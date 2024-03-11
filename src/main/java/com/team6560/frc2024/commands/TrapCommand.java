@@ -34,21 +34,24 @@ public class TrapCommand extends Command {
 
   @Override
   public void execute() {
+    if (shooter.isAtTargetArcAngle()){
+      if(controls.getTrapIntake() && !taskCompleted){
+        taskCompleted = intakeFromWall();
 
-    if(controls.getTrapIntake() && !taskCompleted){
-      taskCompleted = intakeFromWall();
+      } else if(controls.getTrapPlace() && !taskCompleted){
+        taskCompleted = placeNote(controls.getShoot() );
 
-    } else if(controls.getTrapPlace() && !taskCompleted){
-      taskCompleted = placeNote(controls.getShoot() );
+      } else if(controls.getTrapTransferIn() && !taskCompleted){
+        taskCompleted = transferFromShooter();
 
-    } else if(controls.getTrapTransferIn() && !taskCompleted){
-      taskCompleted = transferFromShooter();
+      } else if (controls.getTrapTrapPlace() && !taskCompleted) {
+        taskCompleted = trapPlaceNote(controls.getShoot() );
+      } else{
+        goToStow();
 
-    } else{
-      goToStow();
-
-      if(!(controls.getTrapIntake() || controls.getTrapPlace() || controls.getTrapTransferIn() || controls.getTrapTransferOut()))
-        taskCompleted = false;
+        if(!(controls.getTrapIntake() || controls.getTrapPlace() || controls.getTrapTransferIn() || controls.getTrapTransferOut()))
+          taskCompleted = false;
+      }
     }
   }
 
@@ -113,6 +116,21 @@ public class TrapCommand extends Command {
     }
 
     return false;// !trap.getSensorTriggered();
+  }
+
+  public boolean trapPlaceNote (boolean runFeed){
+    trap.setAngle(Constants.TRAP_TRAP_ANGLE);
+    
+    if (trap.isAtTargetAngle())
+      trap.setExtention(Constants.TRAP_TRAP_EXTENSION);
+
+    if(runFeed && trap.isAtTargetAngle() && trap.isAtTargetExtention() && shooter.isAtTargetArcAngle()){
+      trap.setFeed(Constants.TRAP_TRAP_FEED_RATE);
+    } else {
+      trap.setFeed(0);
+    }
+
+    return false;
   }
 
 

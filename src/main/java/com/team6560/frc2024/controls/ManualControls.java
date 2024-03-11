@@ -205,6 +205,10 @@ public class ManualControls implements DriveCommand.Controls {
     return controlStation.getLeftBumper();
   }
 
+  public boolean getTrapTrapPlace() {
+    return controlStation.getYButton();
+  }
+
 
   
 

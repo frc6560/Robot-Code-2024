@@ -106,7 +106,10 @@ public class ShooterCommand extends Command {
     } else if(controls.getTrapPlace()){
       shooter.setArcPosition(Constants.SHOOTER_AMP_ARC_POS);
     
-    }else {
+    } else if (controls.getTrapTrapPlace()) {
+      shooter.setArcPosition(Constants.SHOOTER_TRAP_ARC_POS);
+      
+    } else {
       shooter.setRPM(0.0);
       shooter.setArcPosition(Constants.SHOOTER_GROUND_INTAKE_POSITION);
       shooter.setTransfer(0.0);
