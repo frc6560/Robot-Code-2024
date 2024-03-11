@@ -34,24 +34,26 @@ public class TrapCommand extends Command {
 
   @Override
   public void execute() {
-    if (shooter.isAtTargetArcAngle()){
-      if(controls.getTrapIntake() && !taskCompleted){
-        taskCompleted = intakeFromWall();
+    if(controls.getTrapIntake() && !taskCompleted){
+      taskCompleted = intakeFromWall();
 
-      } else if(controls.getTrapPlace() && !taskCompleted){
-        taskCompleted = placeNote(controls.getShoot() );
+    } else if(controls.getTrapPlace() && !taskCompleted){
+      taskCompleted = placeNote(controls.getShoot() );
 
-      } else if(controls.getTrapTransferIn() && !taskCompleted){
-        taskCompleted = transferFromShooter();
+    } else if(controls.getTrapTransferIn() && !taskCompleted){
+      taskCompleted = transferFromShooter();
 
-      } else if (controls.getTrapTrapPlace() && !taskCompleted) {
-        taskCompleted = trapPlaceNote(controls.getShoot() );
-      } else{
-        goToStow();
+    } else if (controls.getTrapTrapPlace() && !taskCompleted) {
+      if (shooter.isAtTargetArcAngle())
+        taskCompleted = trapPlaceNote(controls.getShoot());
+    } else if (controls.getTrapTrapPlaceOver()) {
+      trap.setExtention(Constants.TRAP_STOW_EXTENTION);
+      trap.setAngle(Constants.TRAP_STOW_ANGLE);
+    } else{
+      goToStow();
 
-        if(!(controls.getTrapIntake() || controls.getTrapPlace() || controls.getTrapTransferIn() || controls.getTrapTransferOut()))
-          taskCompleted = false;
-      }
+      if(!(controls.getTrapIntake() || controls.getTrapPlace() || controls.getTrapTransferIn() || controls.getTrapTransferOut()))
+        taskCompleted = false;
     }
   }
 

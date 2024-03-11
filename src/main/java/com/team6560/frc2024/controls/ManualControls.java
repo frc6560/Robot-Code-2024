@@ -209,6 +209,10 @@ public class ManualControls implements DriveCommand.Controls {
     return controlStation.getYButton();
   }
 
+  public boolean getTrapTrapPlaceOver() {
+    return controlStation.getYButtonReleased();
+  }
+
 
   
 
