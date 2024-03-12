@@ -48,7 +48,9 @@ public class TrapCommand extends Command {
         taskCompleted = trapPlaceNote(controls.getShoot());
     } else if (controls.getTrapTrapPlaceOver()) {
       trap.setExtention(Constants.TRAP_STOW_EXTENTION);
-      trap.setAngle(Constants.TRAP_STOW_ANGLE);
+
+      if (trap.isAtTargetExtention())
+        trap.setAngle(Constants.TRAP_STOW_ANGLE);
     } else{
       goToStow();
 

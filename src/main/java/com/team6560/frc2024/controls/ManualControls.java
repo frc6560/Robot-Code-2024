@@ -33,7 +33,7 @@ public class ManualControls implements DriveCommand.Controls {
   private NetworkTable armTable;
 
   // private boolean prevclimbEngaged;
-  // private boolean climbEngaged;
+  private boolean climbEngaged = false;
 
   // private boolean prevIntakeOverrideEngaged;
 
@@ -206,7 +206,10 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   public boolean getTrapTrapPlace() {
-    return controlStation.getYButton();
+    if (controlStation.getYButton()) 
+      climbEngaged = !climbEngaged;
+      
+    return climbEngaged;
   }
 
   public boolean getTrapTrapPlaceOver() {
