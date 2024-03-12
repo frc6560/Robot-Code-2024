@@ -206,7 +206,7 @@ public class ManualControls implements DriveCommand.Controls {
   }
 
   public boolean getTrapTrapPlace() {
-    if (controlStation.getYButton()) 
+    if (controlStation.getYButtonPressed()) 
       climbEngaged = !climbEngaged;
       
     return climbEngaged;
