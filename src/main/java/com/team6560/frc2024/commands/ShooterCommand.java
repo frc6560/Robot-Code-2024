@@ -86,8 +86,10 @@ public class ShooterCommand extends Command {
 
 
 
+    } else if (controls.getTrapPlace()) {
+      shooter.setArcPosition(Constants.SHOOTER_TRAP_ARC_POS);
 
-    } else if (controls.getTrapIntake()) {
+    } else if (controls.getTrapIntake() && !trap.getSensorTriggered()) {
       shooter.setArcPosition(Constants.SHOOTER_WALL_INTAKE_POSITION);
     
     }else if (controls.getTrapTransferIn()){
@@ -103,13 +105,10 @@ public class ShooterCommand extends Command {
         shooter.setTransfer(0.0);
       }
 
-    } else if(controls.getTrapPlace()){
+    } else if(controls.getAmpPlace()){
       shooter.setArcPosition(Constants.SHOOTER_AMP_ARC_POS);
     
-    } else if (controls.getTrapTrapPlace()) {
-      shooter.setArcPosition(Constants.SHOOTER_TRAP_ARC_POS);
-      
-    } else if (controls.getTrapTrapPlaceOver()) {
+    } else if (controls.getTrapPlaceOver()) {
       if (trap.isAtTargetExtention()) {
         shooter.setArcPosition(Constants.SHOOTER_GROUND_INTAKE_POSITION);
       }

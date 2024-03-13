@@ -98,7 +98,7 @@ public class AutoShooter extends Command {
     double speed = 0;
     double p = 0.3;
 
-    if(Math.abs(limelightInput) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF){
+    if(Math.abs(limelightInput) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF/2){
         limelightInput = 0;
     }
 

@@ -2,17 +2,17 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.37,
-      "y": 5.3
+      "x": 8.0,
+      "y": 5.8
     },
-    "rotation": -170.0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "five4"
+                  "pathName": "rh4"
                 }
               }
             ]
@@ -33,6 +33,6 @@
       ]
     }
   },
-  "folder": "Five Ball",
+  "folder": "Robin Hood",
   "choreoAuto": false
 }

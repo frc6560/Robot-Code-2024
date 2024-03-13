@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4,
-        "y": 7.75
+        "x": 2.7,
+        "y": 4.12
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3999999999999977,
-        "y": 7.75
+        "x": 2.4601559062273055,
+        "y": 4.740579622004315
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.199999999999999,
-        "y": 7.75
+        "x": 2.25,
+        "y": 5.4
       },
       "prevControl": {
-        "x": 3.2999999999999985,
-        "y": 7.8125
-      },
-      "nextControl": {
-        "x": 5.1,
-        "y": 7.6875
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.2,
-        "y": 7.5
-      },
-      "prevControl": {
-        "x": 6.2,
-        "y": 7.5
+        "x": 2.3967200663978794,
+        "y": 5.030810261620524
       },
       "nextControl": null,
       "isLocked": false,
@@ -54,15 +38,15 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.0,
+    "velocity": 0,
     "rotation": 180.0,
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "Robin Hood",
+  "folder": "Four Ball",
   "previewStartingState": {
     "rotation": 180.0,
-    "velocity": 0
+    "velocity": 0.0
   },
   "useDefaultConstraints": true
 }

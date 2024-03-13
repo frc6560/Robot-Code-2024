@@ -62,8 +62,10 @@ public class DriveCommand extends Command {
         if (controls.driveResetGlobalPose()) {
             if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
                     drivetrain.resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
+                    drivetrain.zeroGyroscope();
             } else {
                 drivetrain.resetOdometry(new Pose2d());
+                    drivetrain.zeroGyroscope();
             }
         }
 
@@ -80,25 +82,45 @@ public class DriveCommand extends Command {
 
     private double getRotation(){
         double controllerInput = controls.driveRotationX();
-
-        double limelightInput = limelight.hasTarget() ? -limelight.getHorizontalAngle() : 0;
-        double llDeadband = Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF; // in degrees
-        double rotateSpeed = 0.25; // multiplyer for max speed
-
+        double limelightInput = limelight.hasTarget() ? limelight.getHorizontalAngle() : 0;
+        
         if (Math.abs(controllerInput) <= 0.1 && controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
-            double speed = 0;
-            double p = 0.3;
-
-            if(Math.abs(limelightInput) < llDeadband){
-                limelightInput = 0;
-            }
-
-            speed = -limelightInput * p * rotateSpeed;
-
-            return -speed;
+            return goToDelta(limelightInput);
+        } else if(controls.getAutoAlignClimb()){
+            return getAlignClimb();
         }
+        
 
         return controllerInput;
+    } 
+
+    private double goToDelta(double delta){
+
+        double llDeadband = Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF/2; // in degrees
+        double rotateSpeed = 0.25; // multiplyer for max speed
+
+        double speed = 0;
+        double p = 0.3;
+
+        if(Math.abs(delta) < llDeadband){
+            delta = 0;
+        }
+
+        speed = delta * p * rotateSpeed;
+
+        return -speed;
+
+    }
+
+    private double getAlignClimb(){
+        double gyro = Math.abs(drivetrain.getRawGyroRotation().getDegrees()) + 30;
+        gyro %= 60;
+        gyro -= 30;
+
+        double delta = - gyro / 2;
+
+        return goToDelta(delta);
+        
     }
 
     @Override

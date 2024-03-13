@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4,
-      "y": 7.75
+      "x": 2.37,
+      "y": 5.3
     },
-    "rotation": 180.0
+    "rotation": -170.0
   },
   "command": {
     "type": "sequential",
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "rh1"
+                  "pathName": "four4"
                 }
               }
             ]
@@ -33,6 +33,6 @@
       ]
     }
   },
-  "folder": "Robin Hood",
+  "folder": "Four Ball",
   "choreoAuto": false
 }

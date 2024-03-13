@@ -51,7 +51,7 @@ public class LightsCommand extends Command {
         light.setLightsIntake();
       } 
 
-    } else if (controls.getTrapPlace()){
+    } else if (controls.getAmpPlace()){
       light.setLightsTrapPlace();
     
     } else if (controls.getTrapTransferIn()){

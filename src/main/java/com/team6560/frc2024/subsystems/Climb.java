@@ -5,6 +5,8 @@
 package com.team6560.frc2024.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkLimitSwitch;
+import com.revrobotics.SparkLimitSwitch.Type;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.team6560.frc2024.Constants;
@@ -18,10 +20,19 @@ import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab
 public class Climb extends SubsystemBase {
   private final CANSparkMax leftClimbMotor = new CANSparkMax(Constants.CLIMB_MOTOR_LEFT, MotorType.kBrushless);
   private final CANSparkMax rightClimbMotor = new CANSparkMax(Constants.CLIMB_MOTOR_RIGHT, MotorType.kBrushless);
+  
+  final SparkLimitSwitch leftLimitSwitch;
+  final SparkLimitSwitch rightLimitSwitch;
+
+  final CANSparkMax climbRollerMotor = new CANSparkMax(Constants.CLIMB_DRIVE_MOTOR, MotorType.kBrushless);
 
   NetworkTableEntry climbOverride = NetworkTableInstance.getDefault().getTable("Climb").getEntry("Climb Override");
   /** Creates a new Climb. */
   public Climb() {
+    climbRollerMotor.restoreFactoryDefaults();
+    climbRollerMotor.setInverted(false);
+    climbRollerMotor.setIdleMode(IdleMode.kBrake);
+
     leftClimbMotor.restoreFactoryDefaults();
     rightClimbMotor.restoreFactoryDefaults();
 
@@ -34,7 +45,15 @@ public class Climb extends SubsystemBase {
     rightClimbMotor.getEncoder().setPosition(0);
     
 
-    climbOverride.setBoolean(false);
+    leftLimitSwitch = leftClimbMotor.getForwardLimitSwitch(Type.kNormallyOpen);
+    leftLimitSwitch.enableLimitSwitch(true);
+    
+
+    rightLimitSwitch = rightClimbMotor.getForwardLimitSwitch(Type.kNormallyOpen);
+    rightLimitSwitch.enableLimitSwitch(true);
+    
+
+    climbOverride.setBoolean(true);
 
     ntDispTab("Climb")
     .add("Left Position", this::getLeftClimbPos)
@@ -61,6 +80,10 @@ public class Climb extends SubsystemBase {
     }
 
     rightClimbMotor.set(output);
+  }
+
+  public void setClimbDriveMotor(double output){
+    climbRollerMotor.set(output);
   }
 
   public double getLeftClimbPos(){

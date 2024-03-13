@@ -298,6 +298,7 @@ public class Drivetrain extends SubsystemBase {
         // robot is currently facing to the 'forwards' direction.
         public void zeroGyroscope() {
                 resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d(0.0)));
+                pigeon.setYaw(0);
         }
 
         public void zeroGyroscope(Rotation2d rotation) {

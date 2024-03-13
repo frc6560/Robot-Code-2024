@@ -28,7 +28,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "five1"
+                        "pathName": "four1"
                       }
                     },
                     {
@@ -46,6 +46,6 @@
       ]
     }
   },
-  "folder": "Five Ball",
+  "folder": "Four Ball",
   "choreoAuto": false
 }

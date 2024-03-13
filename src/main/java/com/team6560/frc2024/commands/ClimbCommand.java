@@ -29,6 +29,8 @@ public class ClimbCommand extends Command {
   public void execute() {
     climb.setClimbOutputLeft(controls.getClimbLeft());
     climb.setClimbOutputRight(controls.getClimbRight());
+
+    climb.setClimbDriveMotor(Math.max(controls.getClimbLeft(), controls.getClimbRight()));
   }
 
   // Called once the command ends or is interrupted.

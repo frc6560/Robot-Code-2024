@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.25,
-      "y": 5.7
+      "x": 2.0,
+      "y": 6.5
     },
-    "rotation": -170.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "five3"
+                  "pathName": "four5"
                 }
               }
             ]
@@ -33,6 +33,6 @@
       ]
     }
   },
-  "folder": "Five Ball",
+  "folder": "Four Ball",
   "choreoAuto": false
 }

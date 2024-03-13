@@ -154,6 +154,10 @@ public class ManualControls implements DriveCommand.Controls {
     return xbox.getRightTriggerAxis() > 0.2;
   }
 
+  public boolean getAutoAlignClimb(){
+    return xbox.getAButton();
+  }
+
   
   // ------------------------------ SHOOTER ------------------------------ \\
 
@@ -197,7 +201,7 @@ public class ManualControls implements DriveCommand.Controls {
     return false; //controlStation.getXButton();
   }
   
-  public boolean getTrapPlace(){
+  public boolean getAmpPlace(){
     return controlStation.getAButton();
   }
   
@@ -205,15 +209,15 @@ public class ManualControls implements DriveCommand.Controls {
     return controlStation.getLeftBumper();
   }
 
-  public boolean getTrapTrapPlace() {
-    if (controlStation.getYButtonPressed()) 
+  public boolean getTrapPlace() {
+    if (controlStation.getYButtonPressed  ()) 
       climbEngaged = !climbEngaged;
       
     return climbEngaged;
   }
 
-  public boolean getTrapTrapPlaceOver() {
-    return controlStation.getYButtonReleased();
+  public boolean getTrapPlaceOver() {
+    return !getTrapPlace() && controlStation.getYButtonReleased();
   }
 
 
@@ -222,9 +226,12 @@ public class ManualControls implements DriveCommand.Controls {
   // ------------------------------ CLIMB ------------------------------ \\
 
   public double getClimbLeft(){
-    return deadband(-controlStation.getRightY()/1.1, 0.1);
+   return deadband(controlStation.getLeftY(), 0.1);
   }
   public double getClimbRight(){
-   return deadband(-controlStation.getLeftY(), 0.1);
+    if(controlStation.getLeftTriggerAxis() > 0.2){
+      return getClimbLeft();
+    }
+    return deadband(controlStation.getRightY()/1.1, 0.1);
   }
 }

@@ -106,10 +106,10 @@ public class RobotContainer {
                 // autoChooser.addOption("Two mid", twoBallMid());
 
 
-                autoChooser.addOption("calibration", (new PathPlannerAuto("cali1")).andThen(new PathPlannerAuto("cali2")));
+                // autoChooser.addOption("calibration", (new PathPlannerAuto("cali1")).andThen(new PathPlannerAuto("cali2")));
 
 
-                autoChooser.addOption("Four ball test 1", fourBall());
+                autoChooser.addOption("Four ball", fourBall());
 
                 autoChooser.addOption("Robin", robinHood());
                 // Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 19.75, 5800))
@@ -122,15 +122,15 @@ public class RobotContainer {
 
         public Command fourBall(){
                 return (new AutoShooter(shooter, limelight, 44, 4000))
-                                .andThen(new PathPlannerAuto("Five1")
-                                .andThen(new PathPlannerAuto("Five2")
+                                .andThen(new PathPlannerAuto("Four1")
+                                .andThen(new PathPlannerAuto("Four2")
                                 .andThen(new AutoShooter(shooter, limelight, drivetrain)))
-                        .andThen(new PathPlannerAuto("Five3"))
-                        .andThen(new PathPlannerAuto("Five3.5"))
+                        .andThen(new PathPlannerAuto("Four3"))
+                        .andThen(new PathPlannerAuto("Four3.5"))
                                 .andThen(new AutoShooter(shooter, limelight, drivetrain))
                                 
-                        .andThen(new PathPlannerAuto("Five4"))
-                        .andThen(new PathPlannerAuto("Five5"))
+                        .andThen(new PathPlannerAuto("Four4"))
+                        .andThen(new PathPlannerAuto("Four5"))
                                 .andThen(new AutoShooter(shooter, limelight, drivetrain)));
         }
 
@@ -154,10 +154,14 @@ public class RobotContainer {
         public Command robinHood() {
                 return (new PathPlannerAuto("RH1"))
                         .andThen(new PathPlannerAuto("RH2"))
+                        .andThen(new AutoShooter(shooter, limelight, drivetrain))
+
+                .andThen(new PathPlannerAuto("RH3"))
+                        .andThen(new PathPlannerAuto("RH4"))
                         .andThen(new AutoShooter(shooter, limelight, drivetrain));
                         // .andThen(new )
         }
-
+        
 
         public Command farThreeBallRed() {
                 Command combo = (new AutoShooter(shooter, limelight, 45, 5000))

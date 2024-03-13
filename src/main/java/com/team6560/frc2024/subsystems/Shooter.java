@@ -172,7 +172,7 @@ public class Shooter extends SubsystemBase {
     arcSwitches.ReverseLimitAutosetPositionEnable = true;
     arcSwitches.ReverseLimitAutosetPositionValue = 0.0;
     arcSwitches.ForwardLimitAutosetPositionEnable = true;
-    arcSwitches.ForwardLimitAutosetPositionValue = 45;
+    arcSwitches.ForwardLimitAutosetPositionValue = 62;
 
     arcMotor.getConfigurator().apply(arcConfigs.withHardwareLimitSwitch(arcSwitches));
     
@@ -295,5 +295,9 @@ public class Shooter extends SubsystemBase {
 
   public boolean isAtTargetArcAngle(){
     return Math.abs(getShooterArcPosition() - targetPosition) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF;
+  }
+
+  public boolean isAtTargetArcAngle(double target){
+    return Math.abs(getShooterArcPosition() - target) < Constants.SHOOTER_ACCEPTABLE_ARC_DIFF;
   }
 }

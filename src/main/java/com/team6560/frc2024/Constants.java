@@ -116,7 +116,7 @@ public static final double SHOOTER_GROUND_INTAKE_POSITION = 1;
 
 public static final double SHOOTER_WALL_INTAKE_POSITION = 36.8;
 
-public static final double SHOOTER_AMP_ARC_POS = 45;
+public static final double SHOOTER_AMP_ARC_POS = 28;
 
 public static final double SHOOTER_TRAP_ARC_POS = 58;
 
@@ -140,16 +140,16 @@ public static final double TRAP_WALL_ANGLE = 0.8;
 public static final double TRAP_WALL_FEED_RATE = -0.8;
 
 
-public static final double TRAP_AMP_ANGLE = 35;
+public static final double TRAP_AMP_ANGLE = 33.4;
 
-public static final double TRAP_AMP_EXTENTION = 4.5;
+public static final double TRAP_AMP_EXTENTION = 3.4;
 
 public static final double TRAP_AMP_FEED_RATE = 1;
 
 
-public static final double TRAP_HANDOFF_EXTENTION = 3.1;
+public static final double TRAP_HANDOFF_EXTENTION = 1.55;
 
-public static final double TRAP_HANDOFF_ANGLE = 67;
+public static final double TRAP_HANDOFF_ANGLE = 72;
 
 public static final double TRAP_TRANSFER_IN_FEED_RATE = -0.5;
 
@@ -160,7 +160,7 @@ public static final double TRAP_TRAP_ANGLE = 35;
 
 public static final double TRAP_TRAP_EXTENSION = 8.8;
 
-public static final double TRAP_TRAP_FEED_RATE = -0.8;
+public static final double TRAP_TRAP_FEED_RATE = 0.6;
 
 
 public static final double TRAP_STOW_ANGLE = 1;
@@ -176,7 +176,7 @@ public static final double SHOOTER_ACCEPTABLE_RPM_DIFF = 50;
 
 public static final double SHOOTER_ACCEPTABLE_ARC_DIFF = 0.2;
 
-public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 1.5;
+public static final double SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF = 3;
 
 public static final double TRAP_ACCEPTABLE_ANGLE_DIFF = 1;
 
@@ -251,6 +251,8 @@ public static final int TRAP_LIMIT_SWITCH_ID = 0;
 public static final int CLIMB_MOTOR_LEFT = 22;
 
 public static final int CLIMB_MOTOR_RIGHT = 23;
+
+public static final int CLIMB_DRIVE_MOTOR = 24;
 
 
 
