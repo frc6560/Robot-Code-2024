@@ -84,12 +84,15 @@ public class DriveCommand extends Command {
         double controllerInput = controls.driveRotationX();
         double limelightInput = limelight.hasTarget() ? limelight.getHorizontalAngle() : 0;
         
-        if (Math.abs(controllerInput) <= 0.1 && controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
-            return goToDelta(limelightInput);
-        } else if(controls.getAutoAlignClimb()){
-            return getAlignClimb();
-        }
+        if(Math.abs(controllerInput) <= 0.1){
+                
+            if (controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
+                return goToDelta(limelightInput);
+            } else if(controls.getAutoAlignClimb()){
+                return getAlignClimb();
+            }
         
+        }
 
         return controllerInput;
     } 
