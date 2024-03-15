@@ -49,6 +49,7 @@ public class ShooterCommand extends Command {
 
   @Override
   public void execute() {
+    limelight.setPipeline(Constants.isRed() ? 1 : 0);
 
     if(controls.getReverseTransfer()){
       shooter.setRPM(0);

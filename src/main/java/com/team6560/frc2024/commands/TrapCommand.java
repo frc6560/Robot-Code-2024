@@ -123,7 +123,7 @@ public class TrapCommand extends Command {
     trap.setAngle(Constants.TRAP_AMP_ANGLE);
     trap.setExtention(Constants.TRAP_AMP_EXTENTION);
 
-    if(runFeed && trap.isAtTargetAngle() && trap.isAtTargetExtention() && shooter.isAtTargetArcAngle()){
+    if(runFeed && trap.isAtTargetAngle() && trap.isAtTargetExtention()){// && shooter.isAtTargetArcAngle()){
       trap.setFeed(Constants.TRAP_AMP_FEED_RATE);
     } else {
       trap.setFeed(0);
@@ -137,7 +137,8 @@ public class TrapCommand extends Command {
       trap.setExtention(Constants.TRAP_TRAP_EXTENSION);
     }
     
-    if (trap.isAtTargetExtention() && runFeed){
+    if (runFeed){ // && trap.isAtTargetExtention()){
+      trap.setExtention(Constants.TRAP_TRAP_EXTENSION);
       trap.setAngle(Constants.TRAP_TRAP_ANGLE); // && trap.isAtTargetAngle() && trap.isAtTargetExtention() && shooter.isAtTargetArcAngle()){
       
       System.out.println("" + trap.isAtTargetAngle() );

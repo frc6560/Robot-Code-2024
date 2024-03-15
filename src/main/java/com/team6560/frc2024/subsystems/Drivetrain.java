@@ -141,13 +141,9 @@ public class Drivetrain extends SubsystemBase {
                 // kinematics = new SwerveDriveKinematics();
 
                 odometry = new SwerveDriveOdometry(m_kinematics, getRawGyroRotation(), getModulePositions());
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent()) {
-                        if (alliance.get() == DriverStation.Alliance.Red) {
-                                resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
-                        } else {
-                                resetOdometry(new Pose2d());
-                        }
+                
+                if(Constants.isRed()){
+                        resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
                 } else {
                         resetOdometry(new Pose2d());
                 }
@@ -159,10 +155,7 @@ public class Drivetrain extends SubsystemBase {
                         this::getChassisSpeeds, 
                         (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds), 
                         Constants.pathFollowerConfig, 
-                        ()-> {
-                                if (alliance.isPresent()) return alliance.get() == DriverStation.Alliance.Red;
-                                else return false;
-                        }, 
+                        ()-> Constants.isRed(),
                         this
                 );
 

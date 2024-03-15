@@ -119,11 +119,12 @@ public class Shooter extends SubsystemBase {
     // aimMap.add(new AimTrajectory(18.70, 5100 , 40));
     // aimMap.add(new AimTrajectory(20.0, 5000 , 45));
 
+    aimMap.add(new AimTrajectory(-1.00, 5250 , 13));
 
-    aimMap.add(new AimTrajectory(1.00, 4750 , 15));
-    aimMap.add(new AimTrajectory(2.03, 4550 , 16));
-    aimMap.add(new AimTrajectory(2.97, 4200 , 18));
-    aimMap.add(new AimTrajectory(4.00, 4200 , 20));
+    aimMap.add(new AimTrajectory(1.00, 5250 , 15));
+    aimMap.add(new AimTrajectory(2.03, 5050 , 16));
+    aimMap.add(new AimTrajectory(2.97, 4700 , 18));
+    aimMap.add(new AimTrajectory(4.00, 4700 , 20));
     aimMap.add(new AimTrajectory(4.99, 4200 , 20));
     aimMap.add(new AimTrajectory(9.05, 4000 , 27));
     aimMap.add(new AimTrajectory(12.02, 4000 , 30));
@@ -245,7 +246,7 @@ public class Shooter extends SubsystemBase {
   public boolean readyToShoot(boolean isShootingSafe){
     return ( 
       Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
-      isAtTargetArcAngle() &&
+      (isShootingSafe ||isAtTargetArcAngle()) &&
       (isShootingSafe || (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ))
       // trap.isClearOfShooter()
     );

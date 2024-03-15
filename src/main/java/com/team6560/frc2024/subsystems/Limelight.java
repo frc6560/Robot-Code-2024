@@ -58,7 +58,12 @@ public class Limelight extends SubsystemBase {
 
     SmartDashboard.putData("aprilTagField", aprilTagField);
   }
-
+  
+  public void setPipeline(int pipeline){
+    ntPipeline.setDouble(pipeline);
+  }
+    
+  
   public double getDistance(){
     if (!hasTarget()) return 20.0;
     

@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class RobotContainer {
         // The robot's subsystems and commands are defined here...
@@ -96,28 +97,19 @@ public class RobotContainer {
                 autoChooser = new SendableChooser<Command>();
                 // autoChooser = AutoBuilder.buildAutoChooser();
                 SmartDashboard.putData("Auto Mode", autoChooser);
+                SmartDashboard.putNumber("Auto Delay", 0);
                 
-                // autoChooser.addOption("One Still", oneBall());
-                // autoChooser.addOption("One Taxi", oneBallTaxi());
-                // autoChooser.addOption("Two", twoBall());
-                // autoChooser.addOption("Three", threeBall());
-                // autoChooser.addOption("five", farThreeBall());
-                // autoChooser.addOption("red five", farThreeBallRed());
-                // autoChooser.addOption("Two mid", twoBallMid());
-
-
-                // autoChooser.addOption("calibration", (new PathPlannerAuto("cali1")).andThen(new PathPlannerAuto("cali2")));
 
 
                 autoChooser.addOption("Four ball", fourBall());
 
-                autoChooser.addOption("Robin", robinHood());
-                // Command combo4 = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 19.75, 5800))
-                // .andThen(new PathPlannerAuto("One")).andThen()new AutoShooter(shooter, limelight, 15  , 5500))
-                // .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 18.85, 5500))
-                // .andThen(new PathPlannerAuto("Three")).andThen(new PathPlannerAuto("Four")).andThen(new AutoShooter(shooter, limelight, 28, 5800));
+                // autoChooser.addOption("Robin", robinHood());
 
-                // autoChooser.setDefaultOption("Three", threeBall());
+                autoChooser.addOption("One Still", OneStill());
+
+                autoChooser.addOption("One Taxi", OneTaxi());
+
+                autoChooser.addOption("Two Mid", TwoMid());
         }
 
         public Command fourBall(){
@@ -135,69 +127,24 @@ public class RobotContainer {
         }
 
 
-        public Command farThreeBall() {
-                var alliance = DriverStation.getAlliance();
-                String prefix = "";
-                if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-                        prefix = "R";                }
-
-
-                Command combo = (new AutoShooter(shooter, limelight, 45, 5000))
-                        .andThen(new PathPlannerAuto("F1")).withTimeout(5)
-                        .andThen(new PathPlannerAuto("straight")).andThen(new AutoShooter(shooter, limelight, 20.5, 5200));
-                        // .andThen(new PathPlannerAuto("F2")).withTimeout(7)
-                        // .andThen(new PathPlannerAuto("F3")).andThen(new AutoShooter(shooter,limelight,20,5200));
-
-                return combo;
+        public Command OneStill(){
+                return (new WaitCommand(SmartDashboard.getNumber("Auto Delay", 0))).andThen(new AutoShooter(shooter, limelight, 44, 4000));
         }
 
-        public Command robinHood() {
-                return (new PathPlannerAuto("RH1"))
-                        .andThen(new PathPlannerAuto("RH2"))
-                        .andThen(new AutoShooter(shooter, limelight, drivetrain))
-
-                .andThen(new PathPlannerAuto("RH3"))
-                        .andThen(new PathPlannerAuto("RH4"))
-                        .andThen(new AutoShooter(shooter, limelight, drivetrain));
-                        // .andThen(new )
-        }
-        
-
-        public Command farThreeBallRed() {
-                Command combo = (new AutoShooter(shooter, limelight, 45, 5000))
-                        .andThen(new PathPlannerAuto("RF1")).withTimeout(5)
-                        .andThen(new PathPlannerAuto("straight")).andThen(new AutoShooter(shooter, limelight, 20.5, 5200));
-                        // .andThen(new PathPlannerAuto("RF2")).withTimeout(7)
-                        // .andThen(new PathPlannerAuto("RF3")).andThen(new AutoShooter(shooter,limelight,20,5200));
-
-                return combo;
-        }
-        
-        public Command oneBall(){
-                Command combo = new AutoShooter(shooter, limelight, 45, 5000);
-                return combo;
-        }
-             
-        public Command oneBallTaxi(){
-                Command combo = (new PathPlannerAuto("Zero")).andThen(new AutoShooter(shooter, limelight, 45, 5000));
-                return combo;
-        }
-        public Command twoBall(){
-                Command combo = oneBallTaxi()
-                .andThen(new PathPlannerAuto("One")).andThen(new AutoShooter(shooter, limelight, 22 , 5200));
-                return combo;
+        public Command OneTaxi(){
+                return (new WaitCommand(SmartDashboard.getNumber("Auto Delay", 0))).andThen
+                (new AutoShooter(shooter, limelight, 44, 4000)).withTimeout(7)
+                                .andThen(new PathPlannerAuto("StraightSafe"));
         }
 
-        public Command threeBall(){
-                Command combo = twoBall()
-                        .andThen(new PathPlannerAuto("Two")).andThen(new AutoShooter(shooter, limelight, 24, 5200));
-                return combo;
+        public Command TwoMid(){
+                return (new WaitCommand(SmartDashboard.getNumber("Auto Delay", 0))).andThen
+                (new AutoShooter(shooter, limelight, 44, 4000))
+                                .andThen(new PathPlannerAuto("MidTaxi"))
+                                .andThen(new PathPlannerAuto("Forward"))
+                                .andThen(new AutoShooter(shooter, limelight, 44, 4000));
         }
 
-        public Command twoBallMid(){
-                Command combo = (new PathPlannerAuto("TwoMid")).andThen(new AutoShooter(shooter, limelight, 22, 5200));
-                return combo;
-        }
 
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.

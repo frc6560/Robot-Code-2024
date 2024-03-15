@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 // import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
 
 // import edu.wpi.first.wpilibj.Filesystem;
@@ -33,6 +34,14 @@ import edu.wpi.first.wpilibj.I2C.Port;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static boolean isRed(){
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent()) {
+      return alliance.get() == DriverStation.Alliance.Red;
+    } 
+    return false;
+  }
 
   public static final int GYRO_ID = 13;
 
@@ -156,7 +165,7 @@ public static final double TRAP_TRANSFER_IN_FEED_RATE = -0.5;
 public static final double TRAP_TRANSFER_OUT_FEED_RATE = 0.4;
 
 
-public static final double TRAP_TRAP_ANGLE = 38;
+public static final double TRAP_TRAP_ANGLE = 58;
 
 public static final double TRAP_TRAP_EXTENSION = 8.8;
 
