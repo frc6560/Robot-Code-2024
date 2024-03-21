@@ -141,7 +141,7 @@ public class TrapCommand extends Command {
       trap.setExtention(Constants.TRAP_TRAP_EXTENSION);
       trap.setAngle(Constants.TRAP_TRAP_ANGLE); // && trap.isAtTargetAngle() && trap.isAtTargetExtention() && shooter.isAtTargetArcAngle()){
       
-      System.out.println("" + trap.isAtTargetAngle() );
+      // System.out.println("" + trap.isAtTargetAngle() );
       if(trap.isAtTargetAngle()){
         trap.setFeed(Constants.TRAP_TRAP_FEED_RATE);
       }

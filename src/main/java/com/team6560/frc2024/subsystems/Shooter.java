@@ -219,7 +219,7 @@ public class Shooter extends SubsystemBase {
     
     // if (speed > 5800) speed += 100;
     
-    speed = Math.max(0,speed) / 60;
+    speed = speed / 60;
 
 
 

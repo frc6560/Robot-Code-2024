@@ -52,8 +52,9 @@ public class ShooterCommand extends Command {
     limelight.setPipeline(Constants.isRed() ? 1 : 0);
 
     if(controls.getReverseTransfer()){
-      shooter.setRPM(0);
+      shooter.setRPM(-500);
       shooter.setTransfer(-0.2);
+      shooter.setArcPosition(Constants.SHOOTER_GROUND_INTAKE_POSITION);
     } else if (controls.getRunIntake() && !shooter.getTransferSensorTriggered()){
       shooter.setArcPosition(Constants.SHOOTER_GROUND_INTAKE_POSITION);
       shooter.setRPM(0.0);

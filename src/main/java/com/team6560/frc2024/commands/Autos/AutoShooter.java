@@ -54,6 +54,10 @@ public class AutoShooter extends Command {
   
   @Override
   public void execute() {
+    
+    limelight.setPipeline(Constants.isRed() ? 1 : 0);
+
+    
     if(shooter.getTransferSensorTriggered() || isShooting){
       if(arc == -1 && rpm == -1){
         if(limelight.hasTarget()){

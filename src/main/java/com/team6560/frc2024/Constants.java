@@ -165,7 +165,7 @@ public static final double TRAP_TRANSFER_IN_FEED_RATE = -0.5;
 public static final double TRAP_TRANSFER_OUT_FEED_RATE = 0.4;
 
 
-public static final double TRAP_TRAP_ANGLE = 58;
+public static final double TRAP_TRAP_ANGLE = 47;
 
 public static final double TRAP_TRAP_EXTENSION = 8.8;
 

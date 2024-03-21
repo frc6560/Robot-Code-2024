@@ -41,6 +41,9 @@ public class Climb extends SubsystemBase {
     leftClimbMotor.setIdleMode(IdleMode.kBrake);
     rightClimbMotor.setIdleMode(IdleMode.kBrake);
 
+    leftClimbMotor.setSmartCurrentLimit(40);
+    rightClimbMotor.setSmartCurrentLimit(40);
+
     leftClimbMotor.getEncoder().setPosition(0);
     rightClimbMotor.getEncoder().setPosition(0);
     
