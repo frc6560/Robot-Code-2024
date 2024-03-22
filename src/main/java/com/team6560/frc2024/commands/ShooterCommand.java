@@ -73,8 +73,7 @@ public class ShooterCommand extends Command {
       if(controls.getSafeAim()){
         shooter.setArcPosition(Constants.SHOOTER_SUBWOOFER_POSITION);
         shooter.setRPM(Constants.SHOOTER_SUBWOOFER_RPM);
-        // shooter.setArcPosition(shooterSetAngle.getDouble(45));
-        // shooter.setRPM(shooterSetRPM.getDouble(5500));
+        
       } else {
         shooter.setArcPosition(shooter.findClosest(dist).getAngle());
         shooter.setRPM(shooter.findClosest(dist).getRpm());

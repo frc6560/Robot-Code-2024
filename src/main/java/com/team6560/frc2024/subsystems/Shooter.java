@@ -21,6 +21,9 @@ import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab
 import java.util.ArrayList;
 
 import edu.wpi.first.math.interpolation.Interpolatable;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -87,6 +90,14 @@ public class Shooter extends SubsystemBase {
 
   ArrayList<AimTrajectory> aimMap = new ArrayList<>();
 
+  NetworkTable nttable = NetworkTableInstance.getDefault().getTable("ShooterPID");
+  NetworkTableEntry ntP = nttable.getEntry("P");
+  NetworkTableEntry ntI = nttable.getEntry("I");
+  NetworkTableEntry ntD = nttable.getEntry("D");
+  NetworkTableEntry ntS = nttable.getEntry("S");
+  NetworkTableEntry ntV = nttable.getEntry("V");
+
+
 
   public Shooter(Limelight limelight, Trap trap) {
     this.limelight = limelight;
@@ -143,6 +154,12 @@ public class Shooter extends SubsystemBase {
     .add("Vertical Position Shooter", this::getShooterArcPosition)
     .add("Transfer Triggered", this::getTransferSensorTriggered);
     // .add("Feeder Proximity Sensor", ()->colorSensor.getProximity());
+
+    ntP.setDouble(0.0);
+    ntI.setDouble(0.0);
+    ntD.setDouble(0.0);
+    ntS.setDouble(0.0);
+    ntV.setDouble(0.0);
   }
 
   private void setupMotors(){
@@ -207,6 +224,23 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     cc++;
 
+    
+    // TalonFX[] shooterMotors = new TalonFX[]{shooterMotorLeft,shooterMotorRight};
+
+    // for (TalonFX motor: shooterMotors){
+    //   // motor.setNeutralMode(NeutralModeValue.Coast);
+
+    //   // in init function, set slot 0 gains
+    //   var slot0Configs = new Slot0Configs();
+    //   // slot0Configs.kS = ntS.getDouble(0.0); // Add 0.05 V output to overcome static friction
+    //   // slot0Configs.kV = ntV.getDouble(0.0); // A velocity target of 1 rps results in 0.12 V output
+    //   // slot0Configs.kP = ntP.getDouble(0.0); // An error of 1 rps results in 0.11 V output
+    //   // slot0Configs.kI = ntI.getDouble(0.0); // no output for integrated error
+    //   // slot0Configs.kD = ntD.getDouble(0.0); // no output for error derivative
+      
+
+    //   motor.getConfigurator().apply(slot0Configs);
+    // }
     // if( cc % freq == 0){
     //   sensorValue = colorSensor.getProximity();
       
@@ -223,7 +257,7 @@ public class Shooter extends SubsystemBase {
 
 
 
-    final VelocityVoltage m_request = new VelocityVoltage(speed).withSlot(0);
+    final VelocityVoltage m_request = new VelocityVoltage(speed);
 
     shooterMotorRight.setControl(m_request);
     shooterMotorLeft.setControl(m_request);

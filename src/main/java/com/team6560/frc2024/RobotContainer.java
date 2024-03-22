@@ -110,6 +110,12 @@ public class RobotContainer {
                 autoChooser.addOption("One Taxi", OneTaxi());
 
                 autoChooser.addOption("Two Mid", TwoMid());
+
+                autoChooser.addOption("Calibration", Calibration());
+        }
+
+        public Command Calibration(){
+                return (new PathPlannerAuto("cali1")).andThen(new WaitCommand(3)).andThen(new PathPlannerAuto("cali2"));
         }
 
         public Command fourBall(){
