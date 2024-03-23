@@ -54,8 +54,8 @@ public class LightsCommand extends Command {
     } else if (controls.getAmpPlace()){
       light.setLightsTrapPlace();
     
-    } else if (controls.getTrapTransferIn()){
-      light.setLightsTrapTransfer(trap.isAtTargetAngle() && trap.isAtTargetExtention() && !trap.getSensorTriggered());
+    // } else if (controls.getTrapTransferIn()){
+    //   light.setLightsTrapTransfer(trap.isAtTargetAngle() && trap.isAtTargetExtention() && !trap.getSensorTriggered());
     
     } else if (shooter.getTransferSensorTriggered() || trap.getSensorTriggered()){
       light.setLightsHasPiece();

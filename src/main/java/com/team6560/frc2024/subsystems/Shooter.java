@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -135,12 +136,14 @@ public class Shooter extends SubsystemBase {
     aimMap.add(new AimTrajectory(1.00, 5250 , 15));
     aimMap.add(new AimTrajectory(2.03, 5050 , 16));
     aimMap.add(new AimTrajectory(2.97, 4700 , 18));
-    aimMap.add(new AimTrajectory(4.00, 4700 , 20));
-    aimMap.add(new AimTrajectory(4.99, 4200 , 20));
-    aimMap.add(new AimTrajectory(9.05, 4000 , 27));
-    aimMap.add(new AimTrajectory(12.02, 4000 , 30));
-    aimMap.add(new AimTrajectory(14.5, 4000 , 35));
-    aimMap.add(new AimTrajectory(20, 4000 , 44));
+    aimMap.add(new AimTrajectory(3.00, 4700 , 20));
+    aimMap.add(new AimTrajectory(4.99, 4300 , 22));
+    aimMap.add(new AimTrajectory(7.0, 4150 , 24));
+    aimMap.add(new AimTrajectory(9.0, 4100 , 28));
+    aimMap.add(new AimTrajectory(11, 4000 , 30.5));
+    aimMap.add(new AimTrajectory(13.57, 4000 , 33.5));
+    aimMap.add(new AimTrajectory(16, 4000 , 38));
+    aimMap.add(new AimTrajectory(24, 4000 , 44));
     
     aimMap.add(new AimTrajectory(100.0, 4000 , 45));
 
@@ -202,15 +205,26 @@ public class Shooter extends SubsystemBase {
     for (TalonFX motor: shooterMotors){
       motor.setNeutralMode(NeutralModeValue.Coast);
 
-      // in init function, set slot 0 gains
-      var slot0Configs = new Slot0Configs();
-      slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
-      slot0Configs.kV = 0.11; // A velocity target of 1 rps results in 0.12 V output
-      slot0Configs.kP = 0.2; // An error of 1 rps results in 0.11 V output
-      slot0Configs.kI = 0.001; // no output for integrated error
-      slot0Configs.kD = 0; // no output for error derivative
+      var talonFXConfigs = new TalonFXConfiguration();
 
-      motor.getConfigurator().apply(slot0Configs);
+      // set slot 0 gains
+      var slot0Configs = talonFXConfigs.Slot0;
+      slot0Configs.kS = 0.1; // Add 0.25 V output to overcome static friction
+      slot0Configs.kV = 0.11; // A velocity target of 1 rps results in 0.12 V output
+      slot0Configs.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+      slot0Configs.kP = 0.2; // An error of 1 rps results in 0.11 V output
+      slot0Configs.kI = 0; // no output for integrated error
+      slot0Configs.kD = 0.01; // no output for error derivative
+
+      // set Motion Magic Velocity settings
+      var motionMagicConfigs = talonFXConfigs.MotionMagic;
+      motionMagicConfigs.MotionMagicAcceleration = 400; // Target acceleration of 400 rps/s (0.25 seconds to max)
+      motionMagicConfigs.MotionMagicJerk = 4000; // Target jerk of 4000 rps/s/s (0.1 seconds)
+
+
+
+
+      motor.getConfigurator().apply(talonFXConfigs);
     }
     
     shooterMotorLeft.setInverted(false);
@@ -222,7 +236,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    cc++;
+    isAtTargetHorizontalAngle(); // running so that it updates the limelight not on target (i know its messy...)
 
     
     // TalonFX[] shooterMotors = new TalonFX[]{shooterMotorLeft,shooterMotorRight};
@@ -232,12 +246,45 @@ public class Shooter extends SubsystemBase {
 
     //   // in init function, set slot 0 gains
     //   var slot0Configs = new Slot0Configs();
-    //   // slot0Configs.kS = ntS.getDouble(0.0); // Add 0.05 V output to overcome static friction
-    //   // slot0Configs.kV = ntV.getDouble(0.0); // A velocity target of 1 rps results in 0.12 V output
-    //   // slot0Configs.kP = ntP.getDouble(0.0); // An error of 1 rps results in 0.11 V output
-    //   // slot0Configs.kI = ntI.getDouble(0.0); // no output for integrated error
-    //   // slot0Configs.kD = ntD.getDouble(0.0); // no output for error derivative
+    //   slot0Configs.kS = ntS.getDouble(0.0); // Add 0.05 V output to overcome static friction
+    //   slot0Configs.kV = ntV.getDouble(0.0); // A velocity target of 1 rps results in 0.12 V output
+    //   slot0Configs.kP = ntP.getDouble(0.0); // An error of 1 rps results in 0.11 V output
+    //   slot0Configs.kI = ntI.getDouble(0.0); // no output for integrated error
+    //   slot0Configs.kD = ntD.getDouble(0.0); // no output for error derivative
       
+    // TalonFX[] shooterMotors = new TalonFX[]{shooterMotorLeft,shooterMotorRight};
+
+    // for (TalonFX motor: shooterMotors){
+    //   motor.setNeutralMode(NeutralModeValue.Coast);
+
+    //   var talonFXConfigs = new TalonFXConfiguration();
+
+    //   // set slot 0 gains
+    //   var slot0Configs = talonFXConfigs.Slot0;
+    //   // slot0Configs.kS = 0.25; // Add 0.25 V output to overcome static friction
+    //   // slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    //   // slot0Configs.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    //   // slot0Configs.kP = 1.0; // An error of 1 rps results in 0.11 V output
+    //   // slot0Configs.kI = 0; // no output for integrated error
+    //   // slot0Configs.kD = 0; // no output for error derivative
+
+    //   slot0Configs.kS = ntS.getDouble(0.0); // Add 0.05 V output to overcome static friction
+    //   slot0Configs.kV = ntV.getDouble(0.0); // A velocity target of 1 rps results in 0.12 V output
+    //   slot0Configs.kP = ntP.getDouble(0.0); // An error of 1 rps results in 0.11 V output
+    //   slot0Configs.kI = ntI.getDouble(0.0); // no output for integrated error
+    //   slot0Configs.kA = ntD.getDouble(0.0);
+
+    //   // set Motion Magic Velocity settings
+    //   var motionMagicConfigs = talonFXConfigs.MotionMagic;
+    //   motionMagicConfigs.MotionMagicAcceleration = 400; // Target acceleration of 400 rps/s (0.25 seconds to max)
+    //   motionMagicConfigs.MotionMagicJerk = 4000; // Target jerk of 4000 rps/s/s (0.1 seconds)
+
+
+
+
+    //   motor.getConfigurator().apply(talonFXConfigs);
+    // }
+    
 
     //   motor.getConfigurator().apply(slot0Configs);
     // }
@@ -257,7 +304,8 @@ public class Shooter extends SubsystemBase {
 
 
 
-    final VelocityVoltage m_request = new VelocityVoltage(speed);
+    final MotionMagicVelocityVoltage m_request = new MotionMagicVelocityVoltage(speed);
+
 
     shooterMotorRight.setControl(m_request);
     shooterMotorLeft.setControl(m_request);
@@ -281,7 +329,7 @@ public class Shooter extends SubsystemBase {
     return ( 
       Math.abs(getShooterRPM() - targetRPM) < Constants.SHOOTER_ACCEPTABLE_RPM_DIFF &&
       (isShootingSafe ||isAtTargetArcAngle()) &&
-      (isShootingSafe || (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ))
+      (isShootingSafe || isAtTargetHorizontalAngle())
       // trap.isClearOfShooter()
     );
   }
@@ -326,6 +374,18 @@ public class Shooter extends SubsystemBase {
   public double getShooterArcPosition(){
     return arcMotor.getRotorPosition().getValueAsDouble();
     // return arcMotor.getRotorPosition().getValueAsDouble();
+  }
+
+  double horizontalOnTarget = 0;
+
+  public boolean isAtTargetHorizontalAngle(){
+    if (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ){
+      horizontalOnTarget += 1;
+    } else {
+      horizontalOnTarget = 0;
+    }
+
+    return horizontalOnTarget > 6;
   }
 
   public boolean isAtTargetArcAngle(){

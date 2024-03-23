@@ -103,7 +103,7 @@ public class RobotContainer {
 
                 autoChooser.addOption("Four ball", fourBall());
 
-                // autoChooser.addOption("Robin", robinHood());
+                autoChooser.addOption("Robin", robinHood());
 
                 autoChooser.addOption("One Still", OneStill());
 
@@ -132,6 +132,17 @@ public class RobotContainer {
                                 .andThen(new AutoShooter(shooter, limelight, drivetrain)));
         }
 
+        public Command robinHood(){
+                return (new AutoShooter(shooter, limelight, 44, 4000))
+                                .andThen(new PathPlannerAuto("RH1")).andThen(new WaitCommand(1))
+                                .andThen(new PathPlannerAuto("RH2"))
+
+                        .andThen(new AutoShooter(shooter, limelight, drivetrain))
+                                .andThen(new PathPlannerAuto("RH3")).andThen(new WaitCommand(0.5))
+                                .andThen(new PathPlannerAuto("RH4"))
+
+                        .andThen(new AutoShooter(shooter, limelight, drivetrain));
+        }
 
         public Command OneStill(){
                 return (new WaitCommand(SmartDashboard.getNumber("Auto Delay", 0))).andThen(new AutoShooter(shooter, limelight, 44, 4000));

@@ -83,8 +83,8 @@ public class Drivetrain extends SubsystemBase {
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
                 MkModuleConfiguration mkConfig = MkModuleConfiguration.getDefaultSteerNEO();
-                mkConfig.setDriveCurrentLimit(40);
-                mkConfig.setSteerCurrentLimit(20);
+                mkConfig.setDriveCurrentLimit(35);
+                mkConfig.setSteerCurrentLimit(15);
 
 
                 

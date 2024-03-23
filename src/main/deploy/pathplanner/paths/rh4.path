@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.170203968320532,
-        "y": 6.579185680730528
+        "x": 6.9116757951825765,
+        "y": 6.836262686609881
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.5414668324920564,
-        "y": 6.256100669623117
+        "x": 4.165608331216663,
+        "y": 6.185878287249532
       },
       "prevControl": {
-        "x": 5.568090993074904,
-        "y": 6.491071586792142
+        "x": 6.179356664692316,
+        "y": 6.779795203874719
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -160.0,
+    "rotation": -167.12499844038743,
     "rotateFast": true
   },
   "reversed": false,
   "folder": "Robin Hood",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 150.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
