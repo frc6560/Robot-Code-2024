@@ -142,7 +142,7 @@ public class Drivetrain extends SubsystemBase {
 
                 odometry = new SwerveDriveOdometry(m_kinematics, getRawGyroRotation(), getModulePositions());
                 
-                if(Constants.isRed()){
+                if(!Constants.isRed()){
                         resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
                 } else {
                         resetOdometry(new Pose2d());
