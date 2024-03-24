@@ -79,7 +79,7 @@ public class RobotContainer {
 
 
                 driveCommand = new DriveCommand(drivetrain, shooter, limelight, manualControls);
-                ShooterCommand = new ShooterCommand(shooter, trap, limelight, manualControls);
+                ShooterCommand = new ShooterCommand(shooter, trap, drivetrain::getPose, limelight, manualControls);
                 intakeCommand = new IntakeCommand(intake, shooter, manualControls);
                 trapCommand = new TrapCommand(trap, shooter, manualControls);
                 climbCommand = new ClimbCommand(climb, manualControls);

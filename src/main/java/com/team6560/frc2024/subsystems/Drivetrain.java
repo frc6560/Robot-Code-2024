@@ -17,6 +17,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.GeometryUtil;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 // UTIL:
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -42,6 +44,8 @@ import com.swervedrivespecialties.swervelib.MkSwerveModuleBuilder;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 import com.team6560.frc2024.Constants;
+import com.team6560.frc2024.utility.LimelightHelpers;
+
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Drivetrain extends SubsystemBase {
@@ -78,6 +82,8 @@ public class Drivetrain extends SubsystemBase {
 
         // ODOMETRY
         private final SwerveDriveOdometry odometry;
+
+        private final SwerveDrivePoseEstimator poseEstimator;
 
         public Drivetrain() {
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -141,6 +147,8 @@ public class Drivetrain extends SubsystemBase {
                 // kinematics = new SwerveDriveKinematics();
 
                 odometry = new SwerveDriveOdometry(m_kinematics, getRawGyroRotation(), getModulePositions());
+
+                poseEstimator = new SwerveDrivePoseEstimator(m_kinematics, getRawGyroRotation(), getModulePositions(), new Pose2d());
                 
                 if(!Constants.isRed()){
                         resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
@@ -180,6 +188,16 @@ public class Drivetrain extends SubsystemBase {
         // Updates the field-relative position.
         private void updateOdometry() {
                 odometry.update(getRawGyroRotation(), getModulePositions());
+                poseEstimator.update(getRawGyroRotation(), getModulePositions());
+
+                LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+                if(limelightMeasurement.tagCount >= 2) {
+                        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+                        poseEstimator.addVisionMeasurement(
+                                limelightMeasurement.pose,
+                                limelightMeasurement.timestampSeconds
+                        );
+                }
         }
 
         // This method is used to control the movement of the chassis.
@@ -272,7 +290,7 @@ public class Drivetrain extends SubsystemBase {
 
         // Gets the current pose of the robot according to the odometer/estimator
         public Pose2d getPose() {
-                return odometry.getPoseMeters();
+                return poseEstimator.getEstimatedPosition();
         }
 
         public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {

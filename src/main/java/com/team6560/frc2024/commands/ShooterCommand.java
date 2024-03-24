@@ -4,12 +4,18 @@
 
 package com.team6560.frc2024.commands;
 
+import java.util.ArrayList;
+import java.util.function.Supplier;
+
 import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Limelight;
 import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Trap;
+import com.team6560.frc2024.utility.LimelightHelpers;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -24,11 +30,14 @@ public class ShooterCommand extends Command {
   final NetworkTableEntry shooterSetAngle;
   final NetworkTableEntry shooterSetRPM;
 
-  public ShooterCommand(Shooter shooter, Trap trap, Limelight limelight, ManualControls controls) {
+  final Supplier<Pose2d> poseSupplier;
+
+  public ShooterCommand(Shooter shooter, Trap trap, Supplier<Pose2d> poseSupplier, Limelight limelight, ManualControls controls) {
     this.shooter = shooter;
     this.trap = trap;
     this.limelight = limelight;
     this.controls = controls;
+    this.poseSupplier = poseSupplier;
 
     addRequirements(shooter);
 
@@ -68,7 +77,13 @@ public class ShooterCommand extends Command {
 
     
     } else if (controls.getSafeAim() || controls.getAim()){
-      double dist = limelight.getVerticalAngle();
+      Translation2d currentTranslation = poseSupplier.get().getTranslation();
+
+      ArrayList<Translation2d> targetLocations = new ArrayList<Translation2d>();
+      targetLocations.add(new Translation2d(0.0, 0.0)); // TODO: Update values!!
+      targetLocations.add(new Translation2d(0.0, 0.0));
+
+      double dist = currentTranslation.nearest(targetLocations).minus(currentTranslation).getNorm();
 
       if(controls.getSafeAim()){
         // shooter.setArcPosition(Constants.SHOOTER_SUBWOOFER_POSITION);
