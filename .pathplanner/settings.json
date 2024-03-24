@@ -3,15 +3,17 @@
   "robotLength": 0.914,
   "holonomicMode": true,
   "pathFolders": [
+    "Calibration",
     "Extras",
     "Four Ball",
-    "Calibration",
+    "Green Arrow",
     "Robin Hood"
   ],
   "autoFolders": [
+    "Calibration",
     "Extras",
     "Four Ball",
-    "Calibration",
+    "Green Arrow",
     "Robin Hood"
   ],
   "defaultMaxVel": 4.5,
