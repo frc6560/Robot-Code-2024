@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "Four Ball",
   "previewStartingState": {
-    "rotation": -170.0,
+    "rotation": 180.0,
     "velocity": 0.0
   },
   "useDefaultConstraints": true

@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.28973292584782,
-        "y": 5.7650100590829885
+        "x": 8.046278109163573,
+        "y": 2.385857203505629
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.395736501860268,
-        "y": 5.439621971211092
+        "x": 7.413268200740647,
+        "y": 1.8210727204313217
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.920318262937831,
-        "y": 7.069927876510557
+        "x": 6.916647759748663,
+        "y": 1.4217761294360087
       },
       "prevControl": {
-        "x": 6.12752979982595,
-        "y": 7.552812491265806
+        "x": 7.491201127123488,
+        "y": 1.5581108267791868
       },
       "nextControl": {
-        "x": 4.384717666232485,
-        "y": 6.855687637828419
+        "x": 5.943664884348138,
+        "y": 1.1908988369680886
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.05
+        "x": 3.6738296015144822,
+        "y": 3.252556350901552
       },
       "prevControl": {
-        "x": 4.322971698070984,
-        "y": 6.431692654167125
+        "x": 3.449851170164975,
+        "y": 1.3633469734317898
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,14 +55,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -170.27242144859838,
+    "rotation": 139.2363947990588,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Robin Hood",
+  "folder": "Green Arrow",
   "previewStartingState": {
     "rotation": 180.0,
-    "velocity": 0.0
+    "velocity": 0
   },
   "useDefaultConstraints": true
 }

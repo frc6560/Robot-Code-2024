@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.0,
-        "y": 5.8
+        "x": 8.279994733180452,
+        "y": 4.070564534960625
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.9116757951825765,
-        "y": 6.836262686609881
+        "x": 4.413932244234596,
+        "y": 3.719989598935308
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.165608331216663,
-        "y": 6.185878287249532
+        "x": 4.569743326912514,
+        "y": 5.433911508392412
       },
       "prevControl": {
-        "x": 6.179356664692316,
-        "y": 6.779795203874719
+        "x": 4.297073932226156,
+        "y": 3.8952770669479646
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -167.12499844038743,
+    "rotation": 180.0,
     "rotateFast": true
   },
   "reversed": false,
   "folder": "Robin Hood",
   "previewStartingState": {
-    "rotation": 150.0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

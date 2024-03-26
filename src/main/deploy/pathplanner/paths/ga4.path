@@ -4,40 +4,56 @@
     {
       "anchor": {
         "x": 8.28973292584782,
-        "y": 5.7650100590829885
+        "y": 4.109517305630104
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.395736501860268,
-        "y": 5.439621971211092
+        "x": 7.2897329258478205,
+        "y": 4.109517305630104
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.920318262937831,
-        "y": 7.069927876510557
+        "x": 5.796755603001123,
+        "y": 3.729727791602677
       },
       "prevControl": {
-        "x": 6.12752979982595,
-        "y": 7.552812491265806
+        "x": 6.444874232529477,
+        "y": 4.491267181298496
       },
       "nextControl": {
-        "x": 4.384717666232485,
-        "y": 6.855687637828419
+        "x": 5.407227896306328,
+        "y": 3.2720327362362913
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.05
+        "x": 3.7809497208555514,
+        "y": 3.1259598462257427
       },
       "prevControl": {
-        "x": 4.322971698070984,
-        "y": 6.431692654167125
+        "x": 4.66670623736334,
+        "y": 2.0187642005910087
+      },
+      "nextControl": {
+        "x": 3.4693275554997136,
+        "y": 3.5154875529205394
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.362207436158645,
+        "y": 3.905015259615335
+      },
+      "prevControl": {
+        "x": 3.323254665489166,
+        "y": 3.6128694795942375
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,14 +71,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -170.27242144859838,
+    "rotation": 143.84181456019172,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Robin Hood",
+  "folder": "Green Arrow",
   "previewStartingState": {
     "rotation": 180.0,
-    "velocity": 0.0
+    "velocity": 0
   },
   "useDefaultConstraints": true
 }

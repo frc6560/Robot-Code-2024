@@ -11,8 +11,10 @@ import com.team6560.frc2024.utility.NumberStepper;
 import com.team6560.frc2024.utility.PovNumberStepper;
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
 // import edu.wpi.first.wpilibj.DriverStation;
 // import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -96,21 +98,9 @@ public class ManualControls implements DriveCommand.Controls {
 
   }
 
-  private static double deadband(double value, double deadband) {
-    if (Math.abs(value) > deadband) {
-      if (value > 0.0) {
-        return (value - deadband) / (1.0 - deadband);
-      } else {
-        return (value + deadband) / (1.0 - deadband);
-      }
-    } else {
-      return 0.0;
-    }
-  }
-
   private static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.1);
+    value = MathUtil.applyDeadband(value, 0.1);
 
     // Square the axis
     value = Math.copySign(value * value, value);
@@ -226,12 +216,12 @@ public class ManualControls implements DriveCommand.Controls {
   // ------------------------------ CLIMB ------------------------------ \\
 
   public double getClimbLeft(){
-   return deadband(controlStation.getLeftY(), 0.1);
+   return MathUtil.applyDeadband(controlStation.getLeftY(), 0.1);
   }
   public double getClimbRight(){
     if(controlStation.getLeftTriggerAxis() > 0.2){
       return getClimbLeft();
     }
-    return deadband(controlStation.getRightY()/1.1, 0.1);
+    return MathUtil.applyDeadband(controlStation.getRightY()/1.1, 0.1);
   }
 }

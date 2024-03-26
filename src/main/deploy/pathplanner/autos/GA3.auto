@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.989122270059487,
-      "y": 5.9597739124303875
+      "x": 2.3104826280826942,
+      "y": 3.96
     },
-    "rotation": 0
+    "rotation": 135.0
   },
   "command": {
     "type": "sequential",
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "four5"
+                  "pathName": "ga3"
                 }
               }
             ]
@@ -33,6 +33,6 @@
       ]
     }
   },
-  "folder": "Four Ball",
+  "folder": "Green Arrow",
   "choreoAuto": false
 }
