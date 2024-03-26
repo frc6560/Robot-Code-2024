@@ -4,6 +4,7 @@
 
 package com.team6560.frc2024.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
 // WPI & REV & SYSTEM:
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import edu.wpi.first.wpilibj.DriverStation;
@@ -16,6 +17,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.GeometryUtil;
 
 import edu.wpi.first.math.VecBuilder;
@@ -31,6 +33,7 @@ import static com.team6560.frc2024.Constants.*;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -49,6 +52,8 @@ import com.team6560.frc2024.utility.LimelightHelpers;
 
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import java.util.ArrayList;
+
 public class Drivetrain extends SubsystemBase {
         /**
          * The maximum voltage that will be delivered to the drive motors.
@@ -65,7 +70,6 @@ public class Drivetrain extends SubsystemBase {
         private final SwerveModule m_frontRightModule;
         private final SwerveModule m_backLeftModule;
         private final SwerveModule m_backRightModule;
-
 
         // private SwerveDriveKinematics kinematics;
 
@@ -96,12 +100,10 @@ public class Drivetrain extends SubsystemBase {
                 mkConfig.setDriveCurrentLimit(35);
                 mkConfig.setSteerCurrentLimit(15);
 
-
-                
                 m_frontLeftModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
-                                        .withSize(2, 4)
-                                        .withPosition(6, 0))
+                                                .withSize(2, 4)
+                                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR, "Canivore")
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_LEFT_MODULE_STEER_MOTOR)
@@ -111,8 +113,8 @@ public class Drivetrain extends SubsystemBase {
 
                 m_frontRightModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
-                                        .withSize(2, 4)
-                                        .withPosition(6, 0))
+                                                .withSize(2, 4)
+                                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR, "Canivore")
                                 .withSteerMotor(MotorType.NEO, Constants.FRONT_RIGHT_MODULE_STEER_MOTOR)
@@ -122,28 +124,25 @@ public class Drivetrain extends SubsystemBase {
 
                 m_backLeftModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
-                                        .withSize(2, 4)
-                                        .withPosition(6, 0))
+                                                .withSize(2, 4)
+                                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.BACK_LEFT_MODULE_DRIVE_MOTOR, "Canivore")
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_LEFT_MODULE_STEER_MOTOR)
                                 .withSteerEncoderPort(Constants.BACK_LEFT_MODULE_STEER_ENCODER, "Canivore")
                                 .withSteerOffset(Constants.BACK_LEFT_MODULE_STEER_OFFSET)
                                 .build();
-                
-                                
+
                 m_backRightModule = new MkSwerveModuleBuilder(mkConfig)
                                 .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-                                        .withSize(2, 4)
-                                        .withPosition(6, 0))
+                                                .withSize(2, 4)
+                                                .withPosition(6, 0))
                                 .withGearRatio(SdsModuleConfigurations.MK4I_L2)
                                 .withDriveMotor(MotorType.FALCON, Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR, "Canivore")
                                 .withSteerMotor(MotorType.NEO, Constants.BACK_RIGHT_MODULE_STEER_MOTOR)
                                 .withSteerEncoderPort(Constants.BACK_RIGHT_MODULE_STEER_ENCODER, "Canivore")
                                 .withSteerOffset(Constants.BACK_RIGHT_MODULE_STEER_OFFSET)
                                 .build();
-
-                                
 
                 modules = new SwerveModule[] { m_frontLeftModule, m_frontRightModule, m_backLeftModule,
                                 m_backRightModule };
@@ -152,9 +151,10 @@ public class Drivetrain extends SubsystemBase {
 
                 odometry = new SwerveDriveOdometry(m_kinematics, getRawGyroRotation(), getModulePositions());
 
-                poseEstimator = new SwerveDrivePoseEstimator(m_kinematics, getRawGyroRotation(), getModulePositions(), new Pose2d());
-                
-                if(!Constants.isRed()){
+                poseEstimator = new SwerveDrivePoseEstimator(m_kinematics, getRawGyroRotation(), getModulePositions(),
+                                new Pose2d());
+
+                if (!Constants.isRed()) {
                         resetPoseEstimator(GeometryUtil.flipFieldPose(new Pose2d()));
                         resetOnlyOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
                 } else {
@@ -162,24 +162,22 @@ public class Drivetrain extends SubsystemBase {
                         resetOnlyOdometry(new Pose2d());
                 }
 
-
                 AutoBuilder.configureHolonomic(
-                        this::getPose, 
-                        (pose) -> resetPoseEstimator(pose), 
-                        this::getChassisSpeeds, 
-                        (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds), 
-                        Constants.pathFollowerConfig, 
-                        ()-> Constants.isRed(),
-                        this
-                );
+                                this::getPose,
+                                (pose) -> resetPoseEstimator(pose),
+                                this::getChassisSpeeds,
+                                (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds),
+                                Constants.pathFollowerConfig,
+                                () -> Constants.isRed(),
+                                this);
 
                 this.fieldOnlyOdometry = new Field2d();
                 this.fieldApriltags = new Field2d();
                 SmartDashboard.putData("FieldOnlyOdometry", fieldOnlyOdometry);
-                SmartDashboard.putData("fieldfieldApriltags",fieldApriltags);
+                SmartDashboard.putData("fieldfieldApriltags", fieldApriltags);
 
                 ntDispTab("Drivetrain")
-                .add("Gyro", () -> getRawGyroRotation().getDegrees());
+                                .add("Gyro", () -> getRawGyroRotation().getDegrees());
         }
 
         public SwerveModule[] getModules() {
@@ -199,13 +197,15 @@ public class Drivetrain extends SubsystemBase {
                 odometry.update(getRawGyroRotation(), getModulePositions());
                 poseEstimator.update(getRawGyroRotation(), getModulePositions());
 
-                LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-                if(limelightMeasurement.tagCount >= 1) {
-                        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,1.0)); // TODO: change 1.0 to 999999 when done debugging 
+                LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers
+                                .getBotPoseEstimate_wpiBlue("limelight");
+                if (limelightMeasurement.tagCount >= 1) {
+                        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 1.0)); // TODO: change 1.0 to
+                                                                                                 // 999999 when done
+                                                                                                 // debugging
                         poseEstimator.addVisionMeasurement(
-                                limelightMeasurement.pose,
-                                limelightMeasurement.timestampSeconds
-                        );
+                                        limelightMeasurement.pose,
+                                        limelightMeasurement.timestampSeconds);
                 }
         }
 
@@ -250,6 +250,54 @@ public class Drivetrain extends SubsystemBase {
                                 });
         }
 
+        private static ArrayList<Pose2d> trapLocations = new ArrayList<Pose2d>();
+
+        static {
+                double l = 1; // meters
+                // blue
+                trapLocations.add(new Pose2d(Units.inchesToMeters(209.48) + l * Math.cos(180.0),
+                                161.62 + l * Math.sin(180.0),
+                                Rotation2d.fromDegrees(180.0))); // id 14
+                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l * Math.cos(-60.0),
+                                177.10 + l * Math.sin(-60.0),
+                                Rotation2d.fromDegrees(-60.0))); // id 15
+                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l * Math.cos(60.0),
+                                146.19 + l * Math.sin(60.0),
+                                Rotation2d.fromDegrees(60.0))); // id 16
+
+                // red
+                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l * Math.cos(120.0),
+                                146.19 + l * Math.sin(120.0),
+                                Rotation2d.fromDegrees(120.0))); // id 11
+                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l * Math.cos(-120.0),
+                                177.10 + l * Math.sin(-120.0),
+                                Rotation2d.fromDegrees(-120.0))); // id 12
+                trapLocations.add(
+                                new Pose2d(Units.inchesToMeters(441.74) + l * Math.cos(0.0), 161.62 + l * Math.sin(0.0),
+                                                Rotation2d.fromDegrees(0.0))); // id 13
+
+        }
+
+        public Command getAutoAlignCommand() {
+                Pose2d estimatedGlobalPose = this.getPose();
+
+                Pose2d targetPose = estimatedGlobalPose.nearest(trapLocations);
+
+                PathConstraints constraints = new PathConstraints(
+                                3.0, 4.0,
+                                Units.degreesToRadians(540), Units.degreesToRadians(720));
+
+                // Since AutoBuilder is configured, we can use it to build pathfinding commands
+                return AutoBuilder.pathfindToPose(
+                                targetPose,
+                                constraints,
+                                0.0, // Goal end velocity in meters/sec
+                                0.0 // Rotation delay distance in meters. This is how far the robot should travel
+                                    // before attempting to rotate.
+                );
+
+        }
+
         // Sets drive motor idle mode to be either brake mode or coast mode.
         public void setDriveMotorBrakeMode(boolean brake) {
                 IdleMode sparkMaxMode = brake ? IdleMode.kBrake : IdleMode.kCoast;
@@ -289,7 +337,7 @@ public class Drivetrain extends SubsystemBase {
 
         public Pose2d getOdometryForAuto() {
                 Pose2d pos = getOdometryPose2dNoApriltags();
-                double scaleValue = 3/2;
+                double scaleValue = 3 / 2;
 
                 return new Pose2d(pos.getX() * scaleValue, pos.getY() * scaleValue, pos.getRotation());
         }

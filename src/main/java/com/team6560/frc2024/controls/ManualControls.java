@@ -154,9 +154,6 @@ public class ManualControls implements DriveCommand.Controls {
     return xbox.getRightTriggerAxis() > 0.2;
   }
 
-  public boolean getAutoAlignClimb(){
-    return xbox.getAButton();
-  }
 
   
   // ------------------------------ SHOOTER ------------------------------ \\

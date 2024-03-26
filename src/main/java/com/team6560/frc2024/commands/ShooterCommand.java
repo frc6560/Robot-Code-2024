@@ -30,14 +30,11 @@ public class ShooterCommand extends Command {
   final NetworkTableEntry shooterSetAngle;
   final NetworkTableEntry shooterSetRPM;
 
-  final Supplier<Pose2d> poseSupplier;
-
-  public ShooterCommand(Shooter shooter, Trap trap, Supplier<Pose2d> poseSupplier, Limelight limelight, ManualControls controls) {
+  public ShooterCommand(Shooter shooter, Trap trap, Limelight limelight, ManualControls controls) {
     this.shooter = shooter;
     this.trap = trap;
     this.limelight = limelight;
     this.controls = controls;
-    this.poseSupplier = poseSupplier;
 
     addRequirements(shooter);
 
