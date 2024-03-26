@@ -17,6 +17,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -37,19 +40,32 @@ public class DriveCommand extends Command {
         boolean driveResetGlobalPose();
 
         boolean getAutoTarget();
+
+        boolean autoAlignClimb();
     }
 
-    private ManualControls controls;
-    private static ArrayList<Pose2d> trapLocations;
+    private Controls controls;
+    private Command goToPoseAutoCommand = null;
+    private boolean goingToPose = false;
+    private boolean autoAlignReady = false;
+    private static ArrayList<Pose2d> trapLocations = new ArrayList<Pose2d>();
+
+    NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Drivetrain");
+    NetworkTableEntry ntTest = ntTable.getEntry("Initializing");
+    NetworkTableEntry ntExec = ntTable.getEntry("Excecuting");
+
 
     static {
-        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
-        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
-        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
+        double l = 1; // meters
+        // blue
+        trapLocations.add(new Pose2d(Units.inchesToMeters(209.48) + l*Math.cos(180.0), 161.62 + l*Math.sin(180.0), Rotation2d.fromDegrees(180.0))); // id 14
+        trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l*Math.cos(-60.0), 177.10 + l*Math.sin(-60.0), Rotation2d.fromDegrees(-60.0))); // id 15
+        trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l*Math.cos(60.0), 146.19 + l*Math.sin(60.0), Rotation2d.fromDegrees(60.0))); // id 16
 
-        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
-        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
-        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
+        //red
+        trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l*Math.cos(120.0), 146.19 + l*Math.sin(120.0), Rotation2d.fromDegrees(120.0))); // id 11
+        trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l*Math.cos(-120.0), 177.10 + l*Math.sin(-120.0), Rotation2d.fromDegrees(-120.0))); // id 12
+        trapLocations.add(new Pose2d(Units.inchesToMeters(441.74) + l*Math.cos(0.0), 161.62 + l*Math.sin(0.0), Rotation2d.fromDegrees(0.0))); // id 13
 
     }
 
@@ -68,6 +84,53 @@ public class DriveCommand extends Command {
 
     @Override
     public void execute() {
+
+        if (controls.autoAlignClimb()) {
+            if (goToPoseAutoCommand == null) {
+                autoAlign();
+                return;
+            }
+            
+            
+            
+            if (!goingToPose) {
+                drivetrain.setAutoLock(true);
+                goToPoseAutoCommand.initialize();
+                ntTest.setBoolean(true);                
+                ntExec.setBoolean(false);
+
+                System.out.println("TEST!!!");
+
+                goingToPose = true;
+            } else if (autoAlignReady) {
+                goToPoseAutoCommand.execute();
+                System.out.println("executing");
+                
+                ntTest.setBoolean(false);
+                ntExec.setBoolean(true);
+            } else {
+                ntExec.setBoolean(false);
+                ntTest.setBoolean(false);
+
+            }
+
+            if (goToPoseAutoCommand.isFinished()) {
+                this.autoAlignReady = false;
+                goToPoseAutoCommand = null;
+                goingToPose = false;
+                drivetrain.setAutoLock(false);
+                drivetrain.stopModules();
+            }
+
+            return;
+        } 
+        else {
+            this.autoAlignReady = true;
+            drivetrain.setAutoLock(false);
+            goToPoseAutoCommand = null;
+            goingToPose = false;
+        }
+
         var alliance = DriverStation.getAlliance();
 
         if (controls.driveResetYaw()) {
@@ -80,11 +143,13 @@ public class DriveCommand extends Command {
 
         if (controls.driveResetGlobalPose()) {
             if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                    drivetrain.resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
+                    drivetrain.resetPoseEstimator(GeometryUtil.flipFieldPose(new Pose2d()));
+                    drivetrain.resetOnlyOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
                     drivetrain.zeroGyroscope();
             } else {
-                drivetrain.resetOdometry(new Pose2d());
-                    drivetrain.zeroGyroscope();
+                drivetrain.resetPoseEstimator(new Pose2d());
+                drivetrain.resetOnlyOdometry(new Pose2d());
+                drivetrain.zeroGyroscope();
             }
         }
 
@@ -107,7 +172,7 @@ public class DriveCommand extends Command {
                 
             if (controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
                 return goToDelta(limelightInput);
-            } else if(controls.getAutoAlignClimb()){
+            } else if(controls.autoAlignClimb()){
                 return getAlignClimb();
             }
         
@@ -128,7 +193,7 @@ public class DriveCommand extends Command {
         Units.degreesToRadians(540), Units.degreesToRadians(720));
 
         // Since AutoBuilder is configured, we can use it to build pathfinding commands
-        Command pathfindingCommand = AutoBuilder.pathfindToPose(
+        this.goToPoseAutoCommand = AutoBuilder.pathfindToPose(
                 targetPose,
                 constraints,
                 0.0, // Goal end velocity in meters/sec

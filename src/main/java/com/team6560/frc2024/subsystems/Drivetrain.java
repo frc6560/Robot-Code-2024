@@ -59,6 +59,7 @@ public class Drivetrain extends SubsystemBase {
         private final Pigeon2 pigeon = new Pigeon2(GYRO_ID, "Canivore");
 
         private Field2d fieldOnlyOdometry;
+        private Field2d fieldApriltags;
 
         private final SwerveModule m_frontLeftModule;
         private final SwerveModule m_frontRightModule;
@@ -85,6 +86,8 @@ public class Drivetrain extends SubsystemBase {
         private final SwerveDriveOdometry odometry;
 
         private final SwerveDrivePoseEstimator poseEstimator;
+
+        private boolean autoLock = false;
 
         public Drivetrain() {
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -152,15 +155,17 @@ public class Drivetrain extends SubsystemBase {
                 poseEstimator = new SwerveDrivePoseEstimator(m_kinematics, getRawGyroRotation(), getModulePositions(), new Pose2d());
                 
                 if(!Constants.isRed()){
-                        resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
+                        resetPoseEstimator(GeometryUtil.flipFieldPose(new Pose2d()));
+                        resetOnlyOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
                 } else {
-                        resetOdometry(new Pose2d());
+                        resetPoseEstimator(new Pose2d());
+                        resetOnlyOdometry(new Pose2d());
                 }
 
 
                 AutoBuilder.configureHolonomic(
                         this::getPose, 
-                        (pose) -> resetOdometry(pose), 
+                        (pose) -> resetPoseEstimator(pose), 
                         this::getChassisSpeeds, 
                         (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds), 
                         Constants.pathFollowerConfig, 
@@ -169,7 +174,9 @@ public class Drivetrain extends SubsystemBase {
                 );
 
                 this.fieldOnlyOdometry = new Field2d();
+                this.fieldApriltags = new Field2d();
                 SmartDashboard.putData("FieldOnlyOdometry", fieldOnlyOdometry);
+                SmartDashboard.putData("fieldfieldApriltags",fieldApriltags);
 
                 ntDispTab("Drivetrain")
                 .add("Gyro", () -> getRawGyroRotation().getDegrees());
@@ -183,7 +190,8 @@ public class Drivetrain extends SubsystemBase {
         public void periodic() {
                 updateOdometry();
 
-                fieldOnlyOdometry.setRobotPose(getPose());
+                fieldOnlyOdometry.setRobotPose(getOdometryPose2dNoApriltags());
+                fieldApriltags.setRobotPose(getPose());
         }
 
         // Updates the field-relative position.
@@ -192,8 +200,8 @@ public class Drivetrain extends SubsystemBase {
                 poseEstimator.update(getRawGyroRotation(), getModulePositions());
 
                 LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-                if(limelightMeasurement.tagCount >= 2) {
-                        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+                if(limelightMeasurement.tagCount >= 1) {
+                        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,1.0)); // TODO: change 1.0 to 999999 when done debugging 
                         poseEstimator.addVisionMeasurement(
                                 limelightMeasurement.pose,
                                 limelightMeasurement.timestampSeconds
@@ -203,6 +211,8 @@ public class Drivetrain extends SubsystemBase {
 
         // This method is used to control the movement of the chassis.
         public void drive(ChassisSpeeds chassisSpeeds) {
+                if (this.autoLock)
+                        return;
                 SwerveModuleState[] speeds = m_kinematics.toSwerveModuleStates(chassisSpeeds);
                 SwerveDriveKinematics.desaturateWheelSpeeds(speeds, Constants.MAX_VELOCITY_METERS_PER_SECOND);
                 setChassisState(speeds);
@@ -302,19 +312,23 @@ public class Drivetrain extends SubsystemBase {
         }
 
         // This method is used to reset the position of the robot's pose estimator.
-        public void resetOdometry(Pose2d pose) {
+        public void resetPoseEstimator(Pose2d pose) {
+                poseEstimator.resetPosition(getRawGyroRotation(), getModulePositions(), pose);
+        }
+
+        public void resetOnlyOdometry(Pose2d pose) {
                 odometry.resetPosition(getRawGyroRotation(), getModulePositions(), pose);
         }
 
         // Sets the gyroscope angle to zero. This can be used to set the direction the
         // robot is currently facing to the 'forwards' direction.
         public void zeroGyroscope() {
-                resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d(0.0)));
+                resetOnlyOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d(0.0)));
                 pigeon.setYaw(0);
         }
 
         public void zeroGyroscope(Rotation2d rotation) {
-                resetOdometry(new Pose2d(getPose().getTranslation(), rotation));
+                resetOnlyOdometry(new Pose2d(getPose().getTranslation(), rotation));
         }
 
         public ChassisSpeeds getChassisSpeeds() {
@@ -324,5 +338,9 @@ public class Drivetrain extends SubsystemBase {
         public SwerveModuleState[] getStates() {
                 return new SwerveModuleState[] { m_frontLeftModule.getState(), m_frontRightModule.getState(),
                                 m_backLeftModule.getState(), m_backRightModule.getState() };
+        }
+
+        public void setAutoLock(boolean lock) {
+                this.autoLock = lock;
         }
 }

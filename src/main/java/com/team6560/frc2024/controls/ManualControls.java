@@ -234,4 +234,9 @@ public class ManualControls implements DriveCommand.Controls {
     }
     return deadband(controlStation.getRightY()/1.1, 0.1);
   }
+
+  @Override
+  public boolean autoAlignClimb() {
+    return xbox.getAButton();
+  }
 }
