@@ -137,7 +137,7 @@ public class Shooter extends SubsystemBase {
     aimMap.add(new AimTrajectory(2.03, 5050 , 16));
     aimMap.add(new AimTrajectory(2.97, 4700 , 18));
     aimMap.add(new AimTrajectory(3.00, 4700 , 20));
-    aimMap.add(new AimTrajectory(4.99, 4300 , 22));
+    aimMap.add(new AimTrajectory(4.99, 4250 , 22));
     aimMap.add(new AimTrajectory(7.0, 4150 , 24));
     aimMap.add(new AimTrajectory(9.0, 4100 , 28));
     aimMap.add(new AimTrajectory(11, 4000 , 30.5));
@@ -236,7 +236,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    isAtTargetHorizontalAngle(); // running so that it updates the limelight not on target (i know its messy...)
+    updateAtHorizontalTarget(); // running so that it updates the limelight not on target (i know its messy...)
 
     
     // TalonFX[] shooterMotors = new TalonFX[]{shooterMotorLeft,shooterMotorRight};
@@ -379,13 +379,16 @@ public class Shooter extends SubsystemBase {
   double horizontalOnTarget = 0;
 
   public boolean isAtTargetHorizontalAngle(){
+    return horizontalOnTarget > 9;
+  }
+
+  private void updateAtHorizontalTarget(){
     if (limelight.hasTarget() && Math.abs(limelight.getHorizontalAngle()) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF ){
       horizontalOnTarget += 1;
     } else {
       horizontalOnTarget = 0;
     }
 
-    return horizontalOnTarget > 6;
   }
 
   public boolean isAtTargetArcAngle(){
