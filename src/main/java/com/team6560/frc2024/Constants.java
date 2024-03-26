@@ -17,7 +17,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.I2C.Port;
 
 // import edu.wpi.first.wpilibj.Filesystem;
 
@@ -245,6 +244,8 @@ public static final int SHOOTER_LEFT_MOTOR = 17;
 public static final int SHOOTER_FEED_MOTOR = 16;
 
 public static final int SHOOTER_PROXIMITY_SENSOR_PORT = 9;
+
+public static final int INTAKE_PROXIMITY_SENSOR_PORT = 6;
 
 
 public static final int TRAP_WRIST_MOTOR = 20;

@@ -83,7 +83,7 @@ public class RobotContainer {
                 intakeCommand = new IntakeCommand(intake, shooter, manualControls);
                 trapCommand = new TrapCommand(trap, shooter, manualControls);
                 climbCommand = new ClimbCommand(climb, manualControls);
-                lightsCommand = new LightsCommand(lights, shooter, intake, trap, manualControls);
+                lightsCommand = new LightsCommand(lights, limelight, shooter, intake, trap, manualControls);
 
 
                 drivetrain.setDefaultCommand(driveCommand);

@@ -7,23 +7,30 @@ package com.team6560.frc2024.commands;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Intake;
 import com.team6560.frc2024.subsystems.Lights;
+import com.team6560.frc2024.subsystems.Limelight;
 import com.team6560.frc2024.subsystems.Shooter;
 import com.team6560.frc2024.subsystems.Trap;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 
 public class LightsCommand extends Command {
 
   private final Lights light;
+  private final Limelight limelight;
   private final Trap trap;
   private final Shooter shooter;
   private final Intake intake;
   private final ManualControls controls;
 
+  int strobeTimer = 30;
+  int strobeDuration = 20;
+
   /** Creates a new LightsCommand. */
-  public LightsCommand(Lights light, Shooter shooter, Intake intake, Trap trap, ManualControls controls) {
+  public LightsCommand(Lights light, Limelight limelight, Shooter shooter, Intake intake, Trap trap, ManualControls controls) {
     this.light = light;
+    this.limelight = limelight;
     this.shooter = shooter;
     this.intake = intake;
     this.trap = trap;
@@ -31,6 +38,9 @@ public class LightsCommand extends Command {
     this.controls = controls;
 
     addRequirements(light);
+
+    ntDispTab("Lights")
+      .add("Strobing", this::strobing);
 
   }
 
@@ -40,12 +50,24 @@ public class LightsCommand extends Command {
     light.setLightsIdle();
   }
 
+  private boolean strobing(){
+    return strobeTimer < strobeDuration;
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(intake.getProximitySensor()){
+      limelight.setLightMode(2);
+      strobeTimer = 0;
+    } else if(!strobing()) {
+      limelight.setLightMode(1);
+    } else {
+      strobeTimer += 1;
+    }
     // if()
     if (controls.getRunIntake()) {
-      if(shooter.getTransferSensorTriggered()){
+      if(shooter.getTransferSensorTriggered() || intake.getProximitySensor()){
         light.setLightsShooting(shooter.readyToShoot(controls.getSafeAim()));
       } else {
         light.setLightsIntake();

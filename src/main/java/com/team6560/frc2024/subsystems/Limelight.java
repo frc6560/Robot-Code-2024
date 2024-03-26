@@ -40,6 +40,7 @@ public class Limelight extends SubsystemBase {
   private final NetworkTableEntry ntcL = networkTable.getEntry("cl");
   private final NetworkTableEntry ntBotPose = networkTable.getEntry("botpose_wpiblue");
   private final NetworkTableEntry ntPipeline = networkTable.getEntry("pipeline"); 
+  private final NetworkTableEntry ntLedMode = networkTable.getEntry("ledMode"); 
 
   private final Field2d aprilTagField = new Field2d();
 
@@ -61,6 +62,10 @@ public class Limelight extends SubsystemBase {
   
   public void setPipeline(int pipeline){
     ntPipeline.setDouble(pipeline);
+  }
+  
+  public void setLightMode(int state){
+    ntLedMode.setDouble(state);
   }
     
   

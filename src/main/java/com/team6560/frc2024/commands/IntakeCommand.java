@@ -34,7 +34,6 @@ public class IntakeCommand extends Command {
   public void execute() {
     if (controls.getRunIntake() && !shooter.getTransferSensorTriggered()) {
       intake.setIntakeFeed(Constants.INTAKE_FEED_RATE);
-      
     } else if (controls.getReverseTransfer()){
       intake.setIntakeFeed(Constants.INTAKE_REVERSE_RATE);
     } else {
