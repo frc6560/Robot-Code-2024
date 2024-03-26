@@ -49,10 +49,8 @@ public class DriveCommand extends Command {
 
     @Override
     public void execute() {
-        var alliance = DriverStation.getAlliance();
-
         if (controls.driveResetYaw()) {
-            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            if (Constants.isRed()) {
                 drivetrain.zeroGyroscope(new Rotation2d(Math.PI));
             } else {
                 drivetrain.zeroGyroscope();
@@ -60,7 +58,7 @@ public class DriveCommand extends Command {
         }
 
         if (controls.driveResetGlobalPose()) {
-            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            if (Constants.isRed()) {
                     drivetrain.resetOdometry(GeometryUtil.flipFieldPose(new Pose2d()));
                     drivetrain.zeroGyroscope();
             } else {
@@ -100,21 +98,21 @@ public class DriveCommand extends Command {
             if(controls.getAutoAlignClimb()){
                 // System.out.println("trying to align");
                 rot = getAlignClimb();
-                System.out.println(rot);
+                // System.out.println(rot);
 
                 if(rot == 0 && limelight.hasTarget()){
-                    System.out.println("trying to move");
+                    // System.out.println("trying to move");
                     double m = goToDelta(limelightInput);
-                    double theta = drivetrain.getRawGyroRotation().getRadians();
+                    double theta = drivetrain.getRawGyroRotation().getRadians() % (2 * Math.PI);
 
-                    System.out.println("magnitude " + m);
-                    System.out.println("Theta " + theta);
+                    // System.out.println("magnitude " + m);
+                    // System.out.println("Theta " + theta);
 
                     y = m * Math.cos(theta);
                     x = m * Math.sin(theta);
 
 
-                    System.out.println("x, y: " + x + " " + y);
+                    // System.out.println("x, y: " + x + " " + y);
 
 
 
@@ -151,15 +149,16 @@ public class DriveCommand extends Command {
     // } 
 
     private double getAlignClimb(){
-        double gyro = Math.abs(drivetrain.getRawGyroRotation().getDegrees()) + 30;
-        gyro %= 60;
-        gyro -= 30;
+        // int dir = 
+        double gyro = drivetrain.getRawGyroRotation().getDegrees() + 60 + 3600;
+        gyro %= 120;
+        gyro -= 60;
 
-        double delta = gyro / 2;
+        double delta = gyro / 1.5;
 
-        System.out.println("delta: " + delta);
-
-        if (Math.abs(delta) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF) {
+        // System.out.println("delta: " + delta);
+        
+        if (Math.abs(delta) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF/1.5) {
             return 0;
         }
 
