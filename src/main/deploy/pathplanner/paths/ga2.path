@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.413295585784529,
-        "y": 1.8210420287981743
+        "x": 7.413268200740647,
+        "y": 1.8210727204313217
       },
       "isLocked": false,
       "linkedName": null
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 2.7194867201122306,
-        "y": 3.5836549015921286
+        "x": 3.6738296015144822,
+        "y": 3.252556350901552
       },
       "prevControl": {
-        "x": 4.199692005552456,
-        "y": 1.3049178174275684
+        "x": 3.449851170164975,
+        "y": 1.3633469734317898
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,8 +55,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 120.0,
-    "rotateFast": true
+    "rotation": 139.2363947990588,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Green Arrow",

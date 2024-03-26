@@ -14,6 +14,8 @@ import com.team6560.frc2024.Constants;
 
 import static com.team6560.frc2024.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import javax.management.remote.TargetedNotification;
+
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -50,6 +52,7 @@ public class Trap extends SubsystemBase {
       .add("Elevator Position", this::getExtention)
       .add("Wrist Angle", this::getAngle)
       .add("Wrist Target Angle", ()->(targetAngle))
+      .add("Wrist Target Extention", ()->(targetExtention))
       .add("Feed speed Stinger", this::getFeedRate)
       .add("Trap Sensor Triggered", this::getSensorTriggered);
   }

@@ -72,7 +72,7 @@ public class RobotContainer {
                 climb = new Climb();
                 lights = new Lights();
 
-                NamedCommands.registerCommand("Intake", new AutoIntake(intake, shooter));
+                NamedCommands.registerCommand("Intake", new AutoIntake(intake, shooter, trap));
                 NamedCommands.registerCommand("Outake", new Outake(intake));
                 // NamedCommands.registerCommand("Aim", new AutoShooter(shooter, limelight, drivetrain, false));
                 // NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight));
@@ -136,26 +136,27 @@ public class RobotContainer {
 
         public Command robinHood(){
                 return (new AutoShooter(shooter, limelight, 44, 4000))
-                                .andThen(new PathPlannerAuto("RH1")).andThen(new WaitCommand(1))
-                                .andThen(new PathPlannerAuto("RH2"))
+                                .andThen(new PathPlannerAuto("RH1")).andThen(new WaitCommand(0.2))
+                                .andThen(new PathPlannerAuto("RH2")).andThen(new WaitCommand(0.2))
 
-                        .andThen(new AutoShooter(shooter, limelight, drivetrain))
-                                .andThen(new PathPlannerAuto("RH3")).andThen(new WaitCommand(0.5))
+                        .andThen(new AutoShooter(shooter, limelight, drivetrain)).andThen(new WaitCommand(0.2))
+                                .andThen(new PathPlannerAuto("RH3")).andThen(new WaitCommand(0.1))
                                 .andThen(new PathPlannerAuto("RH4"))
 
-                        .andThen(new AutoShooter(shooter, limelight, drivetrain));
+                        .andThen(new AutoShooter(shooter, limelight, drivetrain))
+                        ;
         }
 
         public Command greenArrow(){
                 return (new AutoShooter(shooter, limelight, 44, 4000))
-                                .andThen(new PathPlannerAuto("GA1")).andThen(new WaitCommand(0.2))
-                                .andThen(new PathPlannerAuto("GA2"))
+                                .andThen(new PathPlannerAuto("GA1")).andThen(new WaitCommand(0.1))
+                                .andThen(new PathPlannerAuto("GA2")).andThen(new WaitCommand(0.5))
 
-                        .andThen(new AutoShooter(shooter, limelight, 44, 4000))
-                                .andThen(new PathPlannerAuto("GA3")).andThen(new WaitCommand(0.5));
-                                // .andThen(new PathPlannerAuto("RH4"))
+                        .andThen(new AutoShooter(shooter, limelight, drivetrain))
+                                .andThen(new PathPlannerAuto("GA3")).andThen(new WaitCommand(0.1))
+                                .andThen(new PathPlannerAuto("GA4")).andThen(new WaitCommand(0.3))
 
-        //                 .andThen(new AutoShooter(shooter, limelight, drivetrain));
+                        .andThen(new AutoShooter(shooter, limelight, drivetrain));
         }
 
         public Command OneStill(){
