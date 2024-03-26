@@ -70,32 +70,102 @@ public class DriveCommand extends Command {
         }
 
 
-        int dir = (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) ? -1 : 1;
+        // int dir = Constants.isRed() ? -1 : 1;
         
         drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-                controls.driveX() * dir,
-                controls.driveY() * dir,
-                getRotation(),
+                getAutoDrive().getX(),
+                getAutoDrive().getY(),
+                getAutoDrive().getRotation().getRadians(),
                 drivetrain.getGyroscopeRotationNoApriltags())); // perhaps use getRawGyroRotation() instead?
     }
 
-    private double getRotation(){
-        double controllerInput = controls.driveRotationX();
+    private Pose2d getAutoDrive(){
+        double rot = 0;
+        double x = 0;
+        double y = 0;
+
         double limelightInput = limelight.hasTarget() ? limelight.getHorizontalAngle() : 0;
+
+        int dir = Constants.isRed() ? -1 : 1;
+        double xInput = controls.driveX() * dir;
+        double yInput = controls.driveY() * dir;
+        double rotInput = controls.driveRotationX();
         
-        if(Math.abs(controllerInput) <= 0.1){
-                
-            if (controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
-                return goToDelta(limelightInput);
-            } else if(controls.getAutoAlignClimb()){
-                return getAlignClimb();
+        x = xInput;
+        y = yInput;
+        rot = rotInput;
+
+        if(Math.abs(rotInput) < 0.1){
+            if(controls.getAutoAlignClimb()){
+                // System.out.println("trying to align");
+                rot = getAlignClimb();
+                System.out.println(rot);
+
+                if(rot == 0 && limelight.hasTarget()){
+                    System.out.println("trying to move");
+                    double m = goToDelta(limelightInput);
+                    double theta = drivetrain.getRawGyroRotation().getRadians();
+
+                    System.out.println("magnitude " + m);
+                    System.out.println("Theta " + theta);
+
+                    y = m * Math.cos(theta);
+                    x = m * Math.sin(theta);
+
+
+                    System.out.println("x, y: " + x + " " + y);
+
+
+
+
+                } else {
+                    x = 0;
+                    y = 0;
+                }
+
+            } else if(controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
+                rot = goToDelta(limelightInput);
             }
+            
+        }
         
+        return new Pose2d(x, y ,new Rotation2d(rot));
+    }
+
+    // private double getRotation(){
+    //     double controllerInput = controls.driveRotationX();
+    //     double limelightInput = limelight.hasTarget() ? limelight.getHorizontalAngle() : 0;
+        
+    //     if(Math.abs(controllerInput) <= 0.1){
+                
+    //         if (controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
+    //             return goToDelta(limelightInput);
+    //         } else if(controls.getAutoAlignClimb()){
+    //             return getAlignClimb();
+    //         }
+        
+    //     }
+
+    //     return controllerInput;
+    // } 
+
+    private double getAlignClimb(){
+        double gyro = Math.abs(drivetrain.getRawGyroRotation().getDegrees()) + 30;
+        gyro %= 60;
+        gyro -= 30;
+
+        double delta = gyro / 2;
+
+        System.out.println("delta: " + delta);
+
+        if (Math.abs(delta) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF) {
+            return 0;
         }
 
-        return controllerInput;
-    } 
+        return goToDelta(delta);
+        
+    }
 
     private double goToDelta(double delta){
 
@@ -115,16 +185,6 @@ public class DriveCommand extends Command {
 
     }
 
-    private double getAlignClimb(){
-        double gyro = Math.abs(drivetrain.getRawGyroRotation().getDegrees()) + 30;
-        gyro %= 60;
-        gyro -= 30;
-
-        double delta = - gyro / 2;
-
-        return goToDelta(delta);
-        
-    }
 
     @Override
     public void end(boolean interrupted) {
