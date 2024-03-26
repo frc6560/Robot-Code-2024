@@ -15,6 +15,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.util.GeometryUtil;
 
 import edu.wpi.first.math.VecBuilder;
@@ -158,7 +159,7 @@ public class Drivetrain extends SubsystemBase {
 
 
                 AutoBuilder.configureHolonomic(
-                        this::getOdometryPose2dNoApriltags, 
+                        this::getPose, 
                         (pose) -> resetOdometry(pose), 
                         this::getChassisSpeeds, 
                         (robotRelativeSpeeds) -> driveRobotRelative(robotRelativeSpeeds), 

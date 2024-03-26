@@ -77,13 +77,8 @@ public class ShooterCommand extends Command {
 
     
     } else if (controls.getSafeAim() || controls.getAim()){
-      Translation2d currentTranslation = poseSupplier.get().getTranslation();
-
-      ArrayList<Translation2d> targetLocations = new ArrayList<Translation2d>();
-      targetLocations.add(new Translation2d(0.0, 0.0)); // TODO: Update values!!
-      targetLocations.add(new Translation2d(0.0, 0.0));
-
-      double dist = currentTranslation.nearest(targetLocations).minus(currentTranslation).getNorm();
+      
+      double dist = limelight.getVerticalAngle();
 
       if(controls.getSafeAim()){
         // shooter.setArcPosition(Constants.SHOOTER_SUBWOOFER_POSITION);

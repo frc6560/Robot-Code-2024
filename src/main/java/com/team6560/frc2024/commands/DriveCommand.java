@@ -1,5 +1,11 @@
 package com.team6560.frc2024.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.GeometryUtil;
 import com.team6560.frc2024.Constants;
 import com.team6560.frc2024.controls.ManualControls;
@@ -10,6 +16,7 @@ import com.team6560.frc2024.subsystems.Shooter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -33,6 +40,18 @@ public class DriveCommand extends Command {
     }
 
     private ManualControls controls;
+    private static ArrayList<Pose2d> trapLocations;
+
+    static {
+        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
+        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
+        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
+
+        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
+        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
+        trapLocations.add(new Pose2d(0.0, 0.0, Rotation2d.fromRotations(0.5)));
+
+    }
 
     public DriveCommand(Drivetrain drivetrainSubsystem, Shooter shooter, Limelight limelight, ManualControls controls) {
         this.drivetrain = drivetrainSubsystem;
@@ -95,7 +114,29 @@ public class DriveCommand extends Command {
         }
 
         return controllerInput;
-    } 
+    }
+
+    public void autoAlign() {
+        Pose2d estimatedGlobalPose = drivetrain.getPose();
+        
+
+
+        Pose2d targetPose = estimatedGlobalPose.nearest(trapLocations);
+
+        PathConstraints constraints = new PathConstraints(
+        3.0, 4.0,
+        Units.degreesToRadians(540), Units.degreesToRadians(720));
+
+        // Since AutoBuilder is configured, we can use it to build pathfinding commands
+        Command pathfindingCommand = AutoBuilder.pathfindToPose(
+                targetPose,
+                constraints,
+                0.0, // Goal end velocity in meters/sec
+                0.0 // Rotation delay distance in meters. This is how far the robot should travel
+                    // before attempting to rotate.
+        );
+
+    }
 
     private double goToDelta(double delta){
 
