@@ -70,29 +70,29 @@ public class DriveCommand extends Command {
     @Override
     public void execute() {
 
-        // if (controls.autoAlignClimb()) {
-        //     drivetrain.setAutoLock(true);
-        //     if (command == null) {
-        //         commandInitialized = false;
-        //         command = drivetrain.getAutoAlignCommand();
-        //     }
-        //     if (!commandInitialized) {
-        //         command.initialize();
-        //         commandInitialized = true;
-        //     } else if (command.isFinished()) {
-        //         drivetrain.stopModules();
-        //         command = null;
-        //         commandInitialized = false;
-        //         return;
-        //     } else {
-        //         command.execute();
-        //     }
-        //     return;
-        // } else {
-        //     commandInitialized = false;
-        //     command = null;
-        // }
-        // drivetrain.setAutoLock(false);
+        if (controls.autoAlignClimb()) {
+            drivetrain.setAutoLock(true);
+            if (command == null) {
+                commandInitialized = false;
+                command = drivetrain.getAutoAlignCommand();
+            }
+            if (!commandInitialized) {
+                command.initialize();
+                commandInitialized = true;
+            } else if (command.isFinished()) {
+                drivetrain.stopModules();
+                command = null;
+                commandInitialized = false;
+                return;
+            } else {
+                command.execute();
+            }
+            return;
+        } else {
+            commandInitialized = false;
+            command = null;
+        }
+        drivetrain.setAutoLock(false);
 
         var alliance = DriverStation.getAlliance();
 

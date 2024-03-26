@@ -81,7 +81,7 @@ public class RobotContainer {
                 // NamedCommands.registerCommand("Aim", new AutoShooter(shooter, limelight, drivetrain, false));
                 // NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight));
 
-                new JoystickButton(xbox, XboxController.Button.kA.value).whileTrue(drivetrain.getAutoAlignCommand());
+                // new JoystickButton(xbox, XboxController.Button.kA.value).whileTrue(drivetrain.getAutoAlignCommand());
 
                 driveCommand = new DriveCommand(drivetrain, shooter, limelight, manualControls);
                 ShooterCommand = new ShooterCommand(shooter, trap, limelight, manualControls);

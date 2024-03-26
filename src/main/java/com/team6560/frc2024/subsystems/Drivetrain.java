@@ -255,25 +255,25 @@ public class Drivetrain extends SubsystemBase {
         static {
                 double l = 1; // meters
                 // blue
-                trapLocations.add(new Pose2d(Units.inchesToMeters(209.48) + l * Math.cos(180.0),
-                                161.62 + l * Math.sin(180.0),
+                trapLocations.add(new Pose2d(Units.inchesToMeters(209.48) + l * Math.cos(Units.degreesToRadians(180.0)),
+                                Units.inchesToMeters(161.62) + l * Math.sin(Units.degreesToRadians(180.0)),
                                 Rotation2d.fromDegrees(180.0))); // id 14
-                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l * Math.cos(-60.0),
-                                177.10 + l * Math.sin(-60.0),
+                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l * Math.cos(Units.degreesToRadians(-60.0)),
+                                Units.inchesToMeters(177.10) + l * Math.sin(Units.degreesToRadians(-60.0)),
                                 Rotation2d.fromDegrees(-60.0))); // id 15
-                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l * Math.cos(60.0),
-                                146.19 + l * Math.sin(60.0),
+                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l * Math.cos(Units.degreesToRadians(60.0)),
+                                Units.inchesToMeters(146.19) + l * Math.sin(Units.degreesToRadians(60.0)),
                                 Rotation2d.fromDegrees(60.0))); // id 16
 
                 // red
-                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l * Math.cos(120.0),
-                                146.19 + l * Math.sin(120.0),
+                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l * Math.cos(Units.degreesToRadians(120.0)),
+                                Units.inchesToMeters(146.19) + l * Math.sin(Units.degreesToRadians(120.0)),
                                 Rotation2d.fromDegrees(120.0))); // id 11
-                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l * Math.cos(-120.0),
-                                177.10 + l * Math.sin(-120.0),
+                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l * Math.cos(Units.degreesToRadians(-120.0)),
+                                Units.inchesToMeters(177.10) + l * Math.sin(Units.degreesToRadians(-120.0)),
                                 Rotation2d.fromDegrees(-120.0))); // id 12
                 trapLocations.add(
-                                new Pose2d(Units.inchesToMeters(441.74) + l * Math.cos(0.0), 161.62 + l * Math.sin(0.0),
+                                new Pose2d(Units.inchesToMeters(441.74) + l * Math.cos(Units.degreesToRadians(0.0)), Units.inchesToMeters(161.62) + l * Math.sin(Units.degreesToRadians(0.0)),
                                                 Rotation2d.fromDegrees(0.0))); // id 13
 
         }
@@ -284,7 +284,7 @@ public class Drivetrain extends SubsystemBase {
                 Pose2d targetPose = estimatedGlobalPose.nearest(trapLocations);
 
                 PathConstraints constraints = new PathConstraints(
-                                3.0, 4.0,
+                                2.0, 1.0,
                                 Units.degreesToRadians(540), Units.degreesToRadians(720));
 
                 // Since AutoBuilder is configured, we can use it to build pathfinding commands
