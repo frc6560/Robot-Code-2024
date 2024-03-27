@@ -17,6 +17,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 // import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class ManualControls implements DriveCommand.Controls {
   private XboxController xbox;
@@ -235,5 +236,12 @@ public class ManualControls implements DriveCommand.Controls {
   @Override
   public boolean autoAlignClimb() {
     return xbox.getAButton();
+  }
+
+
+
+
+  public void setRumble(double output){
+    xbox.setRumble(RumbleType.kBothRumble, output);
   }
 }
