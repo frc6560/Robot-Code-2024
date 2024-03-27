@@ -5,8 +5,6 @@
 package com.team6560.frc2024.subsystems;
 
 import com.ctre.phoenix.led.CANdle;
-import com.ctre.phoenix.led.FireAnimation;
-import com.ctre.phoenix.led.RainbowAnimation;
 import com.team6560.frc2024.Constants;
 
 import edu.wpi.first.wpilibj.util.Color;
