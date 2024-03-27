@@ -82,6 +82,36 @@ public class Drivetrain extends SubsystemBase {
                         new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45.0)),
                         new SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0))
         };
+        
+
+        private static ArrayList<Pose2d> trapLocations = new ArrayList<Pose2d>();
+
+        static {
+                double l = 1; // meters
+                // blue
+                trapLocations.add(new Pose2d(Units.inchesToMeters(209.48) , // + l * Math.cos(180.0),
+                                161.62 , // + l * Math.sin(180.0),
+                                Rotation2d.fromDegrees(180.0))); // id 14
+                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) , // + l * Math.cos(-60.0),
+                                177.10 , // + l * Math.sin(-60.0),
+                                Rotation2d.fromDegrees(-60.0))); // id 15
+                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) , // + l * Math.cos(60.0),
+                                146.19 , // + l * Math.sin(60.0),
+                                Rotation2d.fromDegrees(60.0))); // id 16
+
+                // red
+                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) , // + l * Math.cos(120.0),
+                                146.19 , // + l * Math.sin(120.0),
+                                Rotation2d.fromDegrees(120.0))); // id 11
+                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) , // + l * Math.cos(-120.0),
+                                177.10 , // + l * Math.sin(-120.0),
+                                Rotation2d.fromDegrees(-120.0))); // id 12
+                trapLocations.add(new Pose2d(Units.inchesToMeters(441.74) , // + l * Math.cos(0.0),
+                                161.62 , // + l * Math.sin(0.0),
+                                Rotation2d.fromDegrees(0.0))); // id 13
+
+        }
+
 
         // SETUP
         public SwerveModule[] modules;
@@ -176,6 +206,27 @@ public class Drivetrain extends SubsystemBase {
                 SmartDashboard.putData("FieldOnlyOdometry", fieldOnlyOdometry);
                 SmartDashboard.putData("fieldfieldApriltags", fieldApriltags);
 
+                double l = 1;
+
+                for(Pose2d trap : trapLocations){
+                        double x = trap.getX();
+                        double y = trap.getY();
+                        double rot = trap.getRotation().getRadians();
+                        
+
+                        System.out.println("rotation: " + Units.radiansToDegrees(rot));
+                        System.out.println("old: x,y: " + x + " " + y);
+
+                        x -= l * Math.cos(rot);
+                        y -= l * Math.sin(rot);
+
+
+                        System.out.println("new: x,y: " + x + " " + y);
+
+                        trap = new Pose2d(x, y, new Rotation2d(rot));
+                }
+
+
                 ntDispTab("Drivetrain")
                                 .add("Gyro", () -> getRawGyroRotation().getDegrees());
         }
@@ -248,34 +299,6 @@ public class Drivetrain extends SubsystemBase {
                                                 new SwerveModuleState(0.0, Rotation2d.fromDegrees(bLdeg)),
                                                 new SwerveModuleState(0.0, Rotation2d.fromDegrees(bRdeg))
                                 });
-        }
-
-        private static ArrayList<Pose2d> trapLocations = new ArrayList<Pose2d>();
-
-        static {
-                double l = 1; // meters
-                // blue
-                trapLocations.add(new Pose2d(Units.inchesToMeters(209.48) + l * Math.cos(180.0),
-                                161.62 + l * Math.sin(180.0),
-                                Rotation2d.fromDegrees(180.0))); // id 14
-                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l * Math.cos(-60.0),
-                                177.10 + l * Math.sin(-60.0),
-                                Rotation2d.fromDegrees(-60.0))); // id 15
-                trapLocations.add(new Pose2d(Units.inchesToMeters(182.73) + l * Math.cos(60.0),
-                                146.19 + l * Math.sin(60.0),
-                                Rotation2d.fromDegrees(60.0))); // id 16
-
-                // red
-                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l * Math.cos(120.0),
-                                146.19 + l * Math.sin(120.0),
-                                Rotation2d.fromDegrees(120.0))); // id 11
-                trapLocations.add(new Pose2d(Units.inchesToMeters(468.69) + l * Math.cos(-120.0),
-                                177.10 + l * Math.sin(-120.0),
-                                Rotation2d.fromDegrees(-120.0))); // id 12
-                trapLocations.add(
-                                new Pose2d(Units.inchesToMeters(441.74) + l * Math.cos(0.0), 161.62 + l * Math.sin(0.0),
-                                                Rotation2d.fromDegrees(0.0))); // id 13
-
         }
 
         public Command getAutoAlignCommand() {
