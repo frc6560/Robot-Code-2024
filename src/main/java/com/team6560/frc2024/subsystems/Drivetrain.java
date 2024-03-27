@@ -307,7 +307,7 @@ public class Drivetrain extends SubsystemBase {
                 Pose2d targetPose = estimatedGlobalPose.nearest(trapLocations);
 
                 PathConstraints constraints = new PathConstraints(
-                                3.0, 4.0,
+                                2.0, 1.0,
                                 Units.degreesToRadians(540), Units.degreesToRadians(720));
 
                 // Since AutoBuilder is configured, we can use it to build pathfinding commands
