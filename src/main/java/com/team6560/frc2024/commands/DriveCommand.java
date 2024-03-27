@@ -95,31 +95,31 @@ public class DriveCommand extends Command {
 
         if(Math.abs(rotInput) < 0.1){
             if(controls.getAutoAlignClimb()){
+                Pose2d targetPose = drivetrain.getAutoAlignTargetPose();
+                Pose2d robotPose = drivetrain.getLimelightPose();
+
+                System.out.println();
+                System.out.println("x " + robotPose.getX() + " y " + robotPose.getY() + " rot " + robotPose.getRotation().getDegrees());
+                System.out.println("x " + targetPose.getX() + " y " + targetPose.getY() + " rot " + targetPose.getRotation().getDegrees());
+                System.out.println();
                 // System.out.println("trying to align");
                 rot = getAlignClimb();
-                // System.out.println(rot);
-
-                if(rot == 0 && limelight.hasTarget()){
-                    // System.out.println("trying to move");
-                    double m = goToDelta(limelightInput);
-                    double theta = drivetrain.getRawGyroRotation().getRadians() % (2 * Math.PI);
-
-                    // System.out.println("magnitude " + m);
-                    // System.out.println("Theta " + theta);
-
-                    y = m * Math.cos(theta);
-                    x = m * Math.sin(theta);
 
 
-                    // System.out.println("x, y: " + x + " " + y);
+                double dx = targetPose.getX() - robotPose.getX();
+                double dy = targetPose.getY() - robotPose.getY();
+                
+                double pidCorrection = 15;
 
+                dx *= pidCorrection;
+                dy *= pidCorrection;
 
+                System.out.println("dx " + dx + " dy " + dy);
 
-
-                } else {
-                    x = 0;
-                    y = 0;
-                }
+                x = -goToDelta(dx);
+                y = -goToDelta(dy);
+                System.out.println("x " + x + " y " + y);
+                    
 
             } else if(controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
                 rot = goToDelta(limelightInput);
@@ -130,32 +130,11 @@ public class DriveCommand extends Command {
         return new Pose2d(x, y ,new Rotation2d(rot));
     }
 
-    // private double getRotation(){
-    //     double controllerInput = controls.driveRotationX();
-    //     double limelightInput = limelight.hasTarget() ? limelight.getHorizontalAngle() : 0;
-        
-    //     if(Math.abs(controllerInput) <= 0.1){
-                
-    //         if (controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
-    //             return goToDelta(limelightInput);
-    //         } else if(controls.getAutoAlignClimb()){
-    //             return getAlignClimb();
-    //         }
-        
-    //     }
-
-    //     return controllerInput;
-    // } 
-
     private double getAlignClimb(){
-        // int dir = 
-        double gyro = drivetrain.getRawGyroRotation().getDegrees() + 60 + 3600;
-        gyro %= 120;
-        gyro -= 60;
+        Rotation2d gyro = drivetrain.getLimelightPose().getRotation();
+        Rotation2d targetRot = drivetrain.getAutoAlignTargetPose().getRotation();
 
-        double delta = gyro / 1.5;
-
-        // System.out.println("delta: " + delta);
+        double delta = gyro.minus(targetRot).getDegrees();
         
         if (Math.abs(delta) < Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF/1.5) {
             return 0;
@@ -165,9 +144,9 @@ public class DriveCommand extends Command {
         
     }
 
-    private double goToDelta(double delta){
+    private double goToDelta(double delta, double deadband){
 
-        double llDeadband = Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF/2; // in degrees
+        double llDeadband = deadband;
         double rotateSpeed = 0.25; // multiplyer for max speed
 
         double speed = 0;
@@ -181,6 +160,10 @@ public class DriveCommand extends Command {
 
         return -speed;
 
+    }
+
+    private double goToDelta(double delta){
+        return goToDelta(delta, Constants.SHOOTER_ACCEPTABLE_HORIZONTAL_DIFF / 2);
     }
 
 

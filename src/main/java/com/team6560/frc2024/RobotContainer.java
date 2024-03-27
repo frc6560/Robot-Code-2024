@@ -17,7 +17,6 @@ import com.team6560.frc2024.commands.ShooterCommand;
 import com.team6560.frc2024.commands.TrapCommand;
 import com.team6560.frc2024.commands.Autos.AutoIntake;
 import com.team6560.frc2024.commands.Autos.AutoShooter;
-import com.team6560.frc2024.commands.Autos.Outake;
 import com.team6560.frc2024.controls.ManualControls;
 import com.team6560.frc2024.subsystems.Climb;
 import com.team6560.frc2024.subsystems.Drivetrain;
@@ -70,7 +69,6 @@ public class RobotContainer {
                 lights = new Lights();
 
                 NamedCommands.registerCommand("Intake", new AutoIntake(intake, shooter, trap));
-                NamedCommands.registerCommand("Outake", new Outake(intake));
                 // NamedCommands.registerCommand("Aim", new AutoShooter(shooter, limelight, drivetrain, false));
                 // NamedCommands.registerCommand("Shoot", new AutoShooter(shooter, limelight));
 
