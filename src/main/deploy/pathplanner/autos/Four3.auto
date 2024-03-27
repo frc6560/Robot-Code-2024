@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.25,
-      "y": 5.7
+      "x": 2.15,
+      "y": 5.55
     },
     "rotation": 180.0
   },
@@ -12,7 +12,7 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
@@ -22,9 +22,22 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "four3"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "four3"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    }
+                  ]
                 }
               }
             ]

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.37,
-        "y": 5.3
+        "x": 2.3519265643182456,
+        "y": 5.53650223579517
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0554722799586447,
-        "y": 6.113613353987272
+        "x": 2.03739884427689,
+        "y": 6.350115589782442
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6,
-        "y": 6.65
+        "x": 2.6603258931025917,
+        "y": 6.990384785778517
       },
       "prevControl": {
-        "x": 1.8195387207675822,
-        "y": 6.4332052002132185
+        "x": 1.8798646138701738,
+        "y": 6.773589985991735
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "Four Ball",
   "previewStartingState": {
-    "rotation": -170.0,
+    "rotation": 180.0,
     "velocity": 0.0
   },
   "useDefaultConstraints": true

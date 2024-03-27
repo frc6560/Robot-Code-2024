@@ -19,6 +19,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 // import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class ManualControls implements DriveCommand.Controls {
   private XboxController xbox;
@@ -223,5 +224,20 @@ public class ManualControls implements DriveCommand.Controls {
       return getClimbLeft();
     }
     return MathUtil.applyDeadband(controlStation.getRightY()/1.1, 0.1);
+  }
+
+
+
+
+
+  
+
+
+  public void setXboxRumble(double output){
+    xbox.setRumble(RumbleType.kBothRumble, output);
+  }
+
+  public void setControlStationRumble(double output){
+    controlStation.setRumble(RumbleType.kBothRumble, output);
   }
 }

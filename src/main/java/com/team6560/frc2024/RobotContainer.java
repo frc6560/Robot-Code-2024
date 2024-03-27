@@ -123,10 +123,10 @@ public class RobotContainer {
         public Command fourBall(){
                 return (new AutoShooter(shooter, limelight, 44, 4000))
                                 .andThen(new PathPlannerAuto("Four1")
-                                .andThen(new PathPlannerAuto("Four2")
+                                .andThen((new PathPlannerAuto("Four2").withTimeout(2))
                                 .andThen(new AutoShooter(shooter, limelight, drivetrain)))
                         .andThen(new PathPlannerAuto("Four3"))
-                        .andThen(new PathPlannerAuto("Four3.5"))
+                        .andThen((new PathPlannerAuto("Four3.5")).withTimeout(2))
                                 .andThen(new AutoShooter(shooter, limelight, drivetrain))
                                 
                         .andThen(new PathPlannerAuto("Four4"))

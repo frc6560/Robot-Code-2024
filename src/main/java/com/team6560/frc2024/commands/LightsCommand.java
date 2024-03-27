@@ -27,6 +27,9 @@ public class LightsCommand extends Command {
   int strobeTimer = 30;
   int strobeDuration = 20;
 
+  boolean rumbling = false;
+  boolean firstFrame = false;
+
   /** Creates a new LightsCommand. */
   public LightsCommand(Lights light, Limelight limelight, Shooter shooter, Intake intake, Trap trap, ManualControls controls) {
     this.light = light;
@@ -58,14 +61,38 @@ public class LightsCommand extends Command {
   @Override
   public void execute() {
     if(intake.getProximitySensor()){
-      limelight.setLightMode(2);
       strobeTimer = 0;
-    } else if(!strobing()) {
-      limelight.setLightMode(1);
     } else {
       strobeTimer += 1;
     }
-    // if()
+
+    // if(shooter.readyToShoot(controls.getSafeAim())){
+    //   if(!firstFrame){
+    //     firstFrame = true;
+    //     rumbling = true;
+    //   } else {
+    //     rumbling = false;
+    //   }
+    // } else {
+    //   firstFrame = false;
+    //   rumbling = false;
+    // }
+
+    if(strobing() || rumbling){
+      if(strobing()){
+        limelight.setLightMode(2);
+      }
+
+      controls.setXboxRumble(0.25);
+      controls.setControlStationRumble(0.25);
+
+    } else {
+      limelight.setLightMode(1);
+      controls.setXboxRumble(0);
+      controls.setControlStationRumble(0);
+    }
+    
+
     if (controls.getRunIntake()) {
       if(shooter.getTransferSensorTriggered() || intake.getProximitySensor()){
         light.setLightsShooting(shooter.readyToShoot(controls.getSafeAim()));
