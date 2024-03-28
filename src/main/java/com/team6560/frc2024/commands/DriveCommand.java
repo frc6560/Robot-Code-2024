@@ -10,6 +10,7 @@ import com.team6560.frc2024.subsystems.Shooter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.proto.Kinematics.ProtobufChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class DriveCommand extends Command {
@@ -70,14 +71,10 @@ public class DriveCommand extends Command {
         // int dir = Constants.isRed() ? -1 : 1;
         
         drivetrain.drive(
-            ChassisSpeeds.fromFieldRelativeSpeeds(
-                getAutoDrive().getX(),
-                getAutoDrive().getY(),
-                getAutoDrive().getRotation().getRadians(),
-                drivetrain.getGyroscopeRotationNoApriltags())); // perhaps use getRawGyroRotation() instead?
+            getAutoDrive()); // perhaps use getRawGyroRotation() instead?
     }
 
-    private Pose2d getAutoDrive(){
+    private ChassisSpeeds getAutoDrive(){
         double rot = 0;
         double x = 0;
         double y = 0;
@@ -92,6 +89,7 @@ public class DriveCommand extends Command {
         x = xInput;
         y = yInput;
         rot = rotInput;
+        boolean align = false;
 
         if(Math.abs(rotInput) < 0.1){
             if(controls.getAutoAlignClimb()){
@@ -104,6 +102,7 @@ public class DriveCommand extends Command {
                 System.out.println();
                 // System.out.println("trying to align");
                 rot = getAlignClimb();
+                
 
 
                 double dx = targetPose.getX() - robotPose.getX();
@@ -119,6 +118,8 @@ public class DriveCommand extends Command {
                 x = -goToDelta(dx);
                 y = -goToDelta(dy);
                 System.out.println("x " + x + " y " + y);
+
+                align = true;
                     
 
             } else if(controls.getAutoTarget() && shooter.getTransferSensorTriggered()){ 
@@ -126,8 +127,16 @@ public class DriveCommand extends Command {
             }
             
         }
+
+        Rotation2d robotRotation = align ? drivetrain.getLimelightPose().getRotation() : drivetrain.getGyroscopeRotationNoApriltags();
         
-        return new Pose2d(x, y ,new Rotation2d(rot));
+        ChassisSpeeds output =  ChassisSpeeds.fromFieldRelativeSpeeds(
+                x,
+                y,
+                rot,
+                robotRotation);
+        
+        return output;
     }
 
     private double getAlignClimb(){

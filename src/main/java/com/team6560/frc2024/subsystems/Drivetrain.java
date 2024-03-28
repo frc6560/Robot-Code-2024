@@ -204,7 +204,8 @@ public class Drivetrain extends SubsystemBase {
                 this.fieldOnlyOdometry = new Field2d();
                 SmartDashboard.putData("FieldOnlyOdometry", fieldOnlyOdometry);
 
-                double l = 0.25;
+                double l = 0.2;
+                double w = 0.27;
 
                 for(int i = 0; i < trapLocations.size(); i++){
                         Pose2d trap = trapLocations.get(i);
@@ -221,6 +222,9 @@ public class Drivetrain extends SubsystemBase {
 
                         x -= l * Math.cos(rot);
                         y -= l * Math.sin(rot);
+
+                        x -= w * Math.sin(rot);
+                        y -= w * Math.cos(rot);
 
 
                         System.out.println("new: x,y: " + x + " " + y);

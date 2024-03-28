@@ -115,7 +115,7 @@ public class Shooter extends SubsystemBase {
     setupMotors();
 
     
-    aimMap.add(new AimTrajectory(-100.0, 5000 , 16));
+    aimMap.add(new AimTrajectory(-100.0, 5250 , 16));
 
     // aimMap.add(new AimTrajectory(-3.19, 6100 , 17));
     // aimMap.add(new AimTrajectory(-1.93, 6100 , 16));
@@ -129,7 +129,9 @@ public class Shooter extends SubsystemBase {
     // aimMap.add(new AimTrajectory(18.70, 5100 , 40));
     // aimMap.add(new AimTrajectory(20.0, 5000 , 45));
 
-    aimMap.add(new AimTrajectory(-1.00, 5250 , 13));
+    aimMap.add(new AimTrajectory(-2.50, 5250 , 10));
+
+    aimMap.add(new AimTrajectory(-1.00, 5250 , 11));
 
     aimMap.add(new AimTrajectory(1.00, 5250 , 15));
     aimMap.add(new AimTrajectory(2.03, 5050 , 16));
